@@ -1,0 +1,157 @@
+/* Estilo do manual em PDF. As cores da marca chegam como variáveis (--primaria, --texto, --destaque) definidas pelo
+   montar-pdf.ts a partir do caso.yaml. Contraste: texto #14243A e primária #0A60A2 sobre branco passam do AA. */
+:root {
+  --suave: #3D4F66;       /* texto secundário: 8,4:1 sobre branco */
+  --linha: #C8D3E0;
+  --fundo-nota: #EEF4FA;
+  --fonte: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@page { size: A4; }
+
+* { box-sizing: border-box; }
+
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+body {
+  margin: 0;
+  font-family: var(--fonte);
+  font-size: 10.5pt;
+  line-height: 1.5;
+  color: var(--texto);
+  background: #fff;
+  hyphens: manual;
+}
+
+p { margin: 0 0 2.6mm; }
+strong { font-weight: 600; }
+a { color: var(--primaria); }
+
+/* ---------- capa ---------- */
+.capa {
+  height: 252mm;
+  display: flex;
+  flex-direction: column;
+  break-after: page;
+  page-break-after: always;
+}
+.capa-logo { width: 44mm; height: auto; margin-top: 6mm; }
+.capa-miolo { margin-top: auto; margin-bottom: 18mm; }
+.capa-traco { width: 22mm; height: 2.2mm; background: var(--primaria); border-radius: 1mm; margin-bottom: 7mm; }
+.capa h1 {
+  font-size: 34pt;
+  line-height: 1.1;
+  font-weight: 700;
+  margin: 0 0 3mm;
+  color: var(--texto);
+  letter-spacing: -0.01em;
+}
+.capa-subtitulo { font-size: 16pt; color: var(--primaria); font-weight: 600; margin: 0; }
+.capa-versao {
+  margin: 0;
+  padding: 5mm 6mm;
+  background: var(--primaria);
+  color: #fff;
+  font-size: 11pt;
+  font-weight: 600;
+  border-radius: 2mm;
+}
+
+/* ---------- sumário ---------- */
+.sumario { break-after: page; page-break-after: always; }
+.sumario h2 { font-size: 20pt; margin: 0 0 5mm; color: var(--texto); }
+.apresentacao {
+  background: var(--fundo-nota);
+  border-left: 1.2mm solid var(--primaria);
+  padding: 4mm 5mm;
+  margin: 0 0 8mm;
+  border-radius: 0 1.5mm 1.5mm 0;
+}
+.apresentacao p:last-child { margin-bottom: 0; }
+.sumario-lista { list-style: none; margin: 0; padding: 0; }
+.sumario-lista > li { margin: 0 0 4mm; }
+.sumario-lista > li > a {
+  display: flex;
+  gap: 3mm;
+  align-items: baseline;
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--texto);
+  text-decoration: none;
+  border-bottom: 0.4pt solid var(--linha);
+  padding-bottom: 1.5mm;
+}
+.sumario-lista .num { color: var(--primaria); min-width: 9mm; }
+.sumario-lista ol { list-style: none; margin: 1.5mm 0 0 12mm; padding: 0; }
+.sumario-lista ol li { margin: 0.8mm 0; }
+.sumario-lista ol a { color: var(--primaria); text-decoration: none; font-size: 10.5pt; }
+
+/* ---------- capítulos ---------- */
+.capitulo { break-before: page; page-break-before: always; }
+.capitulo-rotulo {
+  font-size: 9.5pt;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primaria);
+  margin: 0 0 1mm;
+}
+.capitulo h2 {
+  font-size: 22pt;
+  line-height: 1.15;
+  margin: 0 0 6mm;
+  padding-bottom: 3mm;
+  border-bottom: 0.8mm solid var(--primaria);
+}
+.capitulo h3 {
+  font-size: 13.5pt;
+  margin: 7mm 0 2.5mm;
+  color: var(--primaria);
+  break-after: avoid;
+  page-break-after: avoid;
+}
+.capitulo ul, .capitulo ol:not(.passos) { margin: 0 0 3mm; padding-left: 6mm; }
+.capitulo li { margin: 0 0 1.4mm; break-inside: avoid; page-break-inside: avoid; }
+.capitulo li:has(> ul) { break-inside: auto; page-break-inside: auto; }
+p, li { orphans: 3; widows: 3; }
+.capitulo li > ul { margin-top: 1.4mm; }
+.capitulo blockquote {
+  margin: 4mm 0;
+  padding: 3.5mm 5mm;
+  background: var(--fundo-nota);
+  border-left: 1.2mm solid var(--primaria);
+  border-radius: 0 1.5mm 1.5mm 0;
+  break-inside: avoid;
+}
+.capitulo blockquote p:last-child { margin-bottom: 0; }
+
+/* ---------- passo a passo ---------- */
+.passos { list-style: none; margin: 2mm 0 4mm; padding: 0; }
+.passo {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin: 0 0 7mm;
+}
+.passo-cabeca { display: flex; gap: 3.5mm; align-items: flex-start; margin-bottom: 2.5mm; }
+.passo-numero {
+  flex: none;
+  width: 8.5mm;
+  height: 8.5mm;
+  border-radius: 50%;
+  background: var(--destaque);
+  color: #fff;
+  font-weight: 700;
+  font-size: 12pt;
+  line-height: 8.5mm;
+  text-align: center;
+}
+.passo-texto { margin: 1mm 0 0; font-size: 11pt; }
+.passo-figura { margin: 0 0 0 12mm; }
+.passo-figura img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0.4pt solid var(--linha);
+  border-radius: 1.5mm;
+}
+.passo-figura.tela img { width: 100%; }

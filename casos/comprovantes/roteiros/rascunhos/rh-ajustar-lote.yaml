@@ -1,0 +1,50 @@
+# RASCUNHO — Ajustar o lote devolvido e reenviar para autorização
+# Perfil: analista | Tela: TL-09 /rh/lote?competencia=2026-09 | UC-11 (5a) | Vídeo: sem vídeo próprio (o V14 cita)
+# Manual: Manual do RH › Gerar o lote e entregar à folha (seção "Quando a coordenação devolve o lote")
+#
+# Estado necessário: lote de setembro/2026 "Em elaboração" depois da devolução pela coordenação (crh-devolver-lote).
+# Documentos fictícios: nenhum.
+# Altera dados: lote volta a "Aguardando autorização".
+id: rh-ajustar-lote
+titulo: Ajustar o lote devolvido
+perfil: analista
+estado: atual
+inicio: /rh/lote?competencia=2026-09
+capitulo: capitulos/rh-lote.md
+
+abertura:
+  titulo: Ajustar o lote devolvido
+  subtitulo: Manual do RH
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Gerar o lote e entregar à folha."
+
+passos:
+  - id: motivo
+    narracao: >-
+      Quando a coordenação devolve o lote, você recebe um e-mail, e a tela do lote mostra o motivo.
+    texto: >-
+      Quando a coordenação devolve o lote, chega um e-mail para quem elaborou, e a tela do lote mostra **quem
+      devolveu**, quando e o **motivo**.
+    alvo: { texto: Confira os totais de novo (etapa 2) e envie para autorização. }
+    acao: nenhuma
+    captura: true
+    enquadrar: tela
+
+  - id: totais
+    narracao: Faça o ajuste, confira os totais de novo e clique em Confirmar totais.
+    texto: >-
+      Faça o ajuste pedido (por exemplo, uma decisão na análise), volte ao lote, confira os totais e clique em
+      **Confirmar totais**. As pendências da etapa 1 continuam confirmadas.
+    alvo: { papel: button, nome: Confirmar totais }
+    acao: clicar
+    captura: true
+
+  - id: reenviar
+    narracao: E envie de novo para autorização.
+    texto: Clique em **Enviar para autorização**.
+    alvo: { papel: button, nome: Enviar para autorização }
+    acao: clicar
+    espera_texto: Aguardando autorização da coordenação do RH
+    captura: true

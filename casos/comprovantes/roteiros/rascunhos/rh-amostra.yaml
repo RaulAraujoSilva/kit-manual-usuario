@@ -1,0 +1,77 @@
+# RASCUNHO — Conferir a amostra
+# Perfil: analista | Telas: TL-07 /rh/amostra (painel lateral) | UC-06 (sorteio), UC-08 (decisão) | Vídeo: V10
+# Manual: Manual do RH › Conferir a amostra
+#
+# Estado necessário: o comprovante de saúde da Servidora 050213 (Vida Plena Saúde, R$ 1.240,00) Em amostra, sem
+#   decisão (estado da carga; semente do sorteio 2026-10-7F3A, 5% dos conformes).
+# Documentos fictícios: nenhum.
+# Altera dados: o comprovante da amostra vira Aprovado (pode ser desfeito até o lote).
+id: rh-amostra
+titulo: Conferir a amostra
+perfil: analista
+estado: atual
+inicio: /rh
+capitulo: capitulos/rh-amostra.md
+
+abertura:
+  titulo: Conferir a amostra
+  subtitulo: Manual do RH
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Conferir a amostra."
+
+passos:
+  - id: abrir
+    narracao: >-
+      Todo mês, o sistema sorteia uma amostra de cinco por cento dos conformes para conferência humana. No painel,
+      clique em Conferir amostra.
+    texto: >-
+      Todo mês o sistema sorteia uma **amostra** dos conformes (5%) para conferência humana. No painel, clique em
+      **Conferir amostra**.
+    alvo: { papel: link, nome_comeca: "Conferir amostra" }
+    acao: clicar
+    captura: true
+
+  - id: lista
+    narracao: Cada comprovante da amostra passou nas seis regras. Abra um.
+    texto: Os comprovantes da amostra passaram nas 6 regras. Clique na linha de um deles.
+    alvo: { papel: button, nome_comeca: "Ver detalhes do comprovante de Servidora 050213 (exemplo)" }
+    acao: clicar
+    captura: true
+
+  - id: motivo
+    narracao: >-
+      O painel diz por que ele está aqui: sorteado na amostra aleatória. A semente do sorteio fica registrada, para
+      qualquer um refazer o sorteio.
+    texto: >-
+      O painel mostra o motivo (**Sorteado na amostra aleatória de 5%**) e a **semente do sorteio**, registrada para que
+      o sorteio possa ser refeito e conferido.
+    alvo: { texto: Semente do sorteio }
+    acao: nenhuma
+    captura: true
+
+  - id: documento
+    narracao: Abra os documentos e confira com os dados lidos.
+    texto: Use **Abrir documento** para conferir cada documento com os dados lidos e o valor calculado.
+    alvo: { papel: figure, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }   # conferir: o painel mostra uma miniatura (figure); "Abrir documento: …" pode ter dois botões e o motor exige alvo único
+    acao: nenhuma
+    captura: true
+
+  - id: aprovar
+    narracao: Estando tudo certo, clique em Confirmar e aprovar. O botão mostra o valor que será aprovado.
+    texto: >-
+      Se estiver tudo certo, clique em **Confirmar e aprovar**: o botão mostra o valor que será aprovado. Se encontrar um
+      problema, use **Devolver ao servidor** ou **Reprovar**, como numa divergência.
+    alvo: { papel: button, nome_comeca: "Confirmar e aprovar", dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
+    acao: clicar
+    captura: true
+
+  - id: aprovado
+    narracao: Aprovado. O resultado da amostra entra no relatório do mês, com a taxa de erro.
+    texto: >-
+      O comprovante fica **Aprovado** e entra no lote. O resultado da amostra vai para o relatório mensal, com a taxa de
+      erro na amostra.
+    alvo: { texto: "Aprovado. Entra no lote de" }   # conferir: mensagem de retorno no painel lateral
+    acao: nenhuma
+    captura: true

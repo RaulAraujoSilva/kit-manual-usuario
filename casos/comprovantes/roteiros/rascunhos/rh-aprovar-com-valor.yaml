@@ -1,0 +1,83 @@
+# RASCUNHO — Aprovar informando o valor (divergência sem valor reembolsável calculado)
+# Perfil: analista | Tela: TL-08 /rh/comprovantes/[id] | UC-08 (RN-ANL-02) | Vídeo: sem vídeo próprio (o V09 cita)
+# Manual: Manual do RH › Analisar divergências e decidir (seção "Quando não há valor calculado")
+#
+# Estado necessário: uma divergência da carga SEM valor reembolsável calculado e que não seja da própria analista. O
+#   teste ponta a ponta acha uma pela API; aqui foi escolhida a da Servidora 046112 (exemplo), Espaço Exemplo Recreação
+#   (Regra 2, emitente), valor pago R$ 1.280,00.   # conferir na lista: escolher a que mostra "Sem valor reembolsável calculado"
+#   O teto da educação da carga é R$ 1.000,00 por dependente: o valor informado não pode passar dele.   # conferir
+# Documentos fictícios: nenhum.
+# Altera dados: o comprovante vira Aprovado com o valor e a justificativa (podem ser desfeitos até o lote).
+id: rh-aprovar-com-valor
+titulo: Aprovar informando o valor
+perfil: analista
+estado: atual
+inicio: /rh/divergencias
+capitulo: capitulos/rh-decidir.md
+
+abertura:
+  titulo: Aprovar informando o valor
+  subtitulo: Manual do RH
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Analisar divergências e decidir."
+
+passos:
+  - id: ver
+    narracao: Abra a divergência pela lista.
+    texto: Na lista **Divergências**, clique na linha do comprovante.
+    alvo: { papel: button, nome_comeca: "Ver detalhes do comprovante de Servidora 046112 (exemplo)" }   # conferir
+    acao: clicar
+    captura: false
+
+  - id: sem-valor
+    narracao: >-
+      Quando a conferência não calculou o valor reembolsável, o painel avisa, e a aprovação só sai na análise completa.
+    texto: >-
+      Quando não há valor reembolsável calculado, o painel lateral não oferece **Aprovar**: abra a análise completa e
+      informe o valor.
+    alvo: { papel: link, nome: Abrir análise completa, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
+    acao: clicar
+    captura: true
+
+  - id: opcao
+    narracao: Escolha Aprovar informando o valor.
+    texto: Em **Decisão do RH**, escolha **Aprovar informando o valor**.
+    alvo: { papel: radio, nome_comeca: "Aprovar informando o valor", dentro: { papel: region, nome: Decisão do RH } }
+    acao: clicar
+    captura: true
+
+  - id: valor
+    narracao: Informe o valor aprovado, em reais, sem passar do teto.
+    texto: Em **Valor aprovado**, informe o valor em reais, com centavos, sem passar do teto disponível.
+    alvo: { rotulo: Valor aprovado, dentro: { papel: region, nome: Decisão do RH } }
+    acao: preencher
+    valor: "1.000,00"
+    captura: true
+
+  - id: justificativa
+    narracao: E a justificativa, com pelo menos vinte caracteres. Ela fica no histórico e no relatório.
+    texto: >-
+      Em **Justificativa**, explique a decisão, com pelo menos 20 caracteres. Ela fica no histórico e no relatório da
+      competência.
+    alvo: { rotulo: Justificativa, dentro: { papel: region, nome: Decisão do RH } }
+    acao: preencher
+    valor: "Emitente conferido no cadastro da prefeitura: atividade de educação infantil (exemplo)."
+    captura: true
+
+  - id: confirmar
+    narracao: Clique em Confirmar decisão.
+    texto: Clique em **Confirmar decisão**.
+    alvo: { papel: button, nome: Confirmar decisão, dentro: { papel: region, nome: Decisão do RH } }   # conferir: rótulo do botão nesta opção
+    acao: clicar
+    captura: true
+
+  - id: aprovado
+    narracao: O comprovante está aprovado pelo valor informado e entra no lote do mês.
+    texto: >-
+      O comprovante fica **Aprovado** pelo valor informado e entra no lote da competência. Se o valor difere do
+      calculado, o sistema pede confirmação antes.
+    alvo: { texto: "Aprovado por" }   # conferir: mensagem "Aprovado por R$ … às …" (DECISAO.aprovadoPor)
+    acao: nenhuma
+    captura: true

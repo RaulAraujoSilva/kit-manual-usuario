@@ -1,0 +1,50 @@
+# RASCUNHO — O e-mail que o servidor recebe (devolução)
+# Perfil: servidor (a caixa de e-mail de teste, Mailpit) | Tela: fora do sistema (e-mail) | UC-04, UC-08 (aviso da
+#   decisão) | Vídeo: sem vídeo próprio (pode entrar no V06) | Manual: Guia do servidor › Ler os avisos e os e-mails
+#
+# Estado necessário: o e-mail "Comprovante de outubro devolvido para correção" na caixa de teste (sai do
+#   rh-devolver-conforme). Os lembretes de quem não enviou ("Lembrete: comprovantes de outubro") também estão lá,
+#   enviados pela rotina diária em 05/11/2026.
+# Documentos fictícios: nenhum. Os e-mails da carga vão para endereços fictícios (@exemplo.invalido).
+# Altera dados: não.
+# Precisa do motor: (1) início com endereço absoluto: a caixa de teste fica em http://localhost:8028, fora do
+#   `caso.endereco` (o motor hoje concatena `endereco + inicio`); (2) não entrar no sistema antes; (3) ocultar a moldura
+#   do Mailpit (cabeçalho, lista de outras caixas) ou recortar só a mensagem, para o print não mostrar a ferramenta de
+#   teste. Alternativa sem mexer no motor: print avulso da mensagem, anexado ao capítulo à mão.
+# Alvos do Mailpit: não estão no código do sistema; todos a conferir na tela da caixa de teste. Atenção: o
+#   rh-divergencia (passo 6 da sequência) também manda um e-mail de devolução com o mesmo assunto, para a Servidora
+#   044219; o alvo precisa filtrar pela destinatária servidor.050213@exemplo.invalido (ou esvaziar a caixa antes do 9).
+id: srv-email
+titulo: O e-mail de devolução
+perfil: servidor
+estado: atual
+inicio: "http://localhost:8028/"   # precisa do motor: endereço absoluto
+capitulo: capitulos/srv-avisos.md
+
+abertura:
+  titulo: Os avisos por e-mail
+  subtitulo: Guia do servidor
+
+fecho:
+  linhas:
+    - Dúvidas? Fale com o RH pelo ramal 6457.
+    - "Guia do servidor: capítulo Ler os avisos e os e-mails."
+
+passos:
+  - id: caixa
+    narracao: Cada decisão do RH e cada lembrete do prazo também chegam ao seu e-mail institucional.
+    texto: As decisões do RH e os lembretes do prazo também chegam ao seu **e-mail institucional**.
+    alvo: { texto: Comprovante de outubro devolvido para correção }   # conferir: assunto na lista do Mailpit
+    acao: clicar
+    captura: true
+
+  - id: mensagem
+    narracao: >-
+      O e-mail diz o mês, o motivo e o prazo para corrigir. Valores e o nome do emitente ficam só no sistema, por
+      segurança.
+    texto: >-
+      O e-mail informa o **mês**, o **motivo** e o **prazo** para corrigir. Por proteção dos dados de saúde, valores e
+      nome do emitente não vão no e-mail: entre no sistema para ver o detalhe e corrigir.
+    alvo: { texto: devolvido para correção }   # conferir: corpo da mensagem no Mailpit
+    acao: nenhuma
+    captura: true

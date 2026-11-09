@@ -1,0 +1,104 @@
+# RASCUNHO — Conhecer o painel e as situações
+# Perfil: servidor (Servidora 050213) | Tela: TL-02 /servidor | UC-04 | Vídeo: V02
+# Manual: Guia do servidor › Entender o painel e as situações (e "sair", no fim)
+#
+# Estado necessário: inicial (carga de teste). Na carga, a servidora já enviou outubro/2026 (2 conformes de educação e
+#   1 de saúde sorteado na amostra); janeiro a agosto pagos; setembro aprovado e ainda sem lote.
+# Documentos fictícios: nenhum.
+# Altera dados: não (só a trilha de acesso). Primeiro roteiro da sequência longa (ver ORDEM_DE_GRAVACAO.md).
+id: srv-painel
+titulo: Conhecer o painel
+perfil: servidor
+estado: inicial
+inicio: /servidor
+capitulo: capitulos/srv-painel.md
+
+abertura:
+  titulo: Conhecer o painel
+  subtitulo: Guia do servidor
+
+fecho:
+  linhas:
+    - Dúvidas? Fale com o RH pelo ramal 6457.
+    - "Guia do servidor: capítulo Entender o painel e as situações."
+
+passos:
+  - id: agora
+    narracao: >-
+      O painel mostra, no alto, o que fazer agora. Aqui, os comprovantes de outubro já foram enviados ao RH, e o
+      cartão diz quando a aprovação e o pagamento estão previstos.
+    texto: >-
+      O cartão **Agora** mostra a próxima ação: enviar os comprovantes do mês, corrigir um comprovante devolvido ou
+      aguardar o RH, com o prazo e a folha prevista para o pagamento.
+    alvo: { papel: heading, nome_comeca: "Enviado ao RH em" }   # conferir: o cartão pode ser "Envie os comprovantes de outubro"
+    acao: nenhuma
+    captura: true
+
+  - id: meses
+    narracao: >-
+      Na faixa de meses, cada mês tem um sinal: aprovado, em aberto, devolvido ou sem envio.
+    texto: >-
+      Na faixa **Meses**, cada mês do ano mostra a situação com ícone e palavra: aprovado, em aberto, devolvido, sem
+      envio ou ainda não aberto. Use as setas ao lado do ano para ver o ano anterior.
+    alvo: { papel: list, nome: Meses do ano }
+    acao: nenhuma
+    captura: true
+
+  - id: rastreador
+    narracao: >-
+      Abaixo, o andamento do mês selecionado: enviado, conferido, aprovado pelo RH e pago na folha.
+    texto: >-
+      O **andamento** do mês selecionado tem quatro etapas: **Enviado**, **Conferido**, **Aprovado pelo RH** e **Pago
+      na folha**, com a data de cada uma ou a data prevista.
+    alvo: { papel: list, nome_comeca: "Andamento de" }
+    acao: nenhuma
+    captura: true
+
+  - id: tabela
+    narracao: >-
+      A tabela lista cada comprovante do mês, com a situação, o valor pago, o valor reembolsável e a glosa, quando
+      houver.
+    texto: >-
+      A tabela lista cada comprovante do mês: tipo, **situação** (Conforme, Divergência, Devolvido, Aprovado, Reprovado,
+      Pago na folha), quem consta, emitente, valor **pago**, valor **reembolsável** e **glosa**. A glosa é a parte que
+      não é reembolsada, por exemplo o que passa do teto do mês, com a explicação logo abaixo.
+    alvo: { papel: table, nome_comeca: "Comprovantes de" }   # conferir: legenda da tabela do mês
+    acao: nenhuma
+    captura: true
+
+  - id: outro-mes
+    narracao: Para ver outro mês, clique nele. Veja agosto, que já foi pago.
+    texto: Para ver outro mês, clique nele na faixa de meses.
+    alvo: { papel: link, nome: "agosto de 2026" }   # conferir: nome acessível do mês na faixa ("Ago, agosto de 2026")
+    acao: clicar
+    captura: true
+
+  - id: pago
+    narracao: Em agosto, todas as etapas estão concluídas, até o pagamento na folha.
+    texto: Num mês pago, as quatro etapas aparecem concluídas, com a folha em que o reembolso entrou.
+    alvo: { papel: list, nome_comeca: "Andamento de" }
+    acao: nenhuma
+    captura: true
+
+  - id: reembolsado
+    narracao: Ao lado, o total reembolsado no ano e as pessoas que podem constar nos seus comprovantes.
+    texto: >-
+      Ao lado, **Reembolsado em 2026** soma o que já foi pago na folha no ano. Em **Beneficiários** estão as pessoas
+      em cujo nome os comprovantes são aceitos.
+    alvo: { papel: heading, nome: Reembolsado em 2026 }
+    acao: nenhuma
+    captura: true
+
+  - id: menu-usuario
+    narracao: Quando terminar, abra o menu com o seu nome.
+    texto: Para sair, abra o menu com o **seu nome**, no alto à direita.
+    alvo: { css: "header details > summary" }
+    acao: clicar
+    captura: true
+
+  - id: sair
+    narracao: E clique em Sair.
+    texto: Clique em **Sair**. A sessão também termina sozinha depois de 30 minutos sem uso, com aviso 2 minutos antes.
+    alvo: { papel: button, nome: Sair, exato: true }
+    acao: clicar
+    captura: true

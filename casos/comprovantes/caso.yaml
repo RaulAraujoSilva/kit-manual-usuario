@@ -1,0 +1,41 @@
+# Caso: sistema de comprovantes de saúde e educação (AGENERSA).
+# Ambiente local com dados fictícios; o "hoje" do sistema é fixo em 05/11/2026.
+sistema: Comprovantes de saúde e educação
+orgao: AGENERSA
+endereco: http://127.0.0.1:3005
+
+# Contas da carga de teste (só valem no ambiente local, com a massa fictícia).
+perfis:
+  servidor:
+    nome: Servidora 050213 (exemplo)
+    entrada:
+      pagina: /entrar
+      campos:
+        - { rotulo: "CPF ou matrícula", valor: "50.213-4" }
+        - { rotulo: "Senha", exato: true, valor: "Servidora-050213-Teste!" }
+      botao: Entrar
+      espera_url: /servidor
+
+# Elementos que só existem fora da produção: nunca aparecem em print nem vídeo.
+ocultar:
+  - css: 'aside[aria-label="Ambiente"]'
+  - bloco_do_texto: "Ambiente de teste: entrar como"
+
+# Volta ao estado inicial antes de cada roteiro que altera dados.
+# A cópia `.cache/estado-inicial.dump` é tirada uma vez, logo depois da carga de teste (ver README do caso).
+estado:
+  restaurar:
+    - docker cp .cache/estado-inicial.dump manual-db-1:/tmp/estado-inicial.dump
+    - docker exec manual-db-1 psql -q -U comprovantes -d comprovantes -c "select pg_terminate_backend(pid) from pg_stat_activity where datname = current_database() and pid <> pg_backend_pid()"
+    - docker exec manual-db-1 pg_restore -U comprovantes -d comprovantes --clean --if-exists --no-owner /tmp/estado-inicial.dump
+
+marca:
+  cor_primaria: "#0A60A2"
+  cor_texto: "#14243A"
+  cor_destaque: "#D0006F"
+  logotipo: marca/agenersa-logotipo.png
+  logotipo_branco: marca/agenersa-logotipo-branco.png
+
+voz:
+  modelo: microsoft/mai-voice-2.1
+  voz: "pt-BR-Luana:MAI-Voice-2.1"

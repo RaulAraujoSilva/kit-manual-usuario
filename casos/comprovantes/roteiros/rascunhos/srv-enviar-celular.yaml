@@ -1,0 +1,103 @@
+# RASCUNHO — Enviar os comprovantes pelo celular
+# Perfil: servidor (Servidora 050213) | Tela: TL-03 /servidor/enviar (largura de celular) | UC-02, UC-03 | Vídeo: V04
+# Manual: Guia do servidor › Enviar os comprovantes do mês (seção "Pelo celular")
+#
+# Estado necessário: inicial (os mesmos três documentos do srv-enviar; depois de um envio deles, cairiam na Regra 5,
+#   duplicidade). Rodar com restauração própria, antes do srv-enviar.
+# Documentos fictícios: os três PDFs de casos/comprovantes/documentos (boleto e comprovante da escola, recibo da saúde).
+# Altera dados: envia 2 comprovantes ao RH (protocolo -Rn).
+# Precisa do motor: janela de celular (ex.: 390×844, toque). Hoje a janela é fixa em 1440×900 no capturar.ts; sugestão:
+#   campo `janela: celular` no roteiro. Abaixo de 768 px o menu do alto some e aparece a barra "Menu do celular".
+# Leitura de foto desligada no ambiente local: "Tirar foto" é só mostrado; o envio usa os PDFs com texto. Se a leitura
+#   de foto for ligada (TASK-024), trocar o passo "escolher" por uma foto fictícia.
+id: srv-enviar-celular
+titulo: Enviar os comprovantes pelo celular
+perfil: servidor
+estado: inicial
+inicio: /servidor
+capitulo: capitulos/srv-enviar.md
+
+abertura:
+  titulo: Enviar pelo celular
+  subtitulo: Guia do servidor
+
+fecho:
+  linhas:
+    - Dúvidas? Fale com o RH pelo ramal 6457.
+    - "Guia do servidor: capítulo Enviar os comprovantes do mês."
+
+passos:
+  - id: abrir
+    narracao: No celular, o menu fica embaixo. Toque em Enviar.
+    texto: No celular, o menu fica na barra de baixo. Toque em **Enviar**.
+    alvo: { papel: link, nome: Enviar, exato: true, dentro: { papel: navigation, nome: Menu do celular } }
+    acao: clicar
+    captura: true
+
+  - id: foto
+    narracao: >-
+      Você pode tirar a foto do documento na hora, com a câmera, ou escolher os arquivos que já estão no celular.
+    texto: >-
+      Toque em **Tirar foto** para fotografar o documento: enquadre a folha inteira, com boa luz e sem cortes. Para
+      enviar arquivos que já estão no celular, toque em **Escolher arquivos**.
+    alvo: { papel: button, nome: Tirar foto, exato: true, dentro: { papel: region, nome: Enviar arquivos } }
+    acao: nenhuma
+    captura: true
+
+  - id: escolher
+    narracao: Escolha, de uma vez, todos os documentos do mês.
+    texto: Toque em **Escolher arquivos** e selecione todos os documentos do mês de uma vez.
+    alvo: { papel: button, nome: Escolher arquivos }
+    acao: enviar_arquivos
+    arquivos:
+      - documentos/boleto-escola-outubro.pdf
+      - documentos/comprovante-pagamento-escola-outubro.pdf
+      - documentos/recibo-plano-de-saude-outubro.pdf
+    campo_arquivos: { rotulo: Escolher arquivos }
+    espera_texto: Leitura concluída. Confira as despesas abaixo.
+    captura: true
+
+  - id: conferir
+    narracao: >-
+      O sistema monta as despesas. Role a tela e confira cada uma: quem consta, o tipo e o valor reembolsável.
+    texto: >-
+      O sistema monta as despesas. Role a tela e confira cada uma: **quem consta**, o **tipo** e o valor
+      **reembolsável**.
+    alvo: { papel: article, nome: Colégio Horizonte (exemplo) }
+    acao: nenhuma
+    captura: true
+
+  - id: confirmar-escola
+    narracao: Se estiver tudo certo, toque em Confirmar.
+    texto: Se o tipo e a pessoa estiverem certos, toque em **Confirmar**.
+    alvo: { papel: button, nome: Confirmar, exato: true, dentro: { papel: article, nome: Colégio Horizonte (exemplo) } }
+    acao: clicar
+    captura: true
+
+  - id: confirmar-saude
+    narracao: Faça o mesmo na outra despesa.
+    texto: Faça o mesmo em cada despesa.
+    alvo: { papel: button, nome: Confirmar, exato: true, dentro: { papel: article, nome: Vida Plena Saúde (exemplo) } }
+    acao: clicar
+    captura: false
+
+  - id: enviar
+    narracao: No resumo, no fim da tela, toque em Enviar ao RH.
+    texto: No **Resumo**, no fim da tela, toque em **Enviar ao RH**.
+    alvo: { papel: button, nome_comeca: "Enviar ao RH ·" }
+    acao: clicar
+    captura: true
+
+  - id: confirmar-envio
+    narracao: Confirme o envio.
+    texto: Na confirmação, toque em **Enviar ao RH**.
+    alvo: { papel: button, nome: Enviar ao RH, exato: true, dentro: { papel: dialog } }
+    acao: clicar
+    captura: true
+
+  - id: protocolo
+    narracao: Pronto. O protocolo aparece na tela, e você acompanha tudo pelo início.
+    texto: O envio recebe um **protocolo** com data e hora. Acompanhe a aprovação e o pagamento pelo **Início**.
+    alvo: { papel: status, tem_titulo: Enviado ao RH }
+    acao: nenhuma
+    captura: true

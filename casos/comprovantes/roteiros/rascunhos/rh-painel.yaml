@@ -1,0 +1,102 @@
+# RASCUNHO — O painel do RH
+# Perfil: analista | Tela: TL-06 /rh | UC-16 (indicadores), entrada para UC-07, UC-08, UC-10, UC-11 | Vídeo: V07
+# Manual: Manual do RH › Painel do RH e indicadores
+#
+# Estado necessário: inicial ou só com leituras antes (os números da fila são os da carga: conformes, divergências,
+#   amostra e 19 servidores sem envio em outubro/2026). Rodar antes de qualquer decisão do RH na sequência.
+# Documentos fictícios: nenhum.
+# Altera dados: não.
+id: rh-painel
+titulo: O painel do RH
+perfil: analista
+estado: atual
+inicio: /rh
+capitulo: capitulos/rh-painel.md
+
+abertura:
+  titulo: O painel do RH
+  subtitulo: Manual do RH
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Painel do RH e indicadores."
+
+passos:
+  - id: competencia
+    narracao: >-
+      O painel do RH abre na competência em andamento, com o fechamento do lote e o prazo dos servidores.
+    texto: >-
+      O painel abre na competência em andamento, com a data de **fechamento do lote**, a folha do pagamento e o
+      **prazo dos servidores**. A barra mostra quantos comprovantes já foram aprovados.
+    alvo: { papel: heading, nome: Outubro de 2026, exato: true }
+    acao: nenhuma
+    captura: true
+    enquadrar: tela
+
+  - id: seletor
+    narracao: Para ver outro mês, escolha a competência no alto e clique em Ver.
+    texto: >-
+      Para ver outro mês, escolha em **Competência**, no alto, e clique em **Ver**. O menu e os contadores passam a
+      valer para a competência escolhida.
+    alvo: { rotulo: Competência, exato: true }
+    acao: nenhuma
+    captura: true
+
+  - id: fila
+    narracao: >-
+      Em O que precisa de você, quatro filas: conformes para aprovar, divergências, amostra e quem ainda não enviou.
+      Cada número leva à lista certa.
+    texto: >-
+      **O que precisa de você** mostra quatro filas: **Conformes** para aprovar, **Divergências** para decidir,
+      **Amostra** sorteada para conferir e **Sem envio**. Cada botão leva à lista filtrada, com o mesmo número.
+    alvo: { papel: heading, nome: O que precisa de você }
+    acao: nenhuma
+    captura: true
+
+  - id: cobrancas
+    narracao: >-
+      Abaixo, as cobranças automáticas: os lembretes do mês e quem ainda não enviou. O interruptor pausa todos os
+      lembretes, se preciso.
+    texto: >-
+      **Cobranças automáticas** mostra os lembretes do mês (15, 7 e 1 dia antes do prazo), os primeiros servidores sem
+      envio e o interruptor **Cobrança geral**, que pausa todos os lembretes com motivo registrado.
+    alvo: { papel: heading, nome: Cobranças automáticas }
+    acao: nenhuma
+    captura: true
+
+  - id: pago
+    narracao: E o valor pago na folha no mês anterior.
+    texto: >-
+      **Pago no mês anterior** mostra o lote anterior, a data do pagamento e quantos servidores receberam.
+    alvo: { papel: heading, nome: Pago no mês anterior }
+    acao: nenhuma
+    captura: true
+
+  - id: grafico
+    narracao: O gráfico mostra os comprovantes de cada mês do ano. Prefere números? Clique em Ver como tabela.
+    texto: >-
+      O gráfico mostra os comprovantes de cada mês do ano: aprovados, aguardando, devolvidos e reprovados. Clique em
+      **Ver como tabela** para ver os mesmos números numa tabela.
+    alvo: { papel: button, nome: Ver como tabela }
+    acao: clicar
+    captura: true
+
+  - id: indicadores
+    narracao: Por fim, os indicadores do processo, como a taxa de devolução e o tempo entre o envio e o pagamento.
+    texto: >-
+      **Indicadores do processo**: aprovados sem análise individual, taxa de devolução, taxa de erro na amostra,
+      servidores em dia e tempo entre envio e pagamento. As metas são fixadas depois de três competências medidas.
+    alvo: { papel: heading, nome: Indicadores do processo }
+    acao: nenhuma
+    captura: true
+
+  - id: meus-comprovantes
+    narracao: >-
+      Quem é do RH e também recebe o auxílio envia os próprios comprovantes pelo menu com o seu nome, em Ver meus
+      comprovantes.
+    texto: >-
+      Se você também recebe o auxílio, abra o menu com o seu nome e clique em **Ver meus comprovantes**: os seus
+      comprovantes são decididos por outra pessoa do RH.
+    alvo: { css: "header details > summary" }
+    acao: nenhuma
+    captura: true

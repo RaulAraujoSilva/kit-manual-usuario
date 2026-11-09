@@ -1,0 +1,93 @@
+# RASCUNHO — Meus dados, ajuda, privacidade e acessibilidade
+# Perfil: servidor (Servidora 050213) | Telas: /servidor/dados (Meus dados), /servidor/ajuda, /privacidade,
+#   /acessibilidade (páginas de apoio) | UC-04 (consulta) | Vídeo: V06 (parte 3 de 3)
+# Manual: Guia do servidor › Meus dados, ajuda, privacidade e acessibilidade
+#
+# Estado necessário: qualquer um (só leitura). Na carga, o contato do RH é "ramal 6457" (parâmetro CONTATO_RH).
+# Documentos fictícios: nenhum.
+# Altera dados: não.
+id: srv-dados-e-ajuda
+titulo: Meus dados e ajuda
+perfil: servidor
+estado: atual
+inicio: /servidor
+capitulo: capitulos/srv-dados-e-ajuda.md
+
+abertura:
+  titulo: Meus dados e ajuda
+  subtitulo: Guia do servidor
+
+fecho:
+  linhas:
+    - Dúvidas? Fale com o RH pelo ramal 6457.
+    - "Guia do servidor: capítulo Meus dados, ajuda, privacidade e acessibilidade."
+
+passos:
+  - id: menu-usuario
+    narracao: Para conferir os seus dados, abra o menu com o seu nome.
+    texto: Abra o menu com o **seu nome**, no alto à direita.
+    alvo: { css: "header details > summary" }
+    acao: clicar
+    captura: true
+
+  - id: meus-dados
+    narracao: Clique em Meus dados.
+    texto: Clique em **Meus dados**.
+    alvo: { papel: link, nome: Meus dados, exato: true }
+    acao: clicar
+    captura: false
+
+  - id: dados
+    narracao: >-
+      Aqui estão os dados do seu cadastro, como o RH vê: nome, matrícula, CPF mascarado, e-mail para avisos e
+      vínculo. Se algo estiver errado, fale com o RH.
+    texto: >-
+      **Meus dados** mostra o cadastro como o RH vê: nome, matrícula, CPF mascarado, e-mail para avisos, vínculo e
+      auxílios do mês. A tela é só de consulta: se algum dado estiver errado, fale com o RH pelo ramal 6457. Por aqui
+      também se chega a **Trocar senha**.
+    alvo: { papel: heading, nome: Meus dados, exato: true }
+    acao: nenhuma
+    captura: true
+    enquadrar: tela
+
+  - id: ajuda
+    narracao: No menu do alto, Ajuda reúne o contato do RH, os prazos do mês e as perguntas frequentes.
+    texto: No menu do alto, clique em **Ajuda**.
+    alvo: { papel: link, nome: Ajuda, exato: true, dentro: { papel: navigation, nome: Menu principal } }
+    acao: clicar
+    captura: true
+
+  - id: prazos
+    narracao: Os prazos do mês ficam sempre à vista.
+    texto: >-
+      A **Ajuda** mostra como falar com o RH, os **prazos** do mês (envio dos comprovantes e fechamento do lote para a
+      folha) e as perguntas frequentes.
+    alvo: { papel: heading, nome_comeca: "Prazos" }
+    acao: nenhuma
+    captura: true
+
+  - id: pergunta
+    narracao: Clique numa pergunta para ver a resposta.
+    texto: Clique numa pergunta frequente para ver a resposta.
+    alvo: { css: 'summary:has-text("Por que o valor reembolsável é menor que o valor pago?")' }
+    acao: clicar
+    captura: true
+
+  - id: rodape
+    narracao: No rodapé de todas as telas, estão a privacidade e a acessibilidade do sistema.
+    texto: >-
+      No rodapé de todas as telas ficam **Privacidade** (como os seus dados e os de saúde são protegidos) e
+      **Acessibilidade** (uso pelo teclado, texto ampliado, telas a partir de 360 pixels).
+    alvo: { papel: link, nome: Privacidade, exato: true, dentro: { papel: contentinfo } }
+    acao: clicar
+    captura: true
+
+  - id: privacidade
+    narracao: >-
+      O comprovante de saúde é dado sensível: só você e o RH veem os documentos, e o CPF aparece sempre mascarado.
+    texto: >-
+      Em **Privacidade e proteção de dados**: só você e o RH veem os documentos; telas e relatórios nunca mostram
+      procedimento ou diagnóstico; toda ação fica registrada. Pedidos sobre os seus dados vão ao RH.
+    alvo: { papel: heading, nome: Privacidade e proteção de dados }
+    acao: nenhuma
+    captura: true

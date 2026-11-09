@@ -1,0 +1,60 @@
+# RASCUNHO — Aprovar o perfil do RH pedido pela administração
+# Perfil: coordenacao | Tela: /rh/acessos (Perfis do RH a aprovar; parte da TL-14 na R1) | UC-17 (SEG-AUZ-05) | Vídeo: V17
+# Manual: Manual do RH › Coordenação: autorizar ou devolver o lote, aprovar acessos
+#
+# Estado necessário: um pedido de perfil "Recursos Humanos" para a conta 40.857-8 (Servidora 040857), criado pelo
+#   adm-contas. Na carga inicial não há pedido: a tela mostra "Nenhum perfil à espera de aprovação".
+# Documentos fictícios: nenhum.
+# Altera dados: o perfil passa a valer; a senha provisória é enviada de novo ao e-mail da pessoa (caixa de teste).
+id: crh-aprovar-acessos
+titulo: Aprovar acessos do RH
+perfil: coordenacao
+estado: atual
+inicio: /rh
+capitulo: capitulos/crh-coordenacao.md
+
+abertura:
+  titulo: Aprovar acessos do RH
+  subtitulo: Manual do RH · Coordenação
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Coordenação: aprovar acessos."
+
+passos:
+  - id: abrir
+    narracao: >-
+      O perfil do RH dá acesso a documentos de saúde. Por isso, quando a administração o atribui, ele só vale com a
+      aprovação da coordenação. No menu, clique em Perfis a aprovar.
+    texto: >-
+      O perfil do RH ou da coordenação dá acesso aos documentos de saúde: atribuído pela administração, só vale depois
+      da aprovação de alguém da coordenação. No menu, clique em **Perfis a aprovar**.
+    alvo: { papel: link, nome_comeca: "Perfis a aprovar", dentro: { papel: navigation, nome: Menu do RH } }
+    acao: clicar
+    captura: true
+
+  - id: pedido
+    narracao: Cada pedido mostra a conta, os perfis atuais, o perfil pedido e o motivo.
+    texto: >-
+      Cada pedido mostra a **conta**, os **perfis atuais**, os **perfis pedidos**, o **motivo** e a data. Ninguém aprova a
+      própria conta.
+    alvo: { papel: row, nome_comeca: "40.857-8" }   # conferir: nome da linha começa pela conta
+    acao: nenhuma
+    captura: true
+
+  - id: aprovar
+    narracao: Confira e clique em Aprovar.
+    texto: Confira o pedido e clique em **Aprovar**. Se o pedido não procede, use **Recusar**.
+    alvo: { papel: button, nome: Aprovar o perfil de 40.857-8 }
+    acao: clicar
+    captura: true
+
+  - id: confirmar
+    narracao: Confirme. O perfil passa a valer, e a aprovação fica na trilha com o seu nome.
+    texto: >-
+      Na confirmação, clique em **Aprovar**. O perfil passa a valer, a pessoa entra de novo para usá-lo e a aprovação
+      fica na trilha com o seu nome.
+    alvo: { papel: button, nome: Aprovar, exato: true, dentro: { papel: dialog, nome: Aprovar o perfil pedido para 40.857-8? } }
+    acao: clicar
+    espera_texto: Perfil de 40.857-8 aprovado.
+    captura: true

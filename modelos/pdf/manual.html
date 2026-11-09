@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>{{titulo}} · {{subtitulo}}</title>
+<meta name="author" content="{{orgao}}">
+<meta name="description" content="{{titulo}}: {{subtitulo}}. {{versao}}.">
+<style>
+{{estilo}}
+</style>
+</head>
+<body>
+<section class="capa" aria-labelledby="capa-titulo">
+  <img class="capa-logo" src="{{logotipo}}" alt="Logotipo da {{orgao}}">
+  <div class="capa-miolo">
+    <div class="capa-traco" aria-hidden="true"></div>
+    <h1 id="capa-titulo">{{titulo}}</h1>
+    <p class="capa-subtitulo">{{subtitulo}}</p>
+  </div>
+  <p class="capa-versao">{{versao}}</p>
+</section>
+
+<nav class="sumario" aria-labelledby="sumario-titulo">
+  <h2 id="sumario-titulo">Sumário</h2>
+  {{apresentacao}}
+  <ol class="sumario-lista">
+{{sumario}}
+  </ol>
+</nav>
+
+{{capitulos}}
+</body>
+</html>

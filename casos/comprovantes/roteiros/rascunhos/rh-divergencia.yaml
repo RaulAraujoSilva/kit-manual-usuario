@@ -1,0 +1,125 @@
+# RASCUNHO — Analisar uma divergência e decidir (e desfazer a decisão)
+# Perfil: analista | Telas: TL-07 /rh/divergencias, TL-08 /rh/comprovantes/[id] | UC-08 | Vídeo: V09
+# Manual: Manual do RH › Analisar divergências e decidir: Aprovar, Devolver, Reprovar, desfazer
+#
+# Estado necessário: a divergência da Servidora 044219 (exemplo), Colégio Exemplo Atlântico, que falhou na Regra 4
+#   (competência), ainda sem decisão (estado da carga).
+# Documentos fictícios: nenhum.
+# Altera dados: devolve e, no fim, desfaz a devolução: o comprovante volta a Divergência. Ficam na trilha a decisão e o
+#   desfazer, e na caixa de teste o e-mail da devolução (um e-mail que já saiu não volta).
+id: rh-divergencia
+titulo: Analisar uma divergência e decidir
+perfil: analista
+estado: atual
+inicio: /rh
+capitulo: capitulos/rh-decidir.md
+
+abertura:
+  titulo: Analisar uma divergência e decidir
+  subtitulo: Manual do RH
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Analisar divergências e decidir."
+
+passos:
+  - id: abrir
+    narracao: No painel, na fila Divergências, clique em Analisar divergências.
+    texto: No painel, no cartão **Divergências**, clique em **Analisar divergências**.
+    alvo: { papel: link, nome_comeca: "Analisar divergências" }
+    acao: clicar
+    captura: true
+
+  - id: lista
+    narracao: >-
+      Cada divergência falhou em uma regra da conferência. A lista mostra qual regra e o valor.
+    texto: >-
+      A lista **Divergências** mostra, em cada comprovante, a regra que falhou e o valor. Clique na linha para abrir o
+      painel lateral.
+    alvo: { papel: button, nome_comeca: "Ver detalhes do comprovante de Servidora 044219 (exemplo)" }
+    acao: clicar
+    captura: true
+
+  - id: lateral
+    narracao: O painel lateral resume o achado. Para comparar os documentos com calma, abra a análise completa.
+    texto: >-
+      O painel lateral resume o **achado**, os documentos e as decisões possíveis. **Anterior** e **Próximo** andam pela
+      lista. Para comparar os documentos lado a lado, clique em **Abrir análise completa**.
+    alvo: { papel: link, nome: Abrir análise completa, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
+    acao: clicar
+    captura: true
+
+  - id: achado
+    narracao: >-
+      Na análise, o achado diz qual regra falhou. Aqui, a Regra 4: a despesa não é do mês da competência.
+    texto: >-
+      No alto da **Análise do comprovante** ficam o servidor, a competência, o protocolo e o **achado**: a regra que
+      falhou e o porquê. Embaixo, a **Análise automática** sugere a decisão, quando há sugestão.
+    alvo: { texto: Achado, exato: true }   # conferir: rótulo "Achado" único na análise; "Regra 4 · Competência" aparece mais de uma vez (o motor exige alvo único)
+    acao: nenhuma
+    captura: true
+
+  - id: comparacao
+    narracao: A comparação campo a campo mostra o que difere entre o boleto e o comprovante de pagamento.
+    texto: >-
+      A **Comparação campo a campo** põe lado a lado o boleto ou fatura e o comprovante de pagamento: emitente,
+      competência, número, datas e valores, com o campo diferente realçado. Use **Abrir** para ver cada documento.
+    alvo: { papel: table, nome: Comparação campo a campo }
+    acao: nenhuma
+    captura: true
+
+  - id: decidir
+    narracao: >-
+      Na decisão do RH, você pode aprovar pelo valor calculado, aprovar com outro valor, devolver ao servidor ou
+      reprovar. Aqui, devolva.
+    texto: >-
+      Em **Decisão do RH**, escolha: **Aprovar pelo valor calculado**, **Aprovar com outro valor** (com justificativa),
+      **Devolver ao servidor** (ele corrige e reenvia) ou **Reprovar** (não entra na folha). Atalhos com o foco no
+      painel: A, C, D e R.
+    alvo: { papel: radio, nome_comeca: "Devolver ao servidor", dentro: { papel: region, nome: Decisão do RH } }
+    acao: clicar
+    captura: true
+
+  - id: motivo
+    narracao: Escolha o motivo do catálogo.
+    texto: Em **Motivo**, escolha o motivo do catálogo. O botão de confirmar só se libera com o motivo escolhido.
+    alvo: { rotulo: Motivo, exato: true, dentro: { papel: region, nome: Decisão do RH } }
+    acao: selecionar   # precisa do motor: ação "selecionar" (selectOption pelo rótulo da opção)
+    valor: Competência fora do período
+    captura: true
+
+  - id: mensagem
+    narracao: E escreva ao servidor o que ele precisa enviar.
+    texto: Em **Mensagem ao servidor**, diga o que ele precisa enviar. O prazo para corrigir aparece logo abaixo.
+    alvo: { rotulo: Mensagem ao servidor, dentro: { papel: region, nome: Decisão do RH } }
+    acao: preencher
+    valor: "O boleto enviado é de setembro. Envie o boleto e o comprovante de pagamento de outubro."
+    captura: true
+
+  - id: confirmar
+    narracao: Clique em Confirmar devolução. O servidor recebe o aviso na hora, por e-mail e no sistema.
+    texto: Clique em **Confirmar devolução**. O servidor recebe o aviso na hora, por e-mail e na lista de avisos.
+    alvo: { papel: button, nome: Confirmar devolução, dentro: { papel: region, nome: Decisão do RH } }
+    acao: clicar
+    espera_texto: "Devolvido: Competência fora do período"
+    captura: true
+
+  - id: desfazer
+    narracao: >-
+      Errou? Enquanto o servidor não agir e o lote não for gerado, clique em Desfazer a decisão.
+    texto: >-
+      Se a decisão foi um engano, clique em **Desfazer a decisão**. A devolução se desfaz enquanto o servidor não agir;
+      a aprovação e a reprovação, até o lote ser gerado.
+    alvo: { papel: button, nome: Desfazer a decisão, dentro: { papel: region, nome: Decisão do RH } }
+    acao: clicar
+    captura: true
+
+  - id: confirmar-desfazer
+    narracao: Confirme. O comprovante volta à fila, e o aviso sai da lista do servidor.
+    texto: >-
+      Na confirmação, clique em **Desfazer a decisão**. O comprovante volta a **Divergência** e o aviso sai da lista do
+      servidor; um e-mail que já saiu não volta. Tudo fica no histórico.
+    alvo: { papel: button, nome: Desfazer a decisão, dentro: { papel: dialog, nome: Desfazer a devolução? } }
+    acao: clicar
+    espera_texto: Devolução desfeita
+    captura: true

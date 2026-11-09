@@ -1,0 +1,83 @@
+# RASCUNHO — Bloquear, desbloquear e enviar nova senha provisória
+# Perfil: administracao | Tela: TL-14 /admin (aba Contas e perfis) | UC-17 | Vídeo: V18 (parte 2 de 3)
+# Manual: Manual da administração › Contas e perfis (seção "Bloquear e reenviar a senha")
+#
+# Estado necessário: a conta 40.857-8 criada pelo adm-contas (ativa). Rodar depois do crh-aprovar-acessos e do
+#   srv-primeiro-acesso: "Enviar nova senha provisória" invalida a senha atual e derruba as sessões.
+# Documentos fictícios: nenhum.
+# Altera dados: bloqueia e desbloqueia a conta 40.857-8 (com motivo; trilha "Bloqueou conta" e "Desbloqueou conta").
+#   "Enviar nova senha provisória" é só mostrado, não confirmado.
+id: adm-bloquear-conta
+titulo: Bloquear e desbloquear uma conta
+perfil: administracao
+estado: atual
+inicio: /admin
+capitulo: capitulos/adm-contas.md
+
+abertura:
+  titulo: Bloquear e desbloquear uma conta
+  subtitulo: Manual da administração
+
+fecho:
+  linhas:
+    - "Manual da administração: capítulo Contas e perfis."
+
+passos:
+  - id: bloquear
+    narracao: Para impedir o acesso de uma conta, clique em Bloquear, na linha dela.
+    texto: Na linha da conta, clique em **Bloquear**.
+    alvo: { papel: button, nome: Bloquear 40.857-8 }
+    acao: clicar
+    captura: true
+
+  - id: motivo
+    narracao: O motivo é obrigatório e fica na trilha de auditoria.
+    texto: >-
+      Em **Motivo (obrigatório)**, explique o bloqueio: ele fica na trilha. A pessoa não entra mais e as sessões abertas
+      caem; o histórico continua na trilha.
+    alvo: { rotulo: Motivo (obrigatório), dentro: { papel: dialog, nome: Bloquear a conta 40.857-8? } }
+    acao: preencher
+    valor: "Afastamento a pedido da chefia (exemplo)."
+    captura: true
+
+  - id: confirmar
+    narracao: Clique em Bloquear.
+    texto: Clique em **Bloquear**.
+    alvo: { papel: button, nome: Bloquear, exato: true, dentro: { papel: dialog, nome: Bloquear a conta 40.857-8? } }
+    acao: clicar
+    captura: true
+
+  - id: desbloquear
+    narracao: Para liberar de novo, clique em Desbloquear, também com motivo.
+    texto: >-
+      Para liberar de novo, clique em **Desbloquear** na linha da conta e informe o motivo. A pessoa volta a entrar com
+      a senha que já tinha.
+    alvo: { papel: button, nome: Desbloquear 40.857-8 }
+    acao: clicar
+    captura: true
+
+  - id: motivo-desbloqueio
+    narracao: ""   # sem fala: a narração do passo anterior cobre
+    texto: Informe o motivo do desbloqueio.
+    alvo: { rotulo: Motivo (obrigatório), dentro: { papel: dialog, nome: Desbloquear a conta 40.857-8? } }
+    acao: preencher
+    valor: "Retorno do afastamento (exemplo)."
+    captura: false
+
+  - id: confirmar-desbloqueio
+    narracao: ""   # sem fala
+    texto: Clique em **Desbloquear**.
+    alvo: { papel: button, nome: Desbloquear, exato: true, dentro: { papel: dialog, nome: Desbloquear a conta 40.857-8? } }
+    acao: clicar
+    captura: false
+
+  - id: nova-senha
+    narracao: >-
+      Se a pessoa perdeu a senha, clique em Enviar nova senha provisória. A senha atual deixa de valer, e a nova vai
+      ao e-mail dela.
+    texto: >-
+      Se a pessoa esqueceu a senha, clique em **Enviar nova senha provisória**: a senha atual deixa de valer, as sessões
+      caem e a nova provisória vai ao e-mail institucional, por 24 horas e uma entrada.
+    alvo: { papel: button, nome: Enviar nova senha provisória para 40.857-8 }
+    acao: nenhuma
+    captura: true

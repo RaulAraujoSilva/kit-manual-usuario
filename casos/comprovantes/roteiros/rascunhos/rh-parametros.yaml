@@ -1,0 +1,137 @@
+# RASCUNHO — Calendário, tetos e parâmetros
+# Perfil: analista | Tela: TL-13 /rh/parametros (abas Calendário, Tetos, Parâmetros, Catálogos) | UC-15 | Vídeo: V13
+# Manual: Manual do RH › Calendário, tetos e parâmetros
+#
+# Estado necessário: qualquer um. Teto da saúde em vigor: IN CODIR nº 34/2012 (carga).
+# Documentos fictícios: nenhum. Ato de origem e valores fictícios; vigência futura (01/01/2027), para não mudar a
+#   conferência de outubro/2026.   # conferir: se outro roteiro (ou o teste ponta a ponta) já criou versão nessa data, usar
+#   a seguinte; versão publicada não se apaga.
+# Altera dados: cria a versão do teto da saúde vigente a partir de 01/01/2027.
+id: rh-parametros
+titulo: Calendário, tetos e parâmetros
+perfil: analista
+estado: atual
+inicio: /rh
+capitulo: capitulos/rh-parametros.md
+
+abertura:
+  titulo: Calendário, tetos e parâmetros
+  subtitulo: Manual do RH
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Calendário, tetos e parâmetros."
+
+passos:
+  - id: abrir
+    narracao: No menu, clique em Calendário e parâmetros.
+    texto: No menu do RH, clique em **Calendário e parâmetros**.
+    alvo: { papel: link, nome_comeca: "Calendário e parâmetros", dentro: { papel: navigation, nome: Menu do RH } }
+    acao: clicar
+    captura: true
+
+  - id: calendario
+    narracao: >-
+      O calendário mostra, para cada mês, a abertura, o prazo do servidor, o fechamento do lote e os lembretes. Data em
+      dia sem expediente aparece com o próximo dia útil.
+    texto: >-
+      A aba **Calendário** mostra, por competência, a abertura, o **prazo do servidor**, o **fechamento do lote** e as
+      datas dos lembretes. Quando a data cai em dia sem expediente, a tela avisa e mostra o próximo dia útil. **Ajustar
+      datas** muda o calendário de um mês, com motivo.
+    alvo: { papel: table, nome: Calendário das competências de 2026 }
+    acao: nenhuma
+    captura: true
+
+  - id: tetos
+    narracao: Na aba Tetos, ficam os valores máximos de reembolso, com a vigência e o ato de origem.
+    texto: >-
+      A aba **Tetos** mostra o teto da saúde por grupo etário e o da educação por dependente, cada um com a vigência e
+      o ato de origem.
+    alvo: { papel: link, nome: Tetos, exato: true, dentro: { papel: navigation, nome: Partes dos parâmetros } }
+    acao: clicar
+    captura: true
+
+  - id: nova-vigencia
+    narracao: Quando sair uma tabela nova, cadastre uma nova vigência. A atual continua valendo até a véspera.
+    texto: >-
+      Quando sair uma tabela nova, clique em **Nova vigência do teto da saúde**. A versão em vigor continua até a
+      véspera da nova; comprovantes já conferidos ficam com o teto da época.
+    alvo: { css: 'summary:has-text("Nova vigência do teto da saúde")' }
+    acao: clicar
+    captura: true
+
+  - id: data
+    narracao: Informe a data de início, o ato de origem e o valor de cada grupo.
+    texto: Preencha **Vigência a partir de**, **Ato de origem** e o valor de cada grupo, em reais.
+    alvo: { rotulo: Vigência a partir de, dentro: { papel: form, nome: Nova vigência do teto da saúde } }
+    acao: preencher
+    valor: "2027-01-01"
+    captura: true
+
+  - id: ato
+    narracao: ""   # sem fala: a narração do passo anterior cobre os campos
+    texto: Informe o ato de origem.
+    alvo: { rotulo: Ato de origem, dentro: { papel: form, nome: Nova vigência do teto da saúde } }
+    acao: preencher
+    valor: "Ato de exemplo nº 1/2027 (atualização pelo INPC)"
+    captura: false
+
+  - id: grupo-1
+    narracao: ""
+    texto: Valor do grupo I.
+    alvo: { rotulo: Valor do grupo I (R$), dentro: { papel: form, nome: Nova vigência do teto da saúde } }
+    acao: preencher
+    valor: "250,00"
+    captura: false
+
+  - id: grupo-2
+    narracao: ""
+    texto: Valor do grupo II.
+    alvo: { rotulo: Valor do grupo II (R$), dentro: { papel: form, nome: Nova vigência do teto da saúde } }
+    acao: preencher
+    valor: "330,00"
+    captura: false
+
+  - id: grupo-3
+    narracao: ""
+    texto: Valor do grupo III.
+    alvo: { rotulo: Valor do grupo III (R$), dentro: { papel: form, nome: Nova vigência do teto da saúde } }
+    acao: preencher
+    valor: "410,00"
+    captura: false
+
+  - id: grupo-4
+    narracao: ""
+    texto: Valor do grupo IV.
+    alvo: { rotulo: Valor do grupo IV (R$), dentro: { papel: form, nome: Nova vigência do teto da saúde } }
+    acao: preencher
+    valor: "490,00"
+    captura: false
+
+  - id: grupo-5
+    narracao: ""
+    texto: Valor do grupo V.
+    alvo: { rotulo: Valor do grupo V (R$), dentro: { papel: form, nome: Nova vigência do teto da saúde } }
+    acao: preencher
+    valor: "570,00"
+    captura: true
+
+  - id: cadastrar
+    narracao: Clique em Cadastrar nova vigência.
+    texto: Clique em **Cadastrar nova vigência**. A versão nova aparece em **Outras versões**, como futura.
+    alvo: { papel: button, nome: Cadastrar nova vigência, dentro: { papel: form, nome: Nova vigência do teto da saúde } }
+    acao: clicar
+    espera_texto: Nova versão do teto da saúde vigente a partir de 01/01/2027.
+    captura: true
+
+  - id: parametros
+    narracao: >-
+      Na aba Parâmetros, os valores das regras com vigência e o histórico. Em Catálogos, os motivos de devolução e as
+      rubricas da folha.
+    texto: >-
+      A aba **Parâmetros** mostra os valores das regras (percentual da amostra, dias dos lembretes e outros), a versão
+      das regras em vigor e o histórico. A aba **Catálogos** guarda os **motivos** de devolução, reprovação, glosa e
+      suspensão e as **rubricas da folha**: cadastre, corrija o texto de um motivo nunca usado ou desative.
+    alvo: { papel: link, nome: Parâmetros, exato: true, dentro: { papel: navigation, nome: Partes dos parâmetros } }
+    acao: clicar
+    captura: true

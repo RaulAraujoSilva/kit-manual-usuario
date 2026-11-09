@@ -1,0 +1,71 @@
+# RASCUNHO — Decidir uma falta de comprovação
+# Perfil: analista | Tela: TL-11 /rh/sem-envio?aba=faltas | UC-10 | Vídeo: sem vídeo próprio (o V11 cita)
+# Manual: Manual do RH › Sem envio, lembretes e faltas de comprovação (seção "Faltas de comprovação")
+#
+# Estado necessário: a falta de setembro/2026 do auxílio-saúde do Servidor 048191 (exemplo), 48.191-9, aberta (a carga
+#   abre faltas de quem parou de enviar; saúde vai para decisão do RH com ampla defesa, educação com suspensão
+#   proposta).
+# Documentos fictícios: nenhum. O número do processo SEI é fictício.
+# Altera dados: a falta fica Decidida ("Processo de ampla defesa").
+# Na R1 a falta sanada e o desconto integral ainda não existem (pendência): o capítulo não os menciona.
+id: rh-faltas
+titulo: Decidir uma falta de comprovação
+perfil: analista
+estado: atual
+inicio: /rh/sem-envio?aba=faltas
+capitulo: capitulos/rh-sem-envio.md
+
+abertura:
+  titulo: Faltas de comprovação
+  subtitulo: Manual do RH
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Sem envio, lembretes e faltas de comprovação."
+
+passos:
+  - id: lista
+    narracao: >-
+      Quem tinha o auxílio ativo e não enviou até o prazo ganha uma falta de comprovação, aberta no dia seguinte.
+    texto: >-
+      Na aba **Faltas de comprovação** ficam as faltas abertas no dia seguinte ao prazo, para quem tinha o auxílio ativo
+      e não enviou. A coluna **Proposta** diz o caminho: suspensão (educação) ou decisão do RH com ampla defesa (saúde).
+    alvo: { papel: table }   # conferir: a tabela das faltas deve ser a única da aba (legenda "N faltas de comprovação")
+    acao: nenhuma
+    captura: true
+    enquadrar: tela
+
+  - id: decidir
+    narracao: Na linha da falta, clique em Registrar decisão.
+    texto: >-
+      Na linha da falta, clique em **Registrar decisão** (saúde) ou **Confirmar suspensão** (educação). **Arquivar**
+      encerra a falta sem efeito, por exemplo quando a comprovação foi aceita fora do sistema.
+    alvo: { papel: button, nome: Registrar decisão, dentro: { css: 'tr:has-text("48.191-9"):has-text("setembro/2026")' } }   # conferir: linha da tabela (há uma só falta deste servidor)
+    acao: clicar
+    captura: true
+
+  - id: justificativa
+    narracao: Escreva a justificativa. Ela fica no histórico da falta.
+    texto: Em **Justificativa**, explique a decisão (obrigatória; fica no histórico da falta).
+    alvo: { rotulo: Justificativa, dentro: { papel: dialog } }
+    acao: preencher
+    valor: "Sem comprovação de setembro; aberto processo para ampla defesa (exemplo)."
+    captura: true
+
+  - id: processo
+    narracao: E o número do processo SEI.
+    texto: Em **Número do processo SEI**, informe o processo (obrigatório na ampla defesa e na suspensão da saúde).
+    alvo: { rotulo: Número do processo SEI, dentro: { papel: dialog } }
+    acao: preencher
+    valor: "SEI-480002/000999/2026"
+    captura: true
+
+  - id: confirmar
+    narracao: Clique em Registrar decisão. O rito segue no SEI; nenhum desconto sai daqui.
+    texto: >-
+      Clique em **Registrar decisão**. Na ampla defesa, nenhum desconto nem suspensão sai do sistema: o rito acontece
+      no SEI. Na suspensão, o auxílio fica suspenso a partir de hoje e o servidor sai dos lotes seguintes.
+    alvo: { papel: button, nome: Registrar decisão, dentro: { papel: dialog } }
+    acao: clicar
+    espera_texto: Decisão registrada.
+    captura: true

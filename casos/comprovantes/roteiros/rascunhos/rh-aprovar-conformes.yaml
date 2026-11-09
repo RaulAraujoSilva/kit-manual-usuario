@@ -1,0 +1,69 @@
+# RASCUNHO — Aprovar os conformes em lote
+# Perfil: analista | Tela: TL-07 /rh/comprovantes?situacao=conforme | UC-07 | Vídeo: V08
+# Manual: Manual do RH › Aprovar os conformes em lote
+#
+# Estado necessário: outubro/2026 com conformes esperando aprovação (55 na carga; o número muda com os roteiros
+#   anteriores, por isso os alvos usam "começa com"). Rodar DEPOIS de rh-devolver-conforme e srv-corrigir (que precisam
+#   de um conforme da Servidora 050213) e depois do rh-painel (que mostra os números da carga).
+# Documentos fictícios: nenhum.
+# Altera dados: aprova todos os conformes de outubro/2026 (podem ser desfeitos até o lote).
+id: rh-aprovar-conformes
+titulo: Aprovar os conformes em lote
+perfil: analista
+estado: atual
+inicio: /rh
+capitulo: capitulos/rh-aprovar-conformes.md
+
+abertura:
+  titulo: Aprovar os conformes em lote
+  subtitulo: Manual do RH
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Aprovar os conformes em lote."
+
+passos:
+  - id: abrir
+    narracao: No painel, na fila Conformes, clique em Aprovar conformes.
+    texto: No painel, no cartão **Conformes**, clique em **Aprovar conformes**.
+    alvo: { papel: link, nome_comeca: "Aprovar conformes" }
+    acao: clicar
+    captura: true
+
+  - id: lista
+    narracao: >-
+      A lista mostra os conformes do mês. Todos passaram nas seis regras da conferência automatizada.
+    texto: >-
+      A lista mostra os comprovantes **Conformes**: todos passaram nas 6 regras da conferência automatizada por regras.
+      Clique numa linha para ver os documentos antes, se quiser.
+    alvo: { texto: conformes aguardando aprovação }   # conferir: título "N conformes aguardando aprovação" (o número muda)
+    acao: nenhuma
+    captura: true
+    enquadrar: tela
+
+  - id: aprovar-todos
+    narracao: Para aprovar todos de uma vez, clique em Aprovar os conformes.
+    texto: >-
+      Clique em **Aprovar os N conformes**. Para aprovar só alguns, marque as linhas e use **Aprovar N selecionados**.
+    alvo: { papel: button, nome_comeca: "Aprovar os " }
+    acao: clicar
+    captura: true
+
+  - id: confirmar
+    narracao: Confirme. A aprovação pode ser desfeita até o lote ser gerado.
+    texto: Na confirmação, clique em **Aprovar os N conformes**. A aprovação pode ser desfeita até o lote ser gerado.
+    alvo: { papel: button, nome_comeca: "Aprovar os ", dentro: { papel: dialog } }
+    acao: clicar
+    espera_texto: Registrado em
+    captura: true
+
+  - id: aprovados
+    narracao: >-
+      Pronto. A mensagem registra quantos foram aprovados, quando e por quem, e o que ainda falta: divergências e
+      amostra.
+    texto: >-
+      A mensagem registra quantos foram **aprovados**, a data, a hora e quem aprovou, e o que ainda falta decidir:
+      divergências e amostra. **Desfazer** devolve todos a Conforme.
+    alvo: { papel: button, nome: Desfazer, exato: true }
+    acao: nenhuma
+    captura: true

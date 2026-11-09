@@ -1,0 +1,73 @@
+# RASCUNHO — Importar o cadastro funcional
+# Perfil: analista | Tela: TL-12 /rh/servidores (Importar cadastro funcional) | UC-13 | Vídeo: sem vídeo próprio
+#   (tarefa rara; o V12 cita) | Manual: Manual do RH › Servidores e dependentes (seção "Importar o cadastro funcional")
+#
+# Estado necessário: qualquer um.
+# Documento fictício NOVO (a criar em casos/comprovantes/documentos): servidores-exemplo.csv, UTF-8, separado por ponto
+#   e vírgula, com o cabeçalho do layout e duas linhas fictícias:
+#     matricula;nome;cpf;vinculo;data_nascimento;email;situacao
+#     54.001-2;Servidora 054001 (exemplo);77920451884;efetivo;1990-05-12;servidor.054001@exemplo.invalido;ativo   # conferir: dígito da matrícula, valores aceitos de vinculo/situacao
+#     47.120-3;Servidor 047120 (exemplo);<CPF da carga>;efetivo;<nascimento da carga>;servidor.047120.novo@exemplo.invalido;ativo
+#   (a segunda linha altera só o e-mail de um servidor da carga, para a prévia mostrar "Alterados"; copiar CPF e
+#   nascimento da carga antes de gravar).   # conferir
+# Altera dados: inclui a Servidora 054001 e altera o e-mail do 47.120-3 (nada é apagado; quem não vem no arquivo fica).
+id: rh-importar-cadastro
+titulo: Importar o cadastro funcional
+perfil: analista
+estado: atual
+inicio: /rh/servidores
+capitulo: capitulos/rh-servidores.md
+
+abertura:
+  titulo: Importar o cadastro funcional
+  subtitulo: Manual do RH
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Servidores e dependentes."
+
+passos:
+  - id: abrir
+    narracao: Para atualizar o cadastro com o arquivo do cadastro funcional, abra Importar cadastro funcional.
+    texto: Em **Servidores**, clique em **Importar cadastro funcional**. A última importação aparece logo acima.
+    alvo: { css: 'summary:has-text("Importar cadastro funcional")' }
+    acao: clicar
+    captura: true
+
+  - id: arquivo
+    narracao: Escolha o arquivo, no layout combinado com o cadastro funcional.
+    texto: >-
+      Em **Arquivo do cadastro**, escolha o arquivo servidores.csv (UTF-8, separado por ponto e vírgula), no layout
+      indicado na tela.
+    alvo: { rotulo: Arquivo do cadastro }
+    acao: enviar_arquivos
+    arquivos:
+      - documentos/servidores-exemplo.csv
+    campo_arquivos: { rotulo: Arquivo do cadastro }
+    captura: true
+
+  - id: previa
+    narracao: Clique em Ver prévia das diferenças. Nada muda ainda.
+    texto: Clique em **Ver prévia das diferenças**. Nada é gravado nesta etapa.
+    alvo: { papel: button, nome: Ver prévia das diferenças }
+    acao: clicar
+    captura: true
+
+  - id: diferencas
+    narracao: >-
+      A prévia mostra os novos, os alterados e as linhas rejeitadas, com o motivo. Quem não veio no arquivo não é
+      apagado.
+    texto: >-
+      A **Prévia da importação** mostra quantas linhas foram lidas, os **novos**, os **alterados**, os sem mudança e as
+      **linhas rejeitadas**, com o motivo. Quem está no cadastro e não veio no arquivo não é apagado.
+    alvo: { texto: linhas lidas }   # conferir: resumo "N linhas lidas: …"
+    acao: nenhuma
+    captura: true
+
+  - id: aplicar
+    narracao: Conferido, clique em Aplicar importação.
+    texto: Se a prévia estiver certa, clique em **Aplicar importação**.
+    alvo: { papel: button, nome: Aplicar importação }
+    acao: clicar
+    espera_texto: Cadastro importado
+    captura: true

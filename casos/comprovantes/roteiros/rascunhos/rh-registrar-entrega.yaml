@@ -1,0 +1,80 @@
+# RASCUNHO — Registrar a entrega à folha, a juntada ao SEI e o pagamento
+# Perfil: analista | Tela: TL-09 /rh/lote?competencia=2026-09 (Entrega, juntada e pagamento) | UC-12 | Vídeo: sem vídeo
+#   próprio (pode virar a parte 2 do V14) | Manual: Manual do RH › Gerar o lote e entregar à folha (parte 2)
+#
+# Estado necessário: lote de setembro/2026 GERADO (depois do crh-autorizar-lote; cópia "E4-lote-gerado").
+# Documentos fictícios: nenhum. Processo e documento SEI fictícios (os mesmos do teste ponta a ponta).
+# Altera dados: lote "Pago na folha"; comprovantes de setembro "Pago"; a Servidora 050213 passa a ver setembro pago e o
+#   "Reembolsado em 2026" de R$ 16.565,04.
+# Na R1 o envio à folha e a juntada ao SEI são registrados à mão; a entrega automática é da R3 (fora do manual).
+id: rh-registrar-entrega
+titulo: Registrar a entrega, a juntada e o pagamento
+perfil: analista
+estado: atual
+inicio: /rh/lote?competencia=2026-09
+capitulo: capitulos/rh-lote.md
+
+abertura:
+  titulo: Entrega, juntada e pagamento
+  subtitulo: Manual do RH
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Gerar o lote e entregar à folha."
+
+passos:
+  - id: entrega
+    narracao: >-
+      Depois de enviar o arquivo ao órgão da folha, registre a entrega: diga como foi entregue.
+    texto: >-
+      Baixe o arquivo da folha e envie ao órgão gestor da folha. Depois, em **Registrar entrega à folha**, informe a
+      data e **Como foi entregue** (e o protocolo da folha, se houver).
+    alvo: { rotulo: Como foi entregue, dentro: { papel: form, nome: Registrar entrega à folha } }
+    acao: preencher
+    valor: "Arquivo enviado ao órgão gestor da folha pelo processo SEI."
+    captura: true
+
+  - id: registrar-entrega
+    narracao: E clique em Registrar entrega à folha.
+    texto: Clique em **Registrar entrega à folha**.
+    alvo: { papel: button, nome: Registrar entrega à folha, dentro: { papel: form, nome: Registrar entrega à folha } }
+    acao: clicar
+    espera_texto: Entregue à folha em
+    captura: true
+
+  - id: processo
+    narracao: Depois de juntar o relatório ao processo SEI, registre a juntada.
+    texto: >-
+      Junte o relatório em PDF ao processo SEI do exercício. Em **Registrar juntada ao SEI**, informe o **processo** e o
+      **número do documento SEI**.
+    alvo: { rotulo: Processo SEI do exercício, dentro: { papel: form, nome: Registrar juntada ao SEI } }
+    acao: preencher
+    valor: "SEI-480002/000123/2026"
+    captura: true
+
+  - id: documento
+    narracao: ""   # sem fala: continua a frase do passo anterior
+    texto: Informe o número do documento SEI.
+    alvo: { rotulo: Número do documento SEI, dentro: { papel: form, nome: Registrar juntada ao SEI } }
+    acao: preencher
+    valor: "12345678"
+    captura: false
+
+  - id: registrar-juntada
+    narracao: E clique em Registrar juntada ao SEI.
+    texto: Clique em **Registrar juntada ao SEI**.
+    alvo: { papel: button, nome: Registrar juntada ao SEI, dentro: { papel: form, nome: Registrar juntada ao SEI } }
+    acao: clicar
+    espera_texto: "Juntado ao SEI: documento nº 12345678"
+    captura: true
+
+  - id: pagamento
+    narracao: >-
+      Quando a folha for paga, registre o pagamento. Os servidores passam a ver Pago na folha.
+    texto: >-
+      Quando a folha for paga, em **Registrar pagamento na folha**, confira a folha e a data e clique em **Registrar
+      pagamento**. Os servidores passam a ver **Pago na folha**; o que não foi pago vira compensação no mês seguinte.
+    alvo: { papel: button, nome: Registrar pagamento, exato: true, dentro: { papel: form, nome: Registrar pagamento na folha } }
+    acao: clicar
+    espera_texto: Pago na folha em
+    captura: true

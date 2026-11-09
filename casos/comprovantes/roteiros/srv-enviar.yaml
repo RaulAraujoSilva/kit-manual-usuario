@@ -1,0 +1,107 @@
+id: srv-enviar
+titulo: Enviar os comprovantes do mês
+perfil: servidor
+estado: inicial          # restaura o banco antes de rodar
+inicio: /servidor        # a gravação começa já dentro do sistema, no painel
+capitulo: capitulos/srv-enviar.md
+
+abertura:
+  titulo: Enviar os comprovantes do mês
+  subtitulo: Guia do servidor
+
+fecho:
+  linhas:
+    - Dúvidas? Fale com o RH pelo ramal 6457.
+    - "Guia do servidor: capítulo Enviar os comprovantes do mês."
+
+passos:
+  - id: abrir
+    narracao: >-
+      Todo mês, você envia os comprovantes das despesas de saúde e educação. No painel, clique em Enviar
+      comprovantes.
+    texto: No menu do alto, clique em **Enviar comprovantes**.
+    alvo: { papel: link, nome: Enviar comprovantes, dentro: { papel: navigation, nome: Menu principal } }
+    acao: clicar
+    captura: true
+
+  - id: escolher
+    narracao: >-
+      Clique em Escolher arquivos e selecione, de uma vez, todos os documentos do mês: boletos, faturas,
+      comprovantes de pagamento e recibos. Também pode arrastar os arquivos para esta área.
+    texto: >-
+      Clique em **Escolher arquivos** e selecione todos os documentos do mês de uma vez: boletos, faturas,
+      comprovantes de pagamento e recibos. Se preferir, arraste os arquivos para a área tracejada. No celular, use
+      **Tirar foto**.
+    alvo: { papel: button, nome: Escolher arquivos }
+    acao: enviar_arquivos
+    arquivos:
+      - documentos/boleto-escola-outubro.pdf
+      - documentos/comprovante-pagamento-escola-outubro.pdf
+      - documentos/recibo-plano-de-saude-outubro.pdf
+    campo_arquivos: { rotulo: Escolher arquivos }
+    espera_texto: Leitura concluída. Confira as despesas abaixo.
+    captura: true
+
+  - id: lidos
+    narracao: >-
+      O sistema lê cada arquivo e monta as despesas sozinho. O boleto da escola foi juntado ao comprovante de
+      pagamento, e o recibo do plano de saúde virou outra despesa.
+    texto: >-
+      O sistema lê cada arquivo e monta as despesas: o boleto e o comprovante de pagamento da mesma conta viram uma
+      despesa; o recibo do plano de saúde vale sozinho.
+    alvo: { papel: status, dentro: { papel: region, nome: Enviar arquivos } }
+    acao: nenhuma
+    captura: true
+
+  - id: conferir
+    narracao: >-
+      Confira cada despesa: quem consta, o tipo, o valor pago e o valor que será reembolsado. A parte que passa do
+      teto do mês aparece como glosa.
+    texto: >-
+      Confira cada despesa: **quem consta**, o **tipo** (saúde ou educação), o valor **pago** e o valor
+      **reembolsável**. O que passa do teto do mês aparece como **glosa**, com o motivo.
+    alvo: { papel: article, nome: Colégio Horizonte (exemplo) }
+    acao: nenhuma
+    captura: true
+
+  - id: confirmar-escola
+    narracao: Se o tipo e quem consta estiverem certos, clique em Confirmar.
+    texto: >-
+      Se o tipo e a pessoa estiverem certos, clique em **Confirmar**. Se não estiverem, clique em **Trocar tipo ou
+      quem consta**.
+    alvo: { papel: button, nome: Confirmar, exato: true, dentro: { papel: article, nome: Colégio Horizonte (exemplo) } }
+    acao: clicar
+    captura: true
+
+  - id: confirmar-saude
+    narracao: Faça o mesmo nas outras despesas.
+    texto: Faça o mesmo em cada despesa.
+    alvo: { papel: button, nome: Confirmar, exato: true, dentro: { papel: article, nome: Vida Plena Saúde (exemplo) } }
+    acao: clicar
+    captura: false
+
+  - id: enviar
+    narracao: >-
+      Com tudo confirmado, o resumo mostra o total reembolsável do mês. Clique em Enviar ao RH.
+    texto: >-
+      Com todas as despesas confirmadas, o **Resumo** mostra o total reembolsável. Clique em **Enviar ao RH**.
+    alvo: { papel: button, nome_comeca: "Enviar ao RH ·" }
+    acao: clicar
+    captura: true
+
+  - id: confirmar-envio
+    narracao: Confira a quantidade de comprovantes e clique em Enviar ao RH para confirmar.
+    texto: Na janela de confirmação, confira a quantidade de comprovantes e clique em **Enviar ao RH**.
+    alvo: { papel: button, nome: Enviar ao RH, exato: true, dentro: { papel: dialog } }
+    acao: clicar
+    captura: true
+
+  - id: protocolo
+    narracao: >-
+      Pronto. O envio recebe um número de protocolo, e você acompanha a aprovação e o pagamento pelo painel.
+    texto: >-
+      Pronto: o envio recebe um **protocolo** com data e hora. Acompanhe a aprovação do RH e o pagamento na folha
+      pelo painel.
+    alvo: { papel: status, tem_titulo: Enviado ao RH }
+    acao: nenhuma
+    captura: true

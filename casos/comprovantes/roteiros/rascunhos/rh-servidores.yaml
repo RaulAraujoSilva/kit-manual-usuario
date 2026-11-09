@@ -1,0 +1,122 @@
+# RASCUNHO — Servidores e dependentes: consultar e incluir um dependente
+# Perfil: analista | Telas: TL-12 /rh/servidores e /rh/servidores/[servidor_id] | UC-13 | Vídeo: V12
+# Manual: Manual do RH › Servidores e dependentes
+#
+# Estado necessário: a Servidora 050213 com os dois dependentes da carga. Rodar DEPOIS dos roteiros do servidor que
+#   mostram os beneficiários (srv-painel, srv-dependentes): o dependente incluído aqui aparece no painel dela.
+# Documentos fictícios: dados de um dependente fictício: nome "Dependente 050213-3 (exemplo)", CPF fictício com dígitos
+#   válidos 778.123.456-10 (não pertence a ninguém; prefixo 77 reservado aos testes do kit), nascimento 10/03/2019.
+# Altera dados: inclui o dependente (inscrito na saúde, como vem marcado no formulário).
+id: rh-servidores
+titulo: Servidores e dependentes
+perfil: analista
+estado: atual
+inicio: /rh/servidores
+capitulo: capitulos/rh-servidores.md
+
+abertura:
+  titulo: Servidores e dependentes
+  subtitulo: Manual do RH
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Servidores e dependentes."
+
+passos:
+  - id: lista
+    narracao: >-
+      Em Servidores, você vê quem tem direito a cada auxílio, com a situação da saúde e da educação e os dependentes.
+    texto: >-
+      **Servidores e dependentes** lista quem tem direito a cada auxílio, com a situação da saúde e da educação e o
+      número de dependentes. Filtre por auxílio, vínculo ou situação.
+    alvo: { papel: form, nome: Filtros da lista }
+    acao: nenhuma
+    captura: true
+    enquadrar: tela
+
+  - id: buscar
+    narracao: Busque o servidor pelo nome ou pela matrícula.
+    texto: Em **Buscar nome ou matrícula**, digite o nome ou a matrícula e clique em **Filtrar**.
+    alvo: { rotulo: Buscar nome ou matrícula }
+    acao: preencher
+    valor: "50.213-4"
+    captura: true
+
+  - id: filtrar
+    narracao: ""   # sem fala: continua a frase do passo anterior (conferir se a narração aceita texto vazio)
+    texto: Clique em **Filtrar**.
+    alvo: { papel: button, nome: Filtrar, exato: true, dentro: { papel: form, nome: Filtros da lista } }
+    acao: clicar
+    captura: false
+
+  - id: abrir
+    narracao: Clique no servidor para abrir o cadastro.
+    texto: Clique no nome do servidor para abrir o cadastro.
+    alvo: { papel: link, nome: "50.213-4" }   # conferir: o link do servidor traz a matrícula no nome
+    acao: clicar
+    captura: true
+
+  - id: auxilios
+    narracao: >-
+      O cadastro mostra a situação de cada auxílio, os dependentes e o histórico. Os atalhos levam aos comprovantes e à
+      cobrança deste servidor.
+    texto: >-
+      O cadastro mostra os **dados do servidor**, a **situação dos auxílios**, os **dependentes** e o **histórico**. Os
+      atalhos **Ver comprovantes do servidor** e **Ver cobrança do servidor** abrem as listas já filtradas.
+      **Exportar dados do titular (LGPD)** atende pedidos de acesso aos dados.
+    alvo: { papel: heading, nome: Situação dos auxílios }
+    acao: nenhuma
+    captura: true
+    enquadrar: tela
+
+  - id: incluir
+    narracao: Para incluir um dependente, abra Incluir dependente.
+    texto: Clique em **Incluir dependente**.
+    alvo: { css: 'summary:has-text("Incluir dependente")' }
+    acao: clicar
+    captura: true
+
+  - id: nome
+    narracao: Preencha o nome, o CPF e a data de nascimento.
+    texto: Preencha **Nome**, **CPF** (só os 11 números) e **Data de nascimento**.
+    alvo: { rotulo: Nome, exato: true, dentro: { papel: form, nome: Incluir dependente } }
+    acao: preencher
+    valor: "Dependente 050213-3 (exemplo)"
+    captura: true
+
+  - id: cpf
+    narracao: ""   # sem fala: passo rápido
+    texto: Digite o CPF do dependente.
+    alvo: { rotulo: CPF, exato: true, dentro: { papel: form, nome: Incluir dependente } }
+    acao: preencher
+    valor: "77812345610"
+    captura: false
+
+  - id: nascimento
+    narracao: ""   # sem fala: passo rápido
+    texto: Informe a data de nascimento.
+    alvo: { rotulo: Data de nascimento, exato: true, dentro: { papel: form, nome: Incluir dependente } }
+    acao: preencher
+    valor: "2019-03-10"
+    captura: false
+
+  - id: parentesco
+    narracao: Escolha o parentesco e em quais auxílios ele será inscrito.
+    texto: >-
+      Escolha o **Parentesco** e marque **Inscrever no auxílio-saúde** e, se for o caso, **Inscrever no
+      auxílio-educação**. A inscrição vale desde o início da competência em andamento.
+    alvo: { rotulo: Parentesco, dentro: { papel: form, nome: Incluir dependente } }
+    acao: selecionar   # precisa do motor: ação "selecionar"
+    valor: Filho(a)
+    captura: true
+
+  - id: salvar
+    narracao: Clique em Incluir dependente. A partir de agora, ele pode constar nos comprovantes do servidor.
+    texto: >-
+      Clique em **Incluir dependente**. O dependente passa a aparecer no cadastro e no painel do servidor, entre as
+      pessoas que podem constar nos comprovantes. Para corrigir nome, parentesco ou nascimento, use **Alterar dados de**
+      no cartão do dependente.
+    alvo: { papel: button, nome: Incluir dependente, exato: true, dentro: { papel: form, nome: Incluir dependente } }
+    acao: clicar
+    espera_texto: Dependente 050213-3 (exemplo) incluído.
+    captura: true

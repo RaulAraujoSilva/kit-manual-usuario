@@ -1,0 +1,105 @@
+# RASCUNHO — Devolver ao servidor um conforme que precisa de correção (pelo painel lateral da lista)
+# Perfil: analista | Telas: TL-07 /rh/comprovantes (painel lateral) | UC-08 | Vídeo: sem vídeo próprio (o V09 mostra a
+#   decisão na análise completa; este roteiro prepara a jornada de correção da servidora)
+# Manual: Manual do RH › Analisar divergências e decidir (seção "Decidir pelo painel lateral, inclusive um conforme")
+#
+# Estado necessário: o comprovante de educação da Escola Infantil Pé de Feijão (Dependente 050213-2), da Servidora 050213,
+#   ainda Conforme (estado inicial da carga, antes do rh-aprovar-conformes).
+# Documentos fictícios: nenhum.
+# Altera dados: o comprovante vira Devolvido (motivo "Comprovante incompleto (sem autenticação bancária)", prazo
+#   20/11/2026); aviso na lista da servidora e e-mail na caixa de teste. NÃO desfazer: srv-avisos, srv-email e
+#   srv-corrigir dependem desta devolução. Salvar a cópia do banco "E2-devolvido" depois deste roteiro.
+id: rh-devolver-conforme
+titulo: Devolver um comprovante ao servidor
+perfil: analista
+estado: atual
+inicio: /rh/comprovantes
+capitulo: capitulos/rh-decidir.md
+
+abertura:
+  titulo: Devolver um comprovante ao servidor
+  subtitulo: Manual do RH
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Analisar divergências e decidir."
+
+passos:
+  - id: buscar
+    narracao: Para achar o comprovante de um servidor, busque pelo nome, pela matrícula ou pelo protocolo.
+    texto: Em **Buscar servidor**, digite o nome, a matrícula ou o protocolo.
+    alvo: { rotulo: Buscar servidor }   # conferir: rótulo do campo de busca da lista (LISTA_RH.buscar)
+    acao: preencher
+    valor: "50.213-4"
+    captura: true
+
+  - id: buscar-botao
+    narracao: E clique em Buscar.
+    texto: Clique em **Buscar**.
+    alvo: { papel: button, nome: Buscar, exato: true }
+    acao: clicar
+    captura: false
+
+  - id: ver
+    narracao: Clique na linha do comprovante para abrir os detalhes sem sair da lista.
+    texto: >-
+      Clique na linha do comprovante, ou em **Ver**, para abrir o painel lateral com os documentos e as decisões, sem
+      sair da lista.
+    alvo: { papel: button, nome_comeca: "Ver detalhes do comprovante de Servidora 050213 (exemplo), Escola Infantil Pé de Feijão" }   # conferir: nome do emitente na lista
+    acao: clicar
+    captura: true
+
+  - id: lateral
+    narracao: >-
+      O painel mostra os documentos, as regras da conferência e o valor. Mesmo um conforme pode ser devolvido, se você
+      perceber um problema.
+    texto: >-
+      O painel lateral mostra os documentos, o resultado das 6 regras e o valor reembolsável. Um conforme também pode
+      ser **devolvido** ou **reprovado** quando você percebe um problema nos documentos.
+    alvo: { papel: dialog, nome_comeca: "Detalhes do comprovante de" }
+    acao: nenhuma
+    captura: true
+    enquadrar: tela
+
+  - id: devolver
+    narracao: Clique em Devolver ao servidor.
+    texto: Clique em **Devolver ao servidor**.
+    alvo: { papel: button, nome: Devolver ao servidor, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
+    acao: clicar
+    captura: true
+
+  - id: motivo
+    narracao: Escolha o motivo da lista. O prazo para corrigir aparece logo abaixo.
+    texto: >-
+      Em **Motivo**, escolha o motivo do catálogo. O **prazo para corrigir** aparece logo abaixo; o servidor recebe o
+      aviso por e-mail e na lista de avisos.
+    alvo: { rotulo: Motivo, exato: true, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
+    acao: selecionar   # precisa do motor: ação "selecionar" (selectOption pelo rótulo da opção)
+    valor: Comprovante incompleto (sem autenticação bancária)
+    captura: true
+
+  - id: mensagem
+    narracao: Se quiser, escreva uma mensagem ao servidor.
+    texto: Em **Mensagem ao servidor**, explique o que falta (opcional, salvo no motivo "Outro").
+    alvo: { rotulo: Mensagem ao servidor, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }   # conferir: o campo existe no painel lateral (o teste só o usa na análise completa)
+    acao: preencher
+    valor: "O comprovante do PIX está cortado e não mostra a autenticação. Envie o comprovante completo."
+    captura: false
+
+  - id: confirmar
+    narracao: Clique em Confirmar devolução.
+    texto: Clique em **Confirmar devolução**.
+    alvo: { papel: button, nome: Confirmar devolução, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
+    acao: clicar
+    espera_texto: "Devolvido: Comprovante incompleto"
+    captura: true
+
+  - id: devolvido
+    narracao: >-
+      Pronto. O servidor foi avisado. Só este comprovante volta para ele; os outros do envio continuam como estão.
+    texto: >-
+      O comprovante fica **Devolvido** e o servidor é avisado na hora. Só este comprovante volta; os demais do envio
+      seguem. Enquanto o servidor não agir e o lote não for gerado, **Desfazer a decisão** desfaz a devolução.
+    alvo: { papel: button, nome: Desfazer a decisão, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
+    acao: nenhuma
+    captura: true

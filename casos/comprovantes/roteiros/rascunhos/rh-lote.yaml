@@ -1,0 +1,105 @@
+# RASCUNHO — Gerar o lote: conferir pendências e totais e enviar para autorização
+# Perfil: analista | Tela: TL-09 /rh/lote?competencia=2026-09 | UC-11 | Vídeo: V14
+# Manual: Manual do RH › Gerar o lote e entregar à folha (parte 1: elaborar)
+#
+# Estado necessário: setembro/2026 FECHADO e PRONTO PARA O LOTE, sem lote elaborado (estado da carga: aprovados sem
+#   lote, fechamento de 21/10 já vencido no "hoje" de 05/11/2026). Outubro/2026 não serve: o fechamento é 23/11/2026 e
+#   a tela mostra só "pode ser fechado a partir de 23/11/2026".
+# Documentos fictícios: nenhum.
+# Altera dados: lote de setembro em "Aguardando autorização" (etapas 1 e 2 gravadas). Salvar a cópia do banco
+#   "E3-lote-aguardando" depois deste roteiro (crh-devolver-lote e crh-autorizar-lote partem dela).
+id: rh-lote
+titulo: Gerar o lote do mês
+perfil: analista
+estado: atual
+inicio: /rh?competencia=2026-09
+capitulo: capitulos/rh-lote.md
+
+abertura:
+  titulo: Gerar o lote do mês
+  subtitulo: Manual do RH
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Gerar o lote e entregar à folha."
+
+passos:
+  - id: abrir
+    narracao: >-
+      Depois do fechamento, com a competência escolhida no alto, clique em Gerar lote do mês.
+    texto: >-
+      Depois da data de fechamento, escolha a competência em **Competência**, no alto, clique em **Ver** e depois em
+      **Gerar lote do mês**.
+    alvo: { papel: link, nome: Gerar lote do mês }
+    acao: clicar
+    captura: true
+
+  - id: etapas
+    narracao: >-
+      O lote tem quatro etapas: conferir pendências, conferir totais, escolher arquivos e, pela coordenação, autorizar e
+      gerar. Cada etapa libera a seguinte.
+    texto: >-
+      O lote tem quatro **etapas**: 1. Conferir pendências; 2. Conferir totais; 3. Escolher arquivos; 4. Autorizar e
+      gerar, pela coordenação do RH. Cada etapa libera a seguinte, e as confirmações ficam gravadas no lote.
+    alvo: { papel: list, nome: Etapas do lote }
+    acao: nenhuma
+    captura: true
+
+  - id: pendencias
+    narracao: >-
+      Primeiro, as pendências: divergências decididas, amostra conferida e nenhum conforme esperando. Os devolvidos
+      ficam para o mês seguinte.
+    texto: >-
+      Na etapa **1. Conferir pendências**, confira: divergências decididas, amostra conferida e nenhum conforme
+      esperando aprovação. Os devolvidos que o servidor ainda não corrigiu ficam para a competência seguinte. Clique em
+      **Confirmar pendências**.
+    alvo: { papel: button, nome: Confirmar pendências }
+    acao: clicar
+    captura: true
+
+  - id: totais
+    narracao: >-
+      Depois, os totais por auxílio e rubrica: comprovado, glosa e reembolsado, com as compensações e o líquido na
+      folha.
+    texto: >-
+      Na etapa **2. Conferir totais**, confira os totais por auxílio e rubrica (comprovado, glosa e reembolsado), as
+      compensações e o **líquido na folha**. **Ver a prévia do relatório** mostra o relatório antes de gerar.
+    alvo: { papel: table, nome_comeca: "Saúde e educação, competência" }
+    acao: nenhuma
+    captura: true
+
+  - id: confirmar-totais
+    narracao: Conferido, clique em Confirmar totais.
+    texto: Clique em **Confirmar totais**.
+    alvo: { papel: button, nome: Confirmar totais }
+    acao: clicar
+    captura: true
+
+  - id: arquivos
+    narracao: >-
+      Na terceira etapa, os dois arquivos: o relatório em PDF para o processo SEI e o arquivo de lançamentos para a
+      folha, com a prévia das linhas.
+    texto: >-
+      A etapa **3. Escolher arquivos** mostra os dois arquivos do lote: o **relatório para o SEI** (PDF) e o **arquivo
+      para a folha** (CSV), com a prévia das primeiras linhas. A prévia não mostra CPF.
+    alvo: { papel: table, nome_comeca: "Prévia de Folha_Comprovantes_2026-09" }
+    acao: nenhuma
+    captura: true
+
+  - id: enviar
+    narracao: Clique em Enviar para autorização.
+    texto: Clique em **Enviar para autorização**.
+    alvo: { papel: button, nome: Enviar para autorização }
+    acao: clicar
+    espera_texto: Aguardando autorização da coordenação do RH
+    captura: true
+
+  - id: aguardando
+    narracao: >-
+      Pronto. Agora a coordenação do RH autoriza e gera o lote. Quem elaborou não autoriza.
+    texto: >-
+      O lote fica **Aguardando autorização**. A coordenação do RH confere e autoriza, ou devolve para ajuste com motivo.
+      Quem elaborou o lote não pode autorizá-lo.
+    alvo: { texto: Aguardando autorização da coordenação do RH }
+    acao: nenhuma
+    captura: true

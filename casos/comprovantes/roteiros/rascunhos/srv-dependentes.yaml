@@ -1,0 +1,66 @@
+# RASCUNHO — Consultar os dependentes
+# Perfil: servidor (Servidora 050213) | Tela: TL-12 na visão do servidor, /servidor/dependentes | UC-04 (consulta);
+#   o pedido de inclusão pelo sistema (UC-14) é da R2 e fica FORA do manual | Vídeo: V06 (parte 2 de 3)
+# Manual: Guia do servidor › Dependentes e pedido de inclusão (na R1: como pedir a inclusão ao RH)
+#
+# Estado necessário: inicial (dois dependentes da carga). Rodar antes do rh-servidores, que inclui um terceiro.
+# Documentos fictícios: nenhum.
+# Altera dados: não.
+id: srv-dependentes
+titulo: Consultar os dependentes
+perfil: servidor
+estado: atual
+inicio: /servidor
+capitulo: capitulos/srv-dependentes.md
+
+abertura:
+  titulo: Consultar os dependentes
+  subtitulo: Guia do servidor
+
+fecho:
+  linhas:
+    - Dúvidas? Fale com o RH pelo ramal 6457.
+    - "Guia do servidor: capítulo Dependentes."
+
+passos:
+  - id: abrir
+    narracao: No menu do alto, clique em Dependentes.
+    texto: No menu do alto, clique em **Dependentes**. No celular, ele fica no menu com o seu nome.
+    alvo: { papel: link, nome: Dependentes, exato: true, dentro: { papel: navigation, nome: Menu principal } }
+    acao: clicar
+    captura: true
+
+  - id: voce
+    narracao: Primeiro, o que você mesmo pode receber neste mês, por auxílio.
+    texto: O cartão **Você** mostra o que você pode receber neste mês, pelo seu vínculo e pela situação de cada auxílio.
+    alvo: { papel: heading, nome: Você, exato: true }   # conferir: título do cartão
+    acao: nenhuma
+    captura: true
+
+  - id: lista
+    narracao: >-
+      Depois, cada dependente inscrito, com a idade e se pode receber em cada auxílio. Só são aceitos comprovantes em
+      nome destas pessoas.
+    texto: >-
+      Cada dependente inscrito aparece com a idade, o CPF mascarado e se **pode receber** em cada auxílio neste mês. Só
+      são aceitos comprovantes em nome destas pessoas.
+    alvo: { papel: heading, nome: "Dependente 050213-1 (exemplo)" }   # conferir: nível e texto do título do dependente
+    acao: nenhuma
+    captura: true
+
+  - id: total
+    narracao: Aqui também aparece o total reembolsado no ano, para você e seus dependentes.
+    texto: "**Reembolsado em 2026** soma o que já foi pago na folha no ano, para você e seus dependentes."
+    alvo: { papel: heading, nome: Reembolsado em 2026 }
+    acao: nenhuma
+    captura: true
+
+  - id: incluir
+    narracao: >-
+      Para incluir um dependente, leve ao RH o documento que comprova o vínculo e o CPF da pessoa.
+    texto: >-
+      Para incluir um dependente, leve ao RH a certidão ou o documento que comprova o vínculo e o CPF do dependente. O
+      RH faz a inclusão, e a pessoa passa a aparecer aqui e na lista de quem pode constar nos comprovantes.
+    alvo: { papel: heading, nome: Incluir um dependente }
+    acao: nenhuma
+    captura: true

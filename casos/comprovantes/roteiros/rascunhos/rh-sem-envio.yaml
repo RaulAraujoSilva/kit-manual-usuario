@@ -1,0 +1,118 @@
+# RASCUNHO — Sem envio, lembretes e pausa da cobrança
+# Perfil: analista | Tela: TL-11 /rh/sem-envio (abas Sem envio e Lembretes) | UC-09, UC-10 | Vídeo: V11
+# Manual: Manual do RH › Sem envio, lembretes e faltas de comprovação
+#
+# Estado necessário: outubro/2026 com os 19 servidores sem envio da carga; o Servidor 048191 (exemplo), matrícula
+#   48.191-9 (último envio em agosto), com a cobrança ATIVA. O lembrete de 15 dias (D-15 = 05/11/2026) sai pela rotina
+#   diária do contêiner `manual-rotinas-1`: conferir que ele já rodou, senão a linha do tempo mostra "Agendado".
+# Documentos fictícios: nenhum.
+# Altera dados: pausa e reativa a cobrança do Servidor 048191 (as duas ações ficam no histórico de pausas e na trilha).
+#   "Exportar CSV" não é clicado (baixaria um arquivo; o motor não trata download).
+id: rh-sem-envio
+titulo: Sem envio e cobranças
+perfil: analista
+estado: atual
+inicio: /rh
+capitulo: capitulos/rh-sem-envio.md
+
+abertura:
+  titulo: Sem envio e cobranças
+  subtitulo: Manual do RH
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Sem envio, lembretes e faltas de comprovação."
+
+passos:
+  - id: abrir
+    narracao: No menu, clique em Sem envio.
+    texto: No menu do RH, clique em **Sem envio**. O número ao lado é quantos ainda não enviaram.
+    alvo: { papel: link, nome_comeca: "Sem envio", dentro: { papel: navigation, nome: Menu do RH } }
+    acao: clicar
+    captura: true
+
+  - id: resumo
+    narracao: >-
+      A tela mostra quem tem direito e ainda não enviou, e a linha do tempo dos lembretes automáticos do mês.
+    texto: >-
+      **Sem envio e cobranças** mostra quantos servidores têm direito, quantos enviaram e quantos faltam, e a linha do
+      tempo dos **lembretes automáticos** (15, 7 e 1 dia antes do prazo), que só vão para quem ainda não enviou.
+    alvo: { papel: list, nome: Lembretes da competência }
+    acao: nenhuma
+    captura: true
+
+  - id: filtro
+    narracao: Para focar em quem está há mais tempo sem enviar, filtre pelo último envio.
+    texto: Use os filtros **Auxílio**, **Cobrança** e **Último envio** e clique em **Filtrar**.
+    alvo: { rotulo: Último envio }
+    acao: selecionar   # precisa do motor: ação "selecionar" (selectOption pelo rótulo da opção)
+    valor: Há dois meses ou mais
+    captura: true
+
+  - id: filtrar
+    narracao: E clique em Filtrar.
+    texto: Clique em **Filtrar**.
+    alvo: { papel: button, nome: Filtrar, exato: true, dentro: { papel: form, nome: Filtros da lista } }
+    acao: clicar
+    captura: false
+
+  - id: lista
+    narracao: >-
+      A lista mostra os auxílios sem comprovação, o último envio e os lembretes que cada um já recebeu. Exportar CSV
+      baixa a lista, com o CPF mascarado.
+    texto: >-
+      A lista mostra, para cada servidor, os auxílios sem comprovação, o **último envio** e os lembretes recebidos.
+      **Exportar CSV** baixa a lista com os filtros aplicados e o CPF mascarado; a exportação fica registrada.
+    alvo: { papel: link, nome: Exportar CSV, exato: true }
+    acao: nenhuma
+    captura: true
+
+  - id: pausar
+    narracao: >-
+      Se um servidor não deve ser cobrado agora, por exemplo em licença, pause a cobrança dele no interruptor.
+    texto: >-
+      Para não cobrar um servidor por um período (licença, afastamento), clique no interruptor **Cobrança** da linha
+      dele.
+    alvo: { papel: switch, nome: "Cobrança de Servidor 048191 (exemplo): ativa" }
+    acao: clicar
+    captura: true
+
+  - id: motivo
+    narracao: Informe o motivo. Ele fica registrado com o seu nome e a data.
+    texto: >-
+      Informe o **Motivo da pausa** (obrigatório) e, se quiser, o **Fim previsto**. Enquanto a pausa valer, o servidor
+      não recebe lembretes nem abre falta de comprovação.
+    alvo: { rotulo: Motivo da pausa, dentro: { papel: dialog, nome: "Pausar a cobrança de Servidor 048191 (exemplo)?" } }
+    acao: preencher
+    valor: "Licença médica até o fim do mês (exemplo)."
+    captura: true
+
+  - id: confirmar-pausa
+    narracao: Clique em Pausar cobrança.
+    texto: Clique em **Pausar cobrança**.
+    alvo: { papel: button, nome: Pausar cobrança, dentro: { papel: dialog, nome: "Pausar a cobrança de Servidor 048191 (exemplo)?" } }
+    acao: clicar
+    captura: true
+
+  - id: reativar
+    narracao: Para voltar a cobrar, clique de novo no interruptor e confirme.
+    texto: Para voltar a cobrar, clique de novo no interruptor e confirme em **Reativar cobrança**.
+    alvo: { papel: switch, nome: "Cobrança de Servidor 048191 (exemplo): pausada" }
+    acao: clicar
+    captura: true
+
+  - id: confirmar-reativar
+    narracao: ""   # sem fala: a narração do passo anterior cobre (conferir se a narração aceita texto vazio)
+    texto: Clique em **Reativar cobrança**.
+    alvo: { papel: button, nome: Reativar cobrança, dentro: { papel: dialog } }
+    acao: clicar
+    captura: false
+
+  - id: lembretes
+    narracao: Na aba Lembretes, você vê o que saiu, o que está agendado e o histórico dos meses anteriores.
+    texto: >-
+      A aba **Lembretes** mostra cada disparo do mês (enviado ou agendado, quantos foram lembrados e quantos não foram
+      entregues), o histórico das competências anteriores e as pausas de cobrança.
+    alvo: { papel: link, nome_comeca: "Lembretes", dentro: { papel: navigation, nome: Partes da cobrança } }   # conferir: as abas são links num nav
+    acao: clicar
+    captura: true

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Cartão</title>
+<!-- Cartão de abertura/fecho do vídeo, fotografado em 1920×1080 por motor/montar-video.ts.
+     Marcadores {{...}} são preenchidos pelo motor (valores já escapados). -->
+<style>
+  :root {
+    --primaria: {{COR_PRIMARIA}};
+    --destaque: {{COR_DESTAQUE}};
+    --fonte: {{FONTE}};
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; }
+  body {
+    font-family: var(--fonte), "Segoe UI", Roboto, Arial, sans-serif;
+    color: #fff;
+    background:
+      radial-gradient(1400px 900px at 100% 100%, color-mix(in srgb, var(--primaria) 70%, #000) 0%, transparent 70%),
+      var(--primaria);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+  }
+  .quadro {
+    position: absolute; inset: 0;
+    padding: 110px 160px 96px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+  .logo { height: 210px; width: auto; display: block; }
+  .meio { align-self: center; max-width: 1480px; }
+  .chamada {
+    font-size: 40px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.88);
+  }
+  .traco { width: 132px; height: 8px; border-radius: 4px; background: var(--destaque); margin: 30px 0 34px; }
+  .titulo { font-size: 104px; line-height: 1.08; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; }
+  .linhas p { text-wrap: balance; font-size: 56px; line-height: 1.3; font-weight: 400; color: rgba(255, 255, 255, 0.94); }
+  .linhas p + p { margin-top: 26px; }
+  .linhas p:first-child { font-weight: 600; color: #fff; }
+  .rodape {
+    border-top: 2px solid rgba(255, 255, 255, 0.28);
+    padding-top: 26px;
+    font-size: 30px; color: rgba(255, 255, 255, 0.85);
+  }
+</style>
+</head>
+<body>
+  <div class="quadro">
+    <img class="logo" src="{{LOGO}}" alt="{{ORGAO}}">
+    <div class="meio">{{CORPO}}</div>
+    <div class="rodape"><span>{{SISTEMA}}</span></div>
+  </div>
+<script>
+  // Reduz a fonte do que não couber (título longo, muitas linhas).
+  for (const el of document.querySelectorAll("[data-ajustar]")) {
+    const max = Number(el.dataset.ajustar);
+    let tamanho = parseFloat(getComputedStyle(el).fontSize);
+    while (el.scrollHeight > max && tamanho > 40) {
+      tamanho -= 2;
+      el.style.fontSize = tamanho + "px";
+      for (const p of el.querySelectorAll("p")) p.style.fontSize = tamanho + "px";
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "kit-manual-usuario",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Manual do usuário e vídeos de orientação gerados a partir de roteiros executados no sistema.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "capturar": "node motor/capturar.ts",
+    "anotar": "node motor/anotar.ts",
+    "manual": "node motor/montar-pdf.ts",
+    "narrar": "node motor/narrar.ts",
+    "gravar": "node motor/gravar.ts",
+    "video": "node motor/montar-video.ts",
+    "testar": "node --test \"motor/*.test.ts\""
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "marked": "^18.1.3",
+    "playwright": "^1.65.0",
+    "yaml": "^2.9.1"
+  }
+}
