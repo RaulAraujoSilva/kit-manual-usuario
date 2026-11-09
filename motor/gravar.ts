@@ -7,17 +7,28 @@ import { execFileSync } from "node:child_process";
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
-import { chromium } from "playwright";
 import type { Page } from "playwright";
 
-import { executarAcao } from "./capturar.ts";
-import { argumentos, entrar, esperarCalma, lerCaso, lerRoteiro, localizar, pastaDeSaida, prepararContexto, restaurarEstado } from "./comum.ts";
-import type { Caso, Passo } from "./comum.ts";
+import { abrirSessao, executarAcao } from "./capturar.ts";
+import { argumentos, esperarCalma, lerCaso, lerRoteiro, localizar, pastaDeSaida, prepararEstado } from "./comum.ts";
+import type { Caso, Passo, Roteiro } from "./comum.ts";
 import { narrar, textoAbertura, textoFecho } from "./narrar.ts";
 
-const VIEWPORT = { width: 1280, height: 720 };
-const ESCALA = 1.5;
-const VIDEO = { width: 1920, height: 1080 };
+// Computador: 1280x720 x 1,5 = 1920x1080. Celular: 390x844 na altura do vídeo (1080), centralizado na montagem.
+let VIEWPORT = { width: 1280, height: 720 };
+let ESCALA = 1.5;
+let VIDEO = { width: 1920, height: 1080 };
+const FINAL = { width: 1920, height: 1080 };
+/** Passo sem fala (ação rápida entre duas falas). */
+const DURACAO_SEM_FALA_S = 1.4;
+
+function janelaDoVideo(roteiro: Roteiro): void {
+  if (roteiro.tela === "celular") {
+    VIEWPORT = { width: 390, height: 844 };
+    ESCALA = FINAL.height / VIEWPORT.height;
+    VIDEO = { width: Math.round(VIEWPORT.width * ESCALA / 2) * 2, height: FINAL.height };
+  }
+}
 const PAUSA_ENTRE_PASSOS_S = 0.6;
 
 /** Cursor desenhado na página (o Playwright não mostra o do sistema), efeito de clique, destaque e "arquivos escolhidos". */
@@ -111,6 +122,7 @@ async function moverPara(pagina: Page, x: number, y: number, ms = 650): Promise<
 }
 
 async function trazerParaVista(pagina: Page, passo: Passo): Promise<{ x: number; y: number; w: number; h: number }> {
+  if (!passo.alvo) throw new Error(`Passo ${passo.id}: sem alvo`);
   const alvo = localizar(pagina, passo.alvo);
   await alvo.waitFor({ state: "visible", timeout: 90_000 });
   let c = await alvo.boundingBox();
@@ -130,33 +142,27 @@ async function trazerParaVista(pagina: Page, passo: Passo): Promise<{ x: number;
 
 async function gravar(caso: string, nomeRoteiro: string, dados: Caso): Promise<void> {
   const roteiro = lerRoteiro(caso, nomeRoteiro);
+  janelaDoVideo(roteiro);
+  cursor = { x: VIEWPORT.width / 2, y: VIEWPORT.height / 2 };
   const saida = pastaDeSaida(caso, nomeRoteiro, "video");
 
   // 1. narração antes da gravação: cada passo dura o tempo da sua fala
   const abertura = await narrar(dados, textoAbertura(roteiro));
   const fecho = await narrar(dados, textoFecho(roteiro));
-  const falas = [];
-  for (const p of roteiro.passos) falas.push(await narrar(dados, p.narracao));
+  const falas: { arquivo: string | null; duracao_s: number }[] = [];
+  for (const p of roteiro.passos) {
+    falas.push(p.narracao?.trim() ? await narrar(dados, p.narracao) : { arquivo: null, duracao_s: DURACAO_SEM_FALA_S });
+  }
   console.log(`narração pronta: ${falas.reduce((s, f) => s + f.duracao_s, 0).toFixed(1)} s nos passos`);
 
-  if (roteiro.estado !== "atual") restaurarEstado(caso, dados);
-  const navegador = await chromium.launch();
+  prepararEstado(caso, dados, roteiro.estado);
 
-  // 2. entrada fora da gravação
-  const ctxEntrada = await navegador.newContext({ viewport: VIEWPORT, locale: "pt-BR" });
-  const pEntrada = await ctxEntrada.newPage();
-  await entrar(pEntrada, dados, roteiro.perfil);
-  const sessao = await ctxEntrada.storageState();
-  await ctxEntrada.close();
-
-  // 3. gravação
+  // 2. entrada fora da gravação; 3. gravação quadro a quadro
   const pastaQuadros = path.join(saida, "quadros");
   rmSync(pastaQuadros, { recursive: true, force: true });
   mkdirSync(pastaQuadros, { recursive: true });
-  const contexto = await navegador.newContext({ viewport: VIEWPORT, deviceScaleFactor: ESCALA, locale: "pt-BR", storageState: sessao });
-  await prepararContexto(contexto, dados);
+  const { navegador, contexto, pagina } = await abrirSessao(dados, roteiro, { viewport: VIEWPORT, deviceScaleFactor: ESCALA });
   await contexto.addInitScript(scriptCena(dados.marca.cor_destaque));
-  const pagina = await contexto.newPage();
   const relogio = new Relogio();
   const quadros: { arquivo: string; t: number }[] = [];
   const cdp = await contexto.newCDPSession(pagina);
@@ -179,34 +185,39 @@ async function gravar(caso: string, nomeRoteiro: string, dados: Caso): Promise<v
     const fala = falas[i];
     if (!fala) throw new Error("fala ausente");
     const inicio = relogio.agora();
-    linha.push({ id: passo.id, narracao: passo.narracao, audio: fala.arquivo, inicio_s: Number(inicio.toFixed(3)), duracao_s: fala.duracao_s });
-    const r = await trazerParaVista(pagina, passo);
-    const centro = { x: r.x + r.w / 2, y: r.y + r.h / 2 };
-    await pagina.evaluate((r) => window.__kitDestaque(r), r);
-    if (passo.acao !== "nenhuma") {
-      await moverPara(pagina, centro.x, centro.y);
-      // a ação acontece perto do fim da frase ("…clique em X")
-      await relogio.ate(inicio + Math.max(1.4, fala.duracao_s - 0.9));
-      await pagina.evaluate(() => window.__kitLimpar());
-      if (passo.acao === "clicar") {
-        await pagina.mouse.click(centro.x, centro.y);
-        await esperarCalma(pagina, 500);
-        if (passo.espera_texto) await pagina.getByText(passo.espera_texto).waitFor({ timeout: 90_000 });
-      } else {
-        await pagina.mouse.down(); await pagina.mouse.up();
-        if (passo.acao === "enviar_arquivos") {
-          await pagina.evaluate(([n, r]) => window.__kitArquivos(n, r), [(passo.arquivos ?? []).map((a) => path.basename(a)), r] as const);
-          await espera(1500);
-        }
-        await executarAcao(pagina, caso, passo);
-      }
+    if (fala.arquivo) linha.push({ id: passo.id, narracao: passo.narracao, audio: fala.arquivo, inicio_s: Number(inicio.toFixed(3)), duracao_s: fala.duracao_s });
+    if (!passo.alvo) {
+      // ação sem alvo na tela (abrir uma página ou o e-mail): acontece no começo da fala
+      await executarAcao(pagina, caso, passo, dados);
     } else {
-      // passo de leitura: o cursor vai para o lado, o destaque fica enquanto a fala explica
-      await moverPara(pagina, Math.min(VIEWPORT.width - 40, r.x + r.w + 30), Math.min(VIEWPORT.height - 40, r.y + 30), 800);
-      await relogio.ate(inicio + fala.duracao_s - 0.2);
-      await pagina.evaluate(() => window.__kitLimpar());
+      const r = await trazerParaVista(pagina, passo);
+      const centro = { x: r.x + r.w / 2, y: r.y + r.h / 2 };
+      await pagina.evaluate((r) => window.__kitDestaque(r), r);
+      if (passo.acao !== "nenhuma") {
+        await moverPara(pagina, centro.x, centro.y);
+        // a ação acontece perto do fim da frase ("…clique em X")
+        await relogio.ate(inicio + Math.max(fala.arquivo ? 1.4 : 0.6, fala.duracao_s - 0.9));
+        await pagina.evaluate(() => window.__kitLimpar());
+        if (passo.acao === "clicar") {
+          await pagina.mouse.click(centro.x, centro.y);
+          await esperarCalma(pagina, 500);
+          if (passo.espera_texto) await pagina.getByText(passo.espera_texto).first().waitFor({ timeout: 90_000 });
+        } else {
+          await pagina.mouse.down(); await pagina.mouse.up();
+          if (passo.acao === "enviar_arquivos") {
+            await pagina.evaluate(([n, r]) => window.__kitArquivos(n, r), [(passo.arquivos ?? []).map((a) => path.basename(a)), r] as const);
+            await espera(1500);
+          }
+          await executarAcao(pagina, caso, passo, dados);
+        }
+      } else {
+        // passo de leitura: o cursor vai para o lado, o destaque fica enquanto a fala explica
+        await moverPara(pagina, Math.min(VIEWPORT.width - 40, r.x + r.w + 30), Math.min(VIEWPORT.height - 40, r.y + 30), 800);
+        await relogio.ate(inicio + fala.duracao_s - 0.2);
+        await pagina.evaluate(() => window.__kitLimpar());
+      }
     }
-    await relogio.ate(inicio + fala.duracao_s + PAUSA_ENTRE_PASSOS_S);
+    await relogio.ate(inicio + fala.duracao_s + (fala.arquivo ? PAUSA_ENTRE_PASSOS_S : 0.2));
     console.log(`  ${passo.id}: ${inicio.toFixed(1)} s (+${fala.duracao_s.toFixed(1)} s)`);
   }
   await espera(1200);
@@ -218,7 +229,7 @@ async function gravar(caso: string, nomeRoteiro: string, dados: Caso): Promise<v
   rmSync(pastaQuadros, { recursive: true, force: true });
 
   writeFileSync(path.join(saida, "linha-do-tempo.json"), JSON.stringify({
-    largura: VIDEO.width, altura: VIDEO.height,
+    largura: FINAL.width, altura: FINAL.height,
     corte_inicio_s: Number(corteInicio.toFixed(3)), corte_fim_s: Number(corteFim.toFixed(3)),
     abertura: { ...roteiro.abertura, narracao: textoAbertura(roteiro), audio: abertura.arquivo, duracao_s: abertura.duracao_s },
     passos: linha,

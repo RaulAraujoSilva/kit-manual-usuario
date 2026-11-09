@@ -3,6 +3,23 @@
 sistema: Comprovantes de saúde e educação
 orgao: AGENERSA
 endereco: http://127.0.0.1:3005
+caixa_email: http://127.0.0.1:8028
+
+# Cópias do ambiente em portas próprias, para capturar e gravar em paralelo (cada uma com banco próprio).
+# Escolha com KIT_AMBIENTE=<nome>; sem a variável, vale a primeira. Os {nomes} entram nos comandos de estado.
+ambientes:
+  manual:
+    endereco: http://127.0.0.1:3005
+    caixa_email: http://127.0.0.1:8028
+    vars: { db: manual-db-1, rotinas: manual-rotinas-1 }
+  manual2:
+    endereco: http://127.0.0.1:3006
+    caixa_email: http://127.0.0.1:8029
+    vars: { db: manual2-db-1, rotinas: manual2-rotinas-1 }
+  manual3:
+    endereco: http://127.0.0.1:3007
+    caixa_email: http://127.0.0.1:8030
+    vars: { db: manual3-db-1, rotinas: manual3-rotinas-1 }
 
 # Contas da carga de teste (só valem no ambiente local, com a massa fictícia).
 perfis:
@@ -16,6 +33,36 @@ perfis:
       botao: Entrar
       espera_url: /servidor
 
+  analista:
+    nome: Analista de RH 01 (exemplo)
+    entrada:
+      pagina: /entrar
+      campos:
+        - { rotulo: "CPF ou matrícula", valor: "60.101-0" }
+        - { rotulo: "Senha", exato: true, valor: "Analista-RH-Teste-2026!" }
+      botao: Entrar
+      espera_url: /rh
+
+  coordenacao:
+    nome: Coordenação de RH (exemplo)
+    entrada:
+      pagina: /entrar
+      campos:
+        - { rotulo: "CPF ou matrícula", valor: "60.100-2" }
+        - { rotulo: "Senha", exato: true, valor: "Coordenacao-RH-Teste-2026!" }
+      botao: Entrar
+      espera_url: /rh
+
+  administracao:
+    nome: Administração do sistema (exemplo)
+    entrada:
+      pagina: /entrar
+      campos:
+        - { rotulo: "CPF ou matrícula", valor: "admin" }
+        - { rotulo: "Senha", exato: true, valor: "Administracao-Teste-2026!" }
+      botao: Entrar
+      espera_url: /admin
+
 # Elementos que só existem fora da produção: nunca aparecem em print nem vídeo.
 ocultar:
   - css: 'aside[aria-label="Ambiente"]'
@@ -24,10 +71,15 @@ ocultar:
 # Volta ao estado inicial antes de cada roteiro que altera dados.
 # A cópia `.cache/estado-inicial.dump` é tirada uma vez, logo depois da carga de teste (ver README do caso).
 estado:
+  # As rotinas agendadas (lembretes) ficam paradas durante a gravação, para nada mudar no meio de um roteiro.
   restaurar:
-    - docker cp .cache/estado-inicial.dump manual-db-1:/tmp/estado-inicial.dump
-    - docker exec manual-db-1 psql -q -U comprovantes -d comprovantes -c "select pg_terminate_backend(pid) from pg_stat_activity where datname = current_database() and pid <> pg_backend_pid()"
-    - docker exec manual-db-1 pg_restore -U comprovantes -d comprovantes --clean --if-exists --no-owner /tmp/estado-inicial.dump
+    - docker stop {rotinas}
+    - docker cp {dump} {db}:/tmp/estado.dump
+    - docker exec {db} psql -q -U comprovantes -d comprovantes -c "select pg_terminate_backend(pid) from pg_stat_activity where datname = current_database() and pid <> pg_backend_pid()"
+    - docker exec {db} pg_restore -U comprovantes -d comprovantes --clean --if-exists --no-owner /tmp/estado.dump
+  salvar:
+    - docker exec {db} pg_dump -U comprovantes -d comprovantes -Fc -f /tmp/estado.dump
+    - docker cp {db}:/tmp/estado.dump {dump}
 
 marca:
   cor_primaria: "#0A60A2"

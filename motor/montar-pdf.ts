@@ -21,7 +21,8 @@ interface Manual {
   subtitulo?: string;
   versao?: string;
   apresentacao?: string;
-  capitulos: string[];
+  /** Id de roteiro (capítulo = capitulos/<id>.md) ou capítulo próprio que junta vários roteiros com {{passos:<id>}}. */
+  capitulos: (string | { capitulo: string; titulo?: string })[];
 }
 
 interface Titulo { nivel: number; texto: string; id: string }
@@ -102,15 +103,24 @@ export async function montarPdf(caso: string, manualId: string, saidaDe = caso):
 
   const sumario: string[] = [];
   const capitulos: string[] = [];
-  manual.capitulos.forEach((id, i) => {
-    const roteiro = lerRoteiro(caso, id);
-    const arqMd = path.join(pastaDoCaso(caso), roteiro.capitulo ?? path.join("capitulos", `${id}.md`));
+  manual.capitulos.forEach((entrada, i) => {
+    const id = typeof entrada === "string" ? entrada : path.basename(entrada.capitulo, ".md");
+    const arqRoteiro = path.join(pastaDoCaso(caso), "roteiros", `${id}.yaml`);
+    const roteiro = typeof entrada === "string" && existsSync(arqRoteiro) ? lerRoteiro(caso, id) : undefined;
+    const relMd = typeof entrada === "string" ? (roteiro?.capitulo ?? path.join("capitulos", `${id}.md`)) : entrada.capitulo;
+    const arqMd = path.join(pastaDoCaso(caso), relMd);
     if (!existsSync(arqMd)) throw new Error(`Capítulo não encontrado: ${path.relative(RAIZ, arqMd)}`);
     const { html, titulos } = renderizarCapitulo(readFileSync(arqMd, "utf8"), id);
-    if (!html.includes("<p>{{passos}}</p>")) throw new Error(`O capítulo ${id} não tem o marcador {{passos}} em linha própria.`);
-    const corpo = html.replace("<p>{{passos}}</p>", htmlPassos(saidaDe, roteiro));
+    // {{passos}} = passos do roteiro do capítulo; {{passos:<roteiro>}} = passos de outro roteiro (capítulo com várias tarefas)
+    const corpo = html
+      .replace(/<p>\{\{passos:([\w-]+)\}\}<\/p>/g, (_m, outro: string) => htmlPassos(saidaDe, lerRoteiro(caso, outro)))
+      .replace("<p>{{passos}}</p>", () => {
+        if (!roteiro) throw new Error(`O capítulo ${id} usa {{passos}} mas não há roteiro ${id}; use {{passos:<roteiro>}}.`);
+        return htmlPassos(saidaDe, roteiro);
+      });
+    const tituloPadrao = roteiro?.titulo ?? (typeof entrada === "string" ? id : (entrada.titulo ?? id));
     const principal = titulos.find((t) => t.nivel === 2);
-    const tituloCap = principal?.texto ?? roteiro.titulo;
+    const tituloCap = principal?.texto ?? tituloPadrao;
     const idCap = principal?.id ?? `${id}-capitulo`;
     capitulos.push(
       `<section class="capitulo" aria-labelledby="${idCap}">\n<p class="capitulo-rotulo">Capítulo ${i + 1}</p>\n` +

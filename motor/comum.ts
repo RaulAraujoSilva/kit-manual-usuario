@@ -25,9 +25,16 @@ export interface Passo {
   id: string;
   narracao: string;
   texto: string;
-  alvo: Alvo;
-  acao: "clicar" | "enviar_arquivos" | "preencher" | "selecionar" | "nenhuma";
+  /** Opcional só nas ações sem alvo na tela (abrir, abrir_email); passo sem alvo não tem captura. */
+  alvo?: Alvo;
+  acao: "clicar" | "enviar_arquivos" | "preencher" | "selecionar" | "abrir" | "abrir_email" | "nenhuma";
   valor?: string;
+  /** abrir: caminho no sistema (ex.: /servidor). */
+  url?: string;
+  /** abrir_email: trecho do assunto do e-mail mais recente a abrir na caixa de teste. */
+  assunto?: string;
+  /** preencher: o valor vem do e-mail mais recente com esse assunto (grupo 1 do padrão), ex.: senha provisória. */
+  valor_do_email?: { assunto: string; padrao: string };
   arquivos?: string[];
   campo_arquivos?: Alvo;
   espera_texto?: string;
@@ -39,7 +46,12 @@ export interface Roteiro {
   id: string;
   titulo: string;
   perfil: string;
-  estado?: "inicial" | "atual";
+  /** inicial (padrão), atual (não restaura) ou o nome de uma cópia salva com `node motor/estado.ts salvar <nome>`. */
+  estado?: string;
+  /** Começa sem entrar no sistema (roteiros da própria tela de entrada). */
+  sem_entrada?: boolean;
+  /** Janela de computador (padrão) ou de celular. */
+  tela?: "computador" | "celular";
   inicio: string;
   capitulo?: string;
   abertura: { titulo: string; subtitulo: string };
@@ -51,12 +63,18 @@ export interface Caso {
   sistema: string;
   orgao: string;
   endereco: string;
+  /** Caixa de e-mails de teste (Mailpit), onde chegam avisos e senhas provisórias. */
+  caixa_email?: string;
+  /** Cópias do ambiente em portas próprias, para gravar em paralelo. Escolha com KIT_AMBIENTE=<nome>. */
+  ambientes?: Record<string, { endereco: string; caixa_email?: string; vars?: Record<string, string> }>;
+  /** Variáveis usadas como {nome} nos comandos de estado; vêm do ambiente escolhido. */
+  vars?: Record<string, string>;
   perfis: Record<string, {
     nome: string;
     entrada: { pagina: string; campos: { rotulo: string; exato?: boolean; valor: string }[]; botao: string; espera_url: string };
   }>;
   ocultar: ({ css: string } | { bloco_do_texto: string })[];
-  estado?: { restaurar: string[] };
+  estado?: { restaurar: string[]; salvar?: string[] };
   marca: { cor_primaria: string; cor_texto: string; cor_destaque: string; logotipo: string; logotipo_branco?: string };
   voz: { modelo: string; voz: string; instrucoes?: string };
 }
@@ -66,7 +84,35 @@ export function pastaDoCaso(caso: string): string {
 }
 
 export function lerCaso(caso: string): Caso {
-  return parse(readFileSync(path.join(pastaDoCaso(caso), "caso.yaml"), "utf8")) as Caso;
+  const dados = parse(readFileSync(path.join(pastaDoCaso(caso), "caso.yaml"), "utf8")) as Caso;
+  const nomes = Object.keys(dados.ambientes ?? {});
+  const escolhido = process.env.KIT_AMBIENTE ?? nomes[0];
+  if (escolhido && dados.ambientes) {
+    const amb = dados.ambientes[escolhido];
+    if (!amb) throw new Error(`Ambiente ${escolhido} não está no caso.yaml (há: ${nomes.join(", ")})`);
+    dados.endereco = amb.endereco;
+    if (amb.caixa_email) dados.caixa_email = amb.caixa_email;
+    dados.vars = { ...(dados.vars ?? {}), ...(amb.vars ?? {}) };
+  }
+  return dados;
+}
+
+/** Mensagem mais recente da caixa de teste cujo assunto contém o trecho dado. */
+export async function emailMaisRecente(dados: Caso, assunto: string): Promise<{ id: string; texto: string }> {
+  if (!dados.caixa_email) throw new Error("caso.yaml sem caixa_email");
+  const busca = await fetch(`${dados.caixa_email}/api/v1/search?limit=1&query=${encodeURIComponent(`subject:"${assunto}"`)}`);
+  const lista = (await busca.json()) as { messages?: { ID: string }[] };
+  const id = lista.messages?.[0]?.ID;
+  if (!id) throw new Error(`Nenhum e-mail com assunto "${assunto}" na caixa de teste`);
+  const msg = (await (await fetch(`${dados.caixa_email}/api/v1/message/${id}`)).json()) as { Text?: string };
+  return { id, texto: msg.Text ?? "" };
+}
+
+/** Janela e escala de captura: computador 1440×900 ×2; celular 390×844 ×3. */
+export function janela(roteiro: Roteiro): { viewport: { width: number; height: number }; escala: number; celular: boolean } {
+  return roteiro.tela === "celular"
+    ? { viewport: { width: 390, height: 844 }, escala: 3, celular: true }
+    : { viewport: { width: 1440, height: 900 }, escala: 2, celular: false };
 }
 
 export function lerRoteiro(caso: string, roteiro: string): Roteiro {
@@ -143,12 +189,38 @@ export async function entrar(pagina: Page, caso: Caso, perfil: string): Promise<
   await pagina.waitForURL(new RegExp(escaparRegex(p.entrada.espera_url)));
 }
 
-export function restaurarEstado(caso: string, dados: Caso): void {
-  const cmds = dados.estado?.restaurar ?? [];
-  const dump = path.join(RAIZ, ".cache", "estado-inicial.dump");
-  if (cmds.length > 0 && !existsSync(dump)) throw new Error("Falta .cache/estado-inicial.dump (ver README do caso).");
-  for (const cmd of cmds) execSync(cmd, { cwd: RAIZ, stdio: ["ignore", "ignore", "pipe"] });
-  console.log(`[${caso}] estado inicial restaurado`);
+export function arquivoDeEstado(nome: string): string {
+  if (!/^[\w-]+$/.test(nome)) throw new Error(`Nome de estado inválido: ${nome}`);
+  return path.join(".cache", `estado-${nome}.dump`);
+}
+
+function rodarComandos(cmds: string[], dados: Caso, extra: Record<string, string>): void {
+  const vars = { ...(dados.vars ?? {}), ...extra };
+  for (const modelo of cmds) {
+    const cmd = modelo.replace(/\{(\w+)\}/g, (m, k: string) => vars[k] ?? m);
+    execSync(cmd, { cwd: RAIZ, stdio: ["ignore", "ignore", "pipe"] });
+  }
+}
+
+/** Volta o banco do ambiente escolhido a uma cópia salva (padrão: o estado inicial, logo depois da carga de teste). */
+export function restaurarEstado(caso: string, dados: Caso, nome = "inicial"): void {
+  const dump = arquivoDeEstado(nome);
+  if (!existsSync(path.join(RAIZ, dump))) throw new Error(`Falta ${dump} (ver README do caso).`);
+  rodarComandos(dados.estado?.restaurar ?? [], dados, { dump: dump.split(path.sep).join("/") });
+  console.log(`[${caso}] estado ${nome} restaurado`);
+}
+
+/** Salva o banco do ambiente escolhido como uma cópia nomeada, para roteiros que partem de um estado intermediário. */
+export function salvarEstado(caso: string, dados: Caso, nome: string): void {
+  const dump = arquivoDeEstado(nome);
+  rodarComandos(dados.estado?.salvar ?? [], dados, { dump: dump.split(path.sep).join("/") });
+  console.log(`[${caso}] estado ${nome} salvo em ${dump}`);
+}
+
+/** Restaura conforme o roteiro: nada em "atual", a cópia nomeada, ou o inicial. */
+export function prepararEstado(caso: string, dados: Caso, estado: string | undefined): void {
+  if (estado === "atual") return;
+  restaurarEstado(caso, dados, estado ?? "inicial");
 }
 
 export async function esperarCalma(pagina: Page, ms = 400): Promise<void> {

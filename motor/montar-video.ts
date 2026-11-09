@@ -434,7 +434,7 @@ async function principal(): Promise<void> {
   // 5. Vídeo: cartão → (fade) → corpo cortado → (fade) → cartão, 30 fps constantes, BT.709.
   const ajustar =
     `scale=${largura}:${altura}:force_original_aspect_ratio=decrease:out_color_matrix=bt709:out_range=tv,` +
-    `pad=${largura}:${altura}:(ow-iw)/2:(oh-ih)/2:color=white,setsar=1,format=yuv420p`;
+    `pad=${largura}:${altura}:(ow-iw)/2:(oh-ih)/2:color=0xE6ECF2,setsar=1,format=yuv420p`;
   const grafoVideo = [
     `[0:v]${ajustar},fps=${FPS},trim=duration=${arred(A)},setpts=PTS-STARTPTS,settb=AVTB[ab]`,
     `[1:v]setpts=PTS-STARTPTS,trim=start=${arred(lt.corte_inicio_s)}:end=${arred(lt.corte_fim_s)},setpts=PTS-STARTPTS,` +
