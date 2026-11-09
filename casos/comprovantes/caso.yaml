@@ -91,3 +91,7 @@ marca:
 voz:
   modelo: microsoft/mai-voice-2.1
   voz: "pt-BR-Luana:MAI-Voice-2.1"
+
+# Base da ajuda no sistema (motor/base-ajuda.ts): código de cada perfil no sistema.
+ajuda:
+  perfis: { servidor: SRV, analista: RH, coordenacao: CRH, administracao: ADM }

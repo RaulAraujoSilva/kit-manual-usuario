@@ -16,7 +16,9 @@
     "video": "node motor/montar-video.ts",
     "testar": "node motor/normalizar.test.ts",
     "checar": "node motor/checar.ts",
-    "entregar": "node motor/entregar.ts"
+    "entregar": "node motor/entregar.ts",
+    "base-ajuda": "node motor/base-ajuda.ts",
+    "checar-ajuda": "node motor/checar-ajuda.ts"
   },
   "devDependencies": {
     "@types/node": "^24.19.2",

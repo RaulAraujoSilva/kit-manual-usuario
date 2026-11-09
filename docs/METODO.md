@@ -1,6 +1,6 @@
 # Método: do sistema rodando ao manual e aos vídeos
 
-Onze etapas, da especificação à manutenção. As etapas 1 a 4 se fazem uma vez por sistema; 5 a 8 a cada rodada de
+Onze etapas, da especificação à manutenção, e uma opcional (12) que leva o manual para dentro do sistema. As etapas 1 a 4 se fazem uma vez por sistema; 5 a 8 a cada rodada de
 produção; 9 e 10 na primeira entrega; 11 a cada versão do sistema. Tudo o que o leitor vê sai de arquivo versionado
 (roteiro, capítulo, caso): o que se gera em `saida/` é descartável.
 
@@ -17,6 +17,7 @@ produção; 9 e 10 na primeira entrega; 11 a cada versão do sistema. Tudo o que
 | 9 | Validação com usuários | registro das sessões e ajustes | Dono |
 | 10 | Publicação | Release com PDFs e MP4, local de acesso | Dono |
 | 11 | Manutenção | nova rodada a cada versão | Técnico; dono revisa o que mudou |
+| 12 | Ajuda no sistema e assistente (opcional) | base de conhecimento no sistema, perguntas frequentes e assistente | **Dono aprova a especificação**; encarregado de dados e TI, o assistente |
 
 ## 1. Inventário
 
@@ -185,6 +186,15 @@ A cada versão do sistema, **rode tudo**: é barato. O portão 7 compara com a r
 só esses capítulos são revisados e só as falas que mudaram são narradas de novo (o áudio fica em cache por texto).
 Roteiro que falha por alvo não encontrado indica tela mudada: corrija o roteiro e o texto juntos.
 
+## 12. Ajuda no sistema e assistente (opcional)
+
+Com o manual pronto, o mesmo conhecimento entra no sistema: perguntas frequentes por perfil (página Ajuda e aba
+**Nesta tela** num painel aberto pelo botão **Ajuda** em toda tela) e, se o órgão aceitar o serviço externo, um
+assistente que sabe a tela, a trilha da sessão e a situação do usuário. O rascunho da base sai do manual
+(`motor/base-ajuda.ts`), passa por curadoria e pelo portão `motor/checar-ajuda.ts`; especificação, ADR, instruções e
+casos de avaliação têm modelo em `modelos/ajuda/`. Tudo em `docs/PADRAO_AJUDA_E_ASSISTENTE.md`. Nada é desenvolvido
+antes de o dono aprovar a especificação; o assistente só liga depois da avaliação com o serviço real dentro das metas.
+
 ## Teste de replicação
 
 Para provar que o método se sustenta sozinho, aplique-o a um segundo sistema seguindo só o `README.md` e este
@@ -207,3 +217,4 @@ documento. O que faltar ou confundir vira correção no kit, não conhecimento n
 - [ ] Validação com usuários feita; ajustes aplicados nos roteiros e capítulos
 - [ ] Release publicada com a versão do sistema; local de acesso decidido pelo dono
 - [ ] `saida/`, `.cache/` e qualquer segredo fora do git
+- [ ] (etapa 12, se feita) base da ajuda com 0 erro em `checar-ajuda.ts`; avaliação do assistente dentro das metas e lida

@@ -77,6 +77,8 @@ export interface Caso {
   estado?: { restaurar: string[]; salvar?: string[] };
   marca: { cor_primaria: string; cor_texto: string; cor_destaque: string; logotipo: string; logotipo_branco?: string };
   voz: { modelo: string; voz: string; instrucoes?: string };
+  /** Base da ajuda no sistema (motor/base-ajuda.ts): código de cada perfil do caso no sistema. */
+  ajuda?: { perfis?: Record<string, string> };
 }
 
 export function pastaDoCaso(caso: string): string {

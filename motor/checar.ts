@@ -12,7 +12,7 @@ import { RAIZ, pastaDoCaso } from "./comum.ts";
 const DURACAO_MAXIMA_S = 150;
 
 /** Nunca aparecem em entregável institucional (texto do manual, narração, legenda). */
-const PROIBIDOS: { nome: string; re: RegExp }[] = [
+export const PROIBIDOS: { nome: string; re: RegExp }[] = [
   { nome: "IA", re: /\bI\.?A\.?(?=[\s,.;:)!?]|$)/ },
   { nome: "inteligência artificial", re: /intelig[êe]ncia artificial/i },
   { nome: "ferramenta interna", re: /\b(mailpit|playwright|openrouter|chromium|docker|prisma)\b/i },
@@ -20,7 +20,7 @@ const PROIBIDOS: { nome: string; re: RegExp }[] = [
   { nome: "ambiente de teste", re: /ambiente de (teste|desenvolvimento)/i },
 ];
 /** Fora do vocabulário único da interface (alerta, não erro: pode ser citação de outra coisa). */
-const FORA_DO_VOCABULARIO: { nome: string; re: RegExp }[] = [
+export const FORA_DO_VOCABULARIO: { nome: string; re: RegExp }[] = [
   { nome: "rejeitar (use Reprovar)", re: /\brejeit(?!adas\b)/i }, // "linhas rejeitadas" é termo da própria interface (importação)
   { nome: "deferir/indeferir (use Aprovar/Reprovar)", re: /\b(in)?defer/i },
   { nome: "glosar como verbo solto", re: /\bglosad[oa]s?\b/i },

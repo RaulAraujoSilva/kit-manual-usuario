@@ -62,6 +62,8 @@ roteiro). O que cada etapa lê e grava está em `docs/CONTRATOS.md`.
 | `narrar` | Normaliza o texto (datas e valores por extenso) e gera o áudio de cada passo, da abertura e do fecho | Não (só o OpenRouter) | `.cache/voz/*.mp3` |
 | `gravar` | Executa o roteiro em modo vídeo, com cursor e destaque, esperando em cada passo a duração da fala | **Sim** | `video/bruto.webm` e `video/linha-do-tempo.json` |
 | `montar-video` | Corta, junta áudio, abertura e fecho, normaliza o volume e embute a legenda | Não | `<roteiro>.mp4`, `.srt` e `.vtt` |
+| `base-ajuda` | Rascunho da base de conhecimento da ajuda no sistema (guias, telas, perguntas candidatas), a partir dos capítulos, roteiros e capturas (`node motor/base-ajuda.ts <caso>`) | Não | `saida/<caso>/ajuda/` |
+| `checar-ajuda` | Portão da base final que fica no sistema (`node motor/checar-ajuda.ts <pasta> [--app <src/app>]`) | Não | (relatório no terminal) |
 
 Ordem por roteiro: `capturar` → `anotar`; `narrar` → `gravar` → `montar-video`. O `montar-pdf` roda depois que
 todos os capítulos do manual estão anotados. Os portões de qualidade (`motor/checar.ts`) fecham a produção.
@@ -78,6 +80,8 @@ kit-manual-usuario/
     METODO.md                    a metodologia em 11 etapas e o checklist de entrega
     GUIA_DE_ESTILO.md            redação, anotação, vídeo, acessibilidade e o que nunca aparece
     CONTRATOS.md                 o que cada etapa do motor lê e grava
+    PADRAO_AJUDA_E_ASSISTENTE.md padrão da ajuda no sistema (perguntas frequentes) e do assistente
+  modelos/ajuda/                 especificação, ADR, instruções do assistente e casos de avaliação (modelos)
   .claude/skills/manual-usuario/ skill do Claude Code que conduz o processo
   motor/                         TypeScript + Playwright (comum, capturar, anotar, narrar, normalizar, gravar,
                                  montar-video, montar-pdf, checar)
@@ -95,6 +99,14 @@ kit-manual-usuario/
 ```
 
 Os PDFs e MP4 finais são publicados como Release do GitHub; `saida/` e `.cache/` nunca entram no git.
+
+## Ajuda no sistema e assistente (etapa 12, opcional)
+
+Depois do manual, o mesmo conhecimento pode entrar **no sistema**: perguntas frequentes por perfil e um assistente
+que conversa sabendo a tela, o que a pessoa acabou de fazer e a situação dela. O kit dá o método
+(`docs/PADRAO_AJUDA_E_ASSISTENTE.md`), os modelos (`modelos/ajuda/`), o rascunho da base a partir do manual
+(`base-ajuda`) e o portão da base (`checar-ajuda`); a implementação fica no sistema. Referência: o sistema de
+comprovantes (perguntas frequentes nas três áreas e assistente avaliado com 100% em 40 casos).
 
 ## Caso de referência: comprovantes
 

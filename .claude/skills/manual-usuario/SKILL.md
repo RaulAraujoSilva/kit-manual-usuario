@@ -1,6 +1,6 @@
 ---
 name: manual-usuario
-description: Produz o manual do usuário em PDF (passo a passo com prints anotados com retângulo, seta e número) e vídeos tutoriais curtos narrados e legendados, um por funcionalidade, a partir de roteiros YAML executados no sistema rodando com dados fictícios. Use quando o pedido for "manual do usuário", "guia do usuário", "vídeo tutorial", "vídeos de treinamento", "passo a passo com prints", "documentar as telas para o usuário", "atualizar o manual depois da nova versão" ou "/manual-usuario".
+description: Produz o manual do usuário em PDF (passo a passo com prints anotados com retângulo, seta e número) e vídeos tutoriais curtos narrados e legendados, um por funcionalidade, a partir de roteiros YAML executados no sistema rodando com dados fictícios. Use quando o pedido for "manual do usuário", "guia do usuário", "vídeo tutorial", "vídeos de treinamento", "passo a passo com prints", "documentar as telas para o usuário", "atualizar o manual depois da nova versão", "FAQ / perguntas frequentes no sistema", "ajuda dentro do sistema", "chatbot / assistente de ajuda" ou "/manual-usuario".
 ---
 
 # Manual do usuário e vídeos a partir do sistema rodando
@@ -83,6 +83,22 @@ com a rodada anterior. Olhe você mesmo uma amostra de prints e um vídeo inteir
 Proponha ao dono o teste com usuários reais (método, etapa 9: poucas pessoas, tarefas reais, sucesso, tempo,
 dúvidas). Aplique os ajustes nos roteiros e capítulos e rode de novo. A publicação (Release com PDFs e MP4) e o local
 de acesso são decisão do dono.
+
+## 8. Ajuda no sistema e assistente (opcional, depois do manual)
+
+Quando o pedido for levar a ajuda para dentro do sistema (perguntas frequentes, botão **Ajuda** em toda tela,
+assistente/chatbot que sabe a tela e o que a pessoa fez), siga `docs/PADRAO_AJUDA_E_ASSISTENTE.md`. Esta etapa é a
+**exceção** ao "caixa-preta": a implementação é no repositório do sistema, pelas regras dele.
+
+1. Especificação e ADR a partir de `modelos/ajuda/`, com as decisões (modelo, resumo da situação, painel não modal,
+   nome na interface) levadas ao dono. **Pare até a aprovação.**
+2. `node motor/base-ajuda.ts <caso>` → rascunho; curadoria por agente (nomes da interface pelo código, todas as telas
+   do código, perfil exato, perguntas reescritas, `regras.md` da especificação) → `conhecimento/` no sistema;
+   `node motor/checar-ajuda.ts <pasta> --app <src/app>` com 0 erro.
+3. Implementação no sistema em paralelo com a curadoria (o formato da base é o contrato entre os dois).
+4. Avaliação com o serviço real (`modelos/ajuda/casos-de-avaliacao.md`) dentro das metas, e leia as respostas.
+5. Verificação no navegador num ambiente **próprio do branch** (imagem com etiqueta própria; nunca troque a imagem de
+   um ambiente que outra pessoa usa).
 
 ## Regras que não mudam
 

@@ -131,6 +131,8 @@ async function capturar(caso: string, nomeRoteiro: string, dados: Caso): Promise
         const tela = (await pagina.locator("h1").first().textContent({ timeout: 500 }).catch(() => null))?.trim() || null;
         capturas.push({
           numero, passo: passo.id, arquivo, texto: passo.texto, acao: passo.acao, enquadrar: passo.enquadrar ?? "detalhe", tela,
+          // caminho da tela (sem consulta): o rascunho da base da ajuda tira daqui o catálogo de telas (base-ajuda.ts)
+          caminho: new URL(pagina.url()).pathname,
           caixa: caixa && { x: Math.round(caixa.x), y: Math.round(caixa.y), largura: Math.round(caixa.width), altura: Math.round(caixa.height) },
         });
         console.log(`  ${arquivo}`);

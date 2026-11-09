@@ -17,14 +17,15 @@ Cada etapa lê só o que a anterior grava. Caminhos relativos à raiz do kit; `s
   "viewport": { "largura": 1440, "altura": 900 }, "escala": 2,
   "capturas": [
     { "numero": 1, "passo": "abrir", "arquivo": "01-abrir.png", "texto": "No menu do alto, clique em **Enviar comprovantes**.",
-      "acao": "clicar", "enquadrar": "detalhe",
+      "acao": "clicar", "enquadrar": "detalhe", "tela": "Seus comprovantes", "caminho": "/servidor",
       "caixa": { "x": 540, "y": 40, "largura": 142, "altura": 44 } }
   ]
 }
 ```
 
 `caixa` em pixels CSS da janela (multiplicar por `escala` para o PNG); `null` se o alvo não tem caixa. Só entram os
-passos com `captura: true`, mas `numero` é sempre a posição do passo no roteiro.
+passos com `captura: true`, mas `numero` é sempre a posição do passo no roteiro. `tela` é o primeiro `h1` da página e
+`caminho` o endereço sem consulta no momento do print (usados pelo rascunho da base da ajuda).
 
 ## Anotação (`motor/anotar.ts`)
 - Lê `caixas.json` e grava `saida/<caso>/<roteiro>/anotadas/<NN>-<passo.id>.png` (+ `anotadas/anotadas.json` com
@@ -79,3 +80,24 @@ passos com `captura: true`, mas `numero` é sempre a posição do passo no rotei
 - `node motor/checar.ts <caso>` → `saida/<caso>/checagem.md`: cobertura da `matriz.md` (roteiro, prints, capítulo,
   vídeo), termos proibidos no texto, na narração e nas legendas, duração e legenda dos vídeos, PDF marcado, com
   idioma e marcadores. Sai com erro se algum portão falhar.
+
+## Base da ajuda (`motor/base-ajuda.ts`, `motor/checar-ajuda.ts`)
+
+Padrão em `docs/PADRAO_AJUDA_E_ASSISTENTE.md`.
+
+- `node motor/base-ajuda.ts <caso>` → `saida/<caso>/ajuda/` (rascunho, apagado a cada rodada): `guias/<perfil>.md`,
+  `telas-rascunho.json`, `perguntas-candidatas.json` (cada candidata com `origem`: o capítulo de onde saiu). O perfil é
+  o do roteiro do capítulo (capítulo sem roteiro: o do manual em que está), traduzido por `ajuda.perfis` do
+  `caso.yaml` quando houver.
+- A **base final** fica no repositório do sistema, em `conhecimento/`:
+
+| Arquivo | Forma |
+|---|---|
+| `telas.json` | `[{ "rota": "/rh/comprovantes/[id]", "perfis": ["RH"], "nome": "≤ 80", "paraQueServe": "≤ 600", "acoes": ["…com **botão**…"] }]`; rota como a URL, `[nome]` no segmento dinâmico; uma por tela autenticada |
+| `perguntas.json` | `[{ "id": "srv-kebab", "perfis": ["SRV"], "assunto": "≤ 60", "telas": ["/rota"], "pergunta": "≤ 200", "resposta": "≤ 1500", "passos": ["…"], "destino": "/rota-sem-[id]" }]`; `passos` e `destino` opcionais; ordem de importância dentro do perfil |
+| `guias/<PERFIL>.md` | `## Tarefa`, linhas `Tela: /rota`, para que serve, quando usar, antes de começar, passo a passo, depois, se der errado |
+| `regras.md` | regras do processo em linguagem simples, sem número que seja parâmetro configurável |
+
+- `node motor/checar-ajuda.ts <pasta> [--app <src/app>]`: forma, ids únicos, telas e destinos no catálogo e abertos
+  pelos perfis da pergunta, guia por perfil, termos proibidos e de vocabulário (os mesmos de `checar.ts`), CPF e
+  e-mail; com `--app`, cada rota existe nas páginas do sistema. Sai com erro se houver algum.
