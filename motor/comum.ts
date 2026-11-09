@@ -98,14 +98,19 @@ export function lerCaso(caso: string): Caso {
 }
 
 /** Mensagem mais recente da caixa de teste cujo assunto contém o trecho dado. */
-export async function emailMaisRecente(dados: Caso, assunto: string): Promise<{ id: string; texto: string }> {
+export async function emailMaisRecente(
+  dados: Caso, assunto: string,
+): Promise<{ id: string; texto: string; assunto: string; de: string; para: string }> {
   if (!dados.caixa_email) throw new Error("caso.yaml sem caixa_email");
   const busca = await fetch(`${dados.caixa_email}/api/v1/search?limit=1&query=${encodeURIComponent(`subject:"${assunto}"`)}`);
   const lista = (await busca.json()) as { messages?: { ID: string }[] };
   const id = lista.messages?.[0]?.ID;
   if (!id) throw new Error(`Nenhum e-mail com assunto "${assunto}" na caixa de teste`);
-  const msg = (await (await fetch(`${dados.caixa_email}/api/v1/message/${id}`)).json()) as { Text?: string };
-  return { id, texto: msg.Text ?? "" };
+  type End = { Name?: string; Address?: string };
+  const msg = (await (await fetch(`${dados.caixa_email}/api/v1/message/${id}`)).json()) as
+    { Text?: string; Subject?: string; From?: End; To?: End[] };
+  const fmt = (e?: End) => (e?.Name ? `${e.Name} <${e.Address ?? ""}>` : (e?.Address ?? ""));
+  return { id, texto: msg.Text ?? "", assunto: msg.Subject ?? "", de: fmt(msg.From), para: (msg.To ?? []).map(fmt).join(", ") };
 }
 
 /** Janela e escala de captura: computador 1440×900 ×2; celular 390×844 ×3. */

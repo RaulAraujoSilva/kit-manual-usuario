@@ -1,0 +1,42 @@
+# PREPARO (sem capítulo nem vídeo) — a administração cria a conta de servidor da Servidora 040857 (matrícula 40.857-8),
+# só com o perfil Servidor. A senha provisória vai ao e-mail do cadastro (servidor.040857@exemplo.invalido).
+# Base do roteiro srv-primeiro-acesso. Antes de rodar, esvaziar a caixa de e-mail do ambiente
+#   (curl -s -X DELETE <caixa>/api/v1/messages); depois, salvar o estado:
+#   KIT_AMBIENTE=manual node motor/estado.ts salvar comprovantes srv-conta-nova
+# A restauração do banco não devolve o e-mail: para repetir o srv-primeiro-acesso, rode este preparo de novo.
+id: preparo/srv-conta-nova
+titulo: Preparo — conta nova da Servidora 040857
+perfil: administracao
+estado: inicial
+inicio: /admin
+
+abertura: { titulo: Preparo, subtitulo: sem vídeo }
+fecho: { linhas: [] }
+
+passos:
+  - id: incluir
+    narracao: ""
+    texto: Incluir conta.
+    alvo: { css: 'summary:has-text("Incluir conta")' }
+    acao: clicar
+
+  - id: matricula
+    narracao: ""
+    texto: Matrícula.
+    alvo: { rotulo: Matrícula do servidor ou login da conta técnica, dentro: { papel: form, nome: Incluir conta } }
+    acao: preencher
+    valor: "40.857-8"
+
+  - id: salvar
+    narracao: ""
+    texto: Incluir conta.
+    alvo: { papel: button, nome: Incluir conta, exato: true, dentro: { papel: form, nome: Incluir conta } }
+    acao: clicar
+    espera_texto: Conta 40.857-8 criada.
+
+  - id: criada
+    narracao: ""
+    texto: Conta criada.
+    alvo: { texto: Conta 40.857-8 criada. }
+    acao: nenhuma
+    captura: true

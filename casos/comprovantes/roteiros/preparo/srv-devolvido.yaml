@@ -1,0 +1,70 @@
+# PREPARO (sem capítulo nem vídeo) — o RH devolve um comprovante da Servidora 050213.
+# Base dos roteiros srv-avisos, srv-email e srv-corrigir. Depois de rodar com `capturar`, salvar o estado:
+#   KIT_AMBIENTE=manual node motor/estado.ts salvar comprovantes srv-devolvido
+# Antes de rodar, esvaziar a caixa de e-mail do ambiente (curl -s -X DELETE <caixa>/api/v1/messages), para que o
+#   e-mail de devolução seja o único com esse assunto.
+# Resultado: o comprovante de educação da Escola Infantil Pé de Feijão (Dependente 050213-2) fica Devolvido com o motivo
+#   "Comprovante incompleto (sem autenticação bancária)" e prazo 20/11/2026; aviso não lido na lista da servidora e
+#   e-mail "devolvido para correção" na caixa de teste.
+id: preparo/srv-devolvido
+titulo: Preparo — devolução de um comprovante da Servidora 050213
+perfil: analista
+estado: inicial
+inicio: /rh/comprovantes
+
+abertura: { titulo: Preparo, subtitulo: sem vídeo }
+fecho: { linhas: [] }
+
+passos:
+  - id: buscar
+    narracao: ""
+    texto: Buscar a servidora.
+    alvo: { rotulo: Buscar servidor }
+    acao: preencher
+    valor: "50.213-4"
+
+  - id: buscar-botao
+    narracao: ""
+    texto: Buscar.
+    alvo: { papel: button, nome: Buscar, exato: true }
+    acao: clicar
+
+  - id: ver
+    narracao: ""
+    texto: Abrir o painel lateral do comprovante da Escola Infantil Pé de Feijão.
+    alvo: { papel: button, nome_comeca: "Ver detalhes do comprovante de Servidora 050213 (exemplo), Escola Infantil Pé de Feijão" }
+    acao: clicar
+
+  - id: devolver
+    narracao: ""
+    texto: Devolver ao servidor.
+    alvo: { papel: button, nome: Devolver ao servidor, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
+    acao: clicar
+
+  - id: motivo
+    narracao: ""
+    texto: Motivo.
+    alvo: { rotulo: Motivo, exato: true, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
+    acao: selecionar
+    valor: Comprovante incompleto (sem autenticação bancária)
+
+  - id: mensagem
+    narracao: ""
+    texto: Mensagem ao servidor.
+    alvo: { rotulo: Mensagem ao servidor, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
+    acao: preencher
+    valor: "O comprovante do PIX está cortado e não mostra a autenticação. Envie o comprovante completo."
+
+  - id: confirmar
+    narracao: ""
+    texto: Confirmar devolução.
+    alvo: { papel: button, nome: Confirmar devolução, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
+    acao: clicar
+    espera_texto: "Devolvido: Comprovante incompleto"
+
+  - id: devolvido
+    narracao: ""
+    texto: Devolvido.
+    alvo: { papel: button, nome: Desfazer a decisão, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
+    acao: nenhuma
+    captura: true

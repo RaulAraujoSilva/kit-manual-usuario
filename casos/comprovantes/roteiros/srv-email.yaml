@@ -1,0 +1,54 @@
+# O e-mail que o servidor recebe (devolução)
+# Perfil: servidor (a caixa de e-mail de teste) | Tela: fora do sistema (e-mail) | UC-04, UC-08 (aviso da decisão)
+# Vídeo: sem vídeo próprio | Manual: Guia do servidor › Avisos e e-mails
+#
+# Estado: srv-devolvido. A restauração do banco NÃO devolve a caixa de e-mail: o e-mail "devolvido para correção" precisa
+#   estar na caixa do ambiente (sai do preparo preparo/srv-devolvido). Se a caixa tiver sido esvaziada, rode o preparo de
+#   novo antes deste roteiro.
+# O motor mostra o e-mail com assunto, remetente e destinatário no alto e tira o parágrafo com o endereço do ambiente
+#   local (abrir_email).
+# Documentos fictícios: nenhum. Os e-mails vão para endereços fictícios (@exemplo.invalido).
+# Altera dados: não.
+id: srv-email
+titulo: O e-mail de devolução
+perfil: servidor
+estado: srv-devolvido
+sem_entrada: true
+inicio: /entrar
+capitulo: capitulos/srv-avisos.md
+
+abertura:
+  titulo: Os avisos por e-mail
+  subtitulo: Guia do servidor
+
+fecho:
+  linhas:
+    - Dúvidas? Fale com o RH pelo ramal 6457.
+    - "Guia do servidor: capítulo Avisos e e-mails."
+
+passos:
+  - id: abrir
+    narracao: Cada decisão do RH e cada lembrete do prazo também chegam ao seu e-mail institucional.
+    texto: Abra o e-mail institucional.
+    acao: abrir_email
+    assunto: devolvido para correção
+
+  - id: assunto
+    narracao: O assunto diz o mês do comprovante devolvido.
+    texto: >-
+      As devoluções e os lembretes do prazo também chegam ao seu **e-mail institucional**, enviados por **Comprovantes
+      AGENERSA**. Na devolução, o assunto diz o mês: **Comprovante de outubro/2026 devolvido para correção**.
+    alvo: { papel: heading, nome_comeca: "Comprovante de" }
+    acao: nenhuma
+    captura: true
+
+  - id: mensagem
+    narracao: >-
+      O e-mail diz o motivo e o prazo para corrigir. Valores e o nome do emitente ficam só no sistema.
+    texto: >-
+      O e-mail informa o **motivo** e o **prazo** para corrigir. Por proteção dos dados de saúde, valores e nome do
+      emitente não vão no e-mail: entre no sistema para ver o detalhe no aviso e corrigir. O e-mail é automático: não
+      responda a ele.
+    alvo: { css: 'p:has-text("foi devolvido pelo RH")' }
+    acao: nenhuma
+    captura: true

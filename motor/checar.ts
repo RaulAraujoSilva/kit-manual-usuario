@@ -21,7 +21,7 @@ const PROIBIDOS: { nome: string; re: RegExp }[] = [
 ];
 /** Fora do vocabulário único da interface (alerta, não erro: pode ser citação de outra coisa). */
 const FORA_DO_VOCABULARIO: { nome: string; re: RegExp }[] = [
-  { nome: "rejeitar (use Reprovar)", re: /\brejeit/i },
+  { nome: "rejeitar (use Reprovar)", re: /\brejeit(?!adas\b)/i }, // "linhas rejeitadas" é termo da própria interface (importação)
   { nome: "deferir/indeferir (use Aprovar/Reprovar)", re: /\b(in)?defer/i },
   { nome: "glosar como verbo solto", re: /\bglosad[oa]s?\b/i },
 ];

@@ -1,4 +1,4 @@
-# RASCUNHO — Aprovar os conformes em lote
+# Aprovar os conformes em lote
 # Perfil: analista | Tela: TL-07 /rh/comprovantes?situacao=conforme | UC-07 | Vídeo: V08
 # Manual: Manual do RH › Aprovar os conformes em lote
 #
@@ -10,7 +10,7 @@
 id: rh-aprovar-conformes
 titulo: Aprovar os conformes em lote
 perfil: analista
-estado: atual
+estado: inicial
 inicio: /rh
 capitulo: capitulos/rh-aprovar-conformes.md
 
@@ -32,17 +32,20 @@ passos:
 
   - id: lista
     narracao: >-
-      A lista mostra os conformes do mês. Todos passaram nas seis regras da conferência automatizada.
+      A lista mostra os conformes do mês. Todos passaram nas seis regras da conferência automatizada. Se quiser ver os
+      documentos de um deles antes, clique na linha.
     texto: >-
       A lista mostra os comprovantes **Conformes**: todos passaram nas 6 regras da conferência automatizada por regras.
       Clique numa linha para ver os documentos antes, se quiser.
-    alvo: { texto: conformes aguardando aprovação }   # conferir: título "N conformes aguardando aprovação" (o número muda)
+    alvo: { papel: heading, nome_comeca: "55 conformes aguardando aprovação" }
     acao: nenhuma
     captura: true
     enquadrar: tela
 
   - id: aprovar-todos
-    narracao: Para aprovar todos de uma vez, clique em Aprovar os conformes.
+    narracao: >-
+      Para aprovar todos de uma vez, clique em Aprovar os conformes. Para aprovar só alguns, marque as linhas e use
+      Aprovar selecionados.
     texto: >-
       Clique em **Aprovar os N conformes**. Para aprovar só alguns, marque as linhas e use **Aprovar N selecionados**.
     alvo: { papel: button, nome_comeca: "Aprovar os " }
@@ -67,3 +70,4 @@ passos:
     alvo: { papel: button, nome: Desfazer, exato: true }
     acao: nenhuma
     captura: true
+    enquadrar: tela

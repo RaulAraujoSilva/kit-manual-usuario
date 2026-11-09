@@ -1,17 +1,17 @@
-# RASCUNHO — Sem envio, lembretes e pausa da cobrança
+# Sem envio, lembretes e pausa da cobrança
 # Perfil: analista | Tela: TL-11 /rh/sem-envio (abas Sem envio e Lembretes) | UC-09, UC-10 | Vídeo: V11
 # Manual: Manual do RH › Sem envio, lembretes e faltas de comprovação
 #
-# Estado necessário: outubro/2026 com os 19 servidores sem envio da carga; o Servidor 048191 (exemplo), matrícula
-#   48.191-9 (último envio em agosto), com a cobrança ATIVA. O lembrete de 15 dias (D-15 = 05/11/2026) sai pela rotina
-#   diária do contêiner `manual-rotinas-1`: conferir que ele já rodou, senão a linha do tempo mostra "Agendado".
+# Estado: inicial. Outubro/2026 com os 17 servidores sem envio da carga; o Servidor 048191 (exemplo), matrícula
+#   48.191-9 (último envio em agosto), com a cobrança ATIVA. O lembrete de 15 dias (05/11/2026) já consta como enviado
+#   na carga; as rotinas agendadas ficam paradas durante a captura.
 # Documentos fictícios: nenhum.
 # Altera dados: pausa e reativa a cobrança do Servidor 048191 (as duas ações ficam no histórico de pausas e na trilha).
 #   "Exportar CSV" não é clicado (baixaria um arquivo; o motor não trata download).
 id: rh-sem-envio
 titulo: Sem envio e cobranças
 perfil: analista
-estado: atual
+estado: inicial
 inicio: /rh
 capitulo: capitulos/rh-sem-envio.md
 
@@ -45,7 +45,7 @@ passos:
     narracao: Para focar em quem está há mais tempo sem enviar, filtre pelo último envio.
     texto: Use os filtros **Auxílio**, **Cobrança** e **Último envio** e clique em **Filtrar**.
     alvo: { rotulo: Último envio }
-    acao: selecionar   # precisa do motor: ação "selecionar" (selectOption pelo rótulo da opção)
+    acao: selecionar
     valor: Há dois meses ou mais
     captura: true
 
@@ -102,17 +102,27 @@ passos:
     captura: true
 
   - id: confirmar-reativar
-    narracao: ""   # sem fala: a narração do passo anterior cobre (conferir se a narração aceita texto vazio)
+    narracao: ""   # sem fala: a narração do passo anterior cobre
     texto: Clique em **Reativar cobrança**.
     alvo: { papel: button, nome: Reativar cobrança, dentro: { papel: dialog } }
     acao: clicar
     captura: false
 
   - id: lembretes
-    narracao: Na aba Lembretes, você vê o que saiu, o que está agendado e o histórico dos meses anteriores.
-    texto: >-
-      A aba **Lembretes** mostra cada disparo do mês (enviado ou agendado, quantos foram lembrados e quantos não foram
-      entregues), o histórico das competências anteriores e as pausas de cobrança.
-    alvo: { papel: link, nome_comeca: "Lembretes", dentro: { papel: navigation, nome: Partes da cobrança } }   # conferir: as abas são links num nav
+    narracao: Para acompanhar os lembretes automáticos, abra a aba Lembretes.
+    texto: Para acompanhar os lembretes automáticos, clique na aba **Lembretes**.
+    alvo: { papel: link, nome_comeca: "Lembretes", dentro: { papel: navigation, nome: Partes da cobrança } }
     acao: clicar
+    captura: true
+
+  - id: disparos
+    narracao: >-
+      Cada lembrete mostra a data, quantos foram lembrados e quantos não foram entregues. Os não entregues são tentados
+      de novo.
+    texto: >-
+      Em cada disparo, confira a **Situação** (Enviado ou Agendado), os **Lembrados** e os **Não entregues**. Os não
+      entregues são tentados de novo pela rotina diária enquanto a data do lembrete valer. Mais abaixo ficam as
+      **Competências anteriores**.
+    alvo: { papel: table, nome: Disparos dos lembretes de outubro/2026 }
+    acao: nenhuma
     captura: true

@@ -1,4 +1,4 @@
-# RASCUNHO — Devolver ao servidor um conforme que precisa de correção (pelo painel lateral da lista)
+# Devolver ao servidor um conforme que precisa de correção (pelo painel lateral da lista)
 # Perfil: analista | Telas: TL-07 /rh/comprovantes (painel lateral) | UC-08 | Vídeo: sem vídeo próprio (o V09 mostra a
 #   decisão na análise completa; este roteiro prepara a jornada de correção da servidora)
 # Manual: Manual do RH › Analisar divergências e decidir (seção "Decidir pelo painel lateral, inclusive um conforme")
@@ -8,11 +8,11 @@
 # Documentos fictícios: nenhum.
 # Altera dados: o comprovante vira Devolvido (motivo "Comprovante incompleto (sem autenticação bancária)", prazo
 #   20/11/2026); aviso na lista da servidora e e-mail na caixa de teste. NÃO desfazer: srv-avisos, srv-email e
-#   srv-corrigir dependem desta devolução. Salvar a cópia do banco "E2-devolvido" depois deste roteiro.
+#   srv-corrigir dependem desta devolução (o agente do servidor prepara o próprio estado).
 id: rh-devolver-conforme
 titulo: Devolver um comprovante ao servidor
 perfil: analista
-estado: atual
+estado: inicial
 inicio: /rh/comprovantes
 capitulo: capitulos/rh-decidir.md
 
@@ -28,7 +28,7 @@ passos:
   - id: buscar
     narracao: Para achar o comprovante de um servidor, busque pelo nome, pela matrícula ou pelo protocolo.
     texto: Em **Buscar servidor**, digite o nome, a matrícula ou o protocolo.
-    alvo: { rotulo: Buscar servidor }   # conferir: rótulo do campo de busca da lista (LISTA_RH.buscar)
+    alvo: { rotulo: Buscar servidor }
     acao: preencher
     valor: "50.213-4"
     captura: true
@@ -45,7 +45,7 @@ passos:
     texto: >-
       Clique na linha do comprovante, ou em **Ver**, para abrir o painel lateral com os documentos e as decisões, sem
       sair da lista.
-    alvo: { papel: button, nome_comeca: "Ver detalhes do comprovante de Servidora 050213 (exemplo), Escola Infantil Pé de Feijão" }   # conferir: nome do emitente na lista
+    alvo: { papel: button, nome_comeca: "Ver detalhes do comprovante de Servidora 050213 (exemplo), Escola Infantil Pé de Feijão" }
     acao: clicar
     captura: true
 
@@ -74,16 +74,16 @@ passos:
       Em **Motivo**, escolha o motivo do catálogo. O **prazo para corrigir** aparece logo abaixo; o servidor recebe o
       aviso por e-mail e na lista de avisos.
     alvo: { rotulo: Motivo, exato: true, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
-    acao: selecionar   # precisa do motor: ação "selecionar" (selectOption pelo rótulo da opção)
+    acao: selecionar
     valor: Comprovante incompleto (sem autenticação bancária)
     captura: true
 
   - id: mensagem
     narracao: Se quiser, escreva uma mensagem ao servidor.
     texto: Em **Mensagem ao servidor**, explique o que falta (opcional, salvo no motivo "Outro").
-    alvo: { rotulo: Mensagem ao servidor, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }   # conferir: o campo existe no painel lateral (o teste só o usa na análise completa)
+    alvo: { rotulo: Mensagem ao servidor, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
     acao: preencher
-    valor: "O comprovante do PIX está cortado e não mostra a autenticação. Envie o comprovante completo."
+    valor: "O comprovante do PIX está cortado e não mostra a autenticação. Envie o comprovante completo"
     captura: false
 
   - id: confirmar

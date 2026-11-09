@@ -1,16 +1,16 @@
-# RASCUNHO — Analisar uma divergência e decidir (e desfazer a decisão)
+# Analisar uma divergência e decidir (e desfazer a decisão)
 # Perfil: analista | Telas: TL-07 /rh/divergencias, TL-08 /rh/comprovantes/[id] | UC-08 | Vídeo: V09
 # Manual: Manual do RH › Analisar divergências e decidir: Aprovar, Devolver, Reprovar, desfazer
 #
-# Estado necessário: a divergência da Servidora 044219 (exemplo), Colégio Exemplo Atlântico, que falhou na Regra 4
-#   (competência), ainda sem decisão (estado da carga).
+# Estado: inicial. A divergência da Servidora 051795 (exemplo), Colégio Exemplo Atlântico, que falhou na Regra 4
+#   (competência: mensalidade de agosto/2026 enviada em outubro), sem valor reembolsável calculado.
 # Documentos fictícios: nenhum.
 # Altera dados: devolve e, no fim, desfaz a devolução: o comprovante volta a Divergência. Ficam na trilha a decisão e o
 #   desfazer, e na caixa de teste o e-mail da devolução (um e-mail que já saiu não volta).
 id: rh-divergencia
 titulo: Analisar uma divergência e decidir
 perfil: analista
-estado: atual
+estado: inicial
 inicio: /rh
 capitulo: capitulos/rh-decidir.md
 
@@ -36,7 +36,7 @@ passos:
     texto: >-
       A lista **Divergências** mostra, em cada comprovante, a regra que falhou e o valor. Clique na linha para abrir o
       painel lateral.
-    alvo: { papel: button, nome_comeca: "Ver detalhes do comprovante de Servidora 044219 (exemplo)" }
+    alvo: { papel: button, nome_comeca: "Ver detalhes do comprovante de Servidora 051795 (exemplo)" }
     acao: clicar
     captura: true
 
@@ -51,11 +51,11 @@ passos:
 
   - id: achado
     narracao: >-
-      Na análise, o achado diz qual regra falhou. Aqui, a Regra 4: a despesa não é do mês da competência.
+      Na análise, o achado diz qual regra falhou. Aqui, a Regra 4: a mensalidade é de agosto, e não do mês em análise.
     texto: >-
       No alto da **Análise do comprovante** ficam o servidor, a competência, o protocolo e o **achado**: a regra que
       falhou e o porquê. Embaixo, a **Análise automática** sugere a decisão, quando há sugestão.
-    alvo: { texto: Achado, exato: true }   # conferir: rótulo "Achado" único na análise; "Regra 4 · Competência" aparece mais de uma vez (o motor exige alvo único)
+    alvo: { papel: heading, nome: Achado, exato: true }
     acao: nenhuma
     captura: true
 
@@ -70,12 +70,12 @@ passos:
 
   - id: decidir
     narracao: >-
-      Na decisão do RH, você pode aprovar pelo valor calculado, aprovar com outro valor, devolver ao servidor ou
-      reprovar. Aqui, devolva.
+      Em Decisão do RH, você pode aprovar, devolver ao servidor ou reprovar. Aqui, a despesa é de outro mês: devolva ao
+      servidor.
     texto: >-
-      Em **Decisão do RH**, escolha: **Aprovar pelo valor calculado**, **Aprovar com outro valor** (com justificativa),
-      **Devolver ao servidor** (ele corrige e reenvia) ou **Reprovar** (não entra na folha). Atalhos com o foco no
-      painel: A, C, D e R.
+      Em **Decisão do RH**, escolha a decisão: aprovar (**Aprovar pelo valor calculado** ou **Aprovar com outro valor**;
+      sem valor calculado, **Aprovar informando o valor**), **Devolver ao servidor** (ele corrige e reenvia) ou
+      **Reprovar** (não entra na folha). Atalhos com o foco no painel: A, C, D e R.
     alvo: { papel: radio, nome_comeca: "Devolver ao servidor", dentro: { papel: region, nome: Decisão do RH } }
     acao: clicar
     captura: true
@@ -93,7 +93,7 @@ passos:
     texto: Em **Mensagem ao servidor**, diga o que ele precisa enviar. O prazo para corrigir aparece logo abaixo.
     alvo: { rotulo: Mensagem ao servidor, dentro: { papel: region, nome: Decisão do RH } }
     acao: preencher
-    valor: "O boleto enviado é de setembro. Envie o boleto e o comprovante de pagamento de outubro."
+    valor: "A mensalidade enviada é de agosto. Envie o boleto e o comprovante de pagamento de outubro"
     captura: true
 
   - id: confirmar
@@ -119,7 +119,7 @@ passos:
     texto: >-
       Na confirmação, clique em **Desfazer a decisão**. O comprovante volta a **Divergência** e o aviso sai da lista do
       servidor; um e-mail que já saiu não volta. Tudo fica no histórico.
-    alvo: { papel: button, nome: Desfazer a decisão, dentro: { papel: dialog, nome: Desfazer a devolução? } }
+    alvo: { papel: button, nome: Desfazer a decisão, dentro: { papel: dialog, nome: "Desfazer a devolução?" } }
     acao: clicar
     espera_texto: Devolução desfeita
     captura: true

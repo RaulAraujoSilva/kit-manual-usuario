@@ -1,0 +1,77 @@
+# Ler os avisos
+# Perfil: servidor (Servidora 050213) | Tela: TL-05 /servidor/avisos | UC-04 | Vídeo: V06 (parte 1 de 3)
+# Manual: Guia do servidor › Avisos e e-mails
+#
+# Estado: srv-devolvido (roteiro de preparo preparo/srv-devolvido: o RH devolveu o comprovante da Escola Infantil Pé de
+#   Feijão; aviso ainda não lido). Na carga inicial a lista da servidora fica vazia: ela já enviou outubro.
+# Documentos fictícios: nenhum.
+# Altera dados: abrir o motivo marca o aviso como lido.
+id: srv-avisos
+titulo: Ler os avisos
+perfil: servidor
+estado: srv-devolvido
+inicio: /servidor
+capitulo: capitulos/srv-avisos.md
+
+abertura:
+  titulo: Ler os avisos
+  subtitulo: Guia do servidor
+
+fecho:
+  linhas:
+    - Dúvidas? Fale com o RH pelo ramal 6457.
+    - "Guia do servidor: capítulo Avisos e e-mails."
+
+passos:
+  - id: sino
+    narracao: Quando há aviso novo, o sino, no alto da tela, mostra quantos. Clique nele.
+    texto: Quando há aviso novo, o **sino** no alto da tela mostra quantos. Clique nele.
+    alvo: { papel: link, nome_comeca: "Avisos:" }
+    acao: clicar
+    captura: true
+
+  - id: lista
+    narracao: >-
+      Aqui ficam os lembretes do prazo e as decisões do RH. O aviso novo aparece como não lido, com o resumo e o
+      prazo.
+    texto: >-
+      A página **Avisos** reúne os lembretes do prazo e as decisões do RH, do mais novo para o mais antigo. O aviso novo
+      aparece como **Não lido**, com o resumo, o prazo e quantos dias faltam. Use **Não lidos** para ver só os novos e
+      **Marcar como lido** para marcar sem abrir.
+    alvo: { css: 'article:has(h2:text-is("Comprovante devolvido pelo RH"))' }
+    acao: nenhuma
+    captura: true
+
+  - id: ver-motivo
+    narracao: Clique em Ver motivo.
+    texto: Clique em **Ver motivo**. O aviso passa a contar como lido.
+    alvo: { papel: button, nome: Ver motivo, dentro: { css: 'article:has(h2:text-is("Comprovante devolvido pelo RH"))' } }
+    acao: clicar
+    captura: true
+
+  - id: motivo
+    narracao: Aparecem o motivo informado pelo RH e a mensagem que o RH escreveu para você.
+    texto: >-
+      Aparecem o **Motivo informado pelo RH** e a mensagem do RH, quando houver. Para fechar, clique em **Recolher**.
+    alvo: { css: 'div:has(> strong:text-is("Motivo informado pelo RH"))' }
+    acao: nenhuma
+    captura: true
+
+  - id: corrigir
+    narracao: Para resolver, clique em Corrigir comprovante.
+    texto: >-
+      Para resolver, clique em **Corrigir comprovante** (veja o capítulo Corrigir um comprovante devolvido). Num
+      lembrete de prazo, o atalho leva para **Enviar comprovantes**.
+    alvo: { papel: link, nome: Corrigir comprovante, dentro: { css: 'article:has(h2:text-is("Comprovante devolvido pelo RH"))' } }
+    acao: nenhuma
+    captura: true
+
+  - id: como-chegam
+    narracao: >-
+      Os avisos também chegam ao seu e-mail institucional, sem valores nem o nome do emitente. O detalhe fica aqui.
+    texto: >-
+      Em **Como chegam os avisos**: cada aviso também chega ao seu **e-mail institucional**, sem valores nem nome do
+      emitente; os lembretes saem 15, 7 e 1 dia antes do prazo, só se faltar comprovar; as devoluções chegam na hora.
+    alvo: { css: 'section:has(h2:text-is("Como chegam os avisos"))' }
+    acao: nenhuma
+    captura: true

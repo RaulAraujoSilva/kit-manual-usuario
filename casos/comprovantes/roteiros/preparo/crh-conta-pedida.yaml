@@ -1,0 +1,42 @@
+# PREPARO (sem capítulo nem vídeo) — a administração inclui a conta 40.857-8 (Servidora 040857, exemplo) com os perfis
+# Servidor e Recursos Humanos; o perfil do RH fica aguardando a coordenação. Mesmo efeito do adm-contas.
+# Parte do estado inicial; depois de capturar, salvar: node motor/estado.ts salvar comprovantes crh-conta-pedida
+# Usado por: crh-aprovar-acessos.
+id: crh-conta-pedida
+titulo: Preparo — conta 40.857-8 com perfil do RH pedido
+perfil: administracao
+estado: inicial
+inicio: /admin
+
+abertura: { titulo: Preparo, subtitulo: Preparo }
+fecho: { linhas: [] }
+
+passos:
+  - id: incluir
+    narracao: ""
+    texto: Incluir conta.
+    alvo: { css: 'summary:has-text("Incluir conta")' }
+    acao: clicar
+  - id: matricula
+    narracao: ""
+    texto: Matrícula.
+    alvo: { rotulo: Matrícula do servidor ou login da conta técnica, dentro: { papel: form, nome: Incluir conta } }
+    acao: preencher
+    valor: "40.857-8"
+  - id: perfil
+    narracao: ""
+    texto: Recursos Humanos.
+    alvo: { rotulo: Recursos Humanos, exato: true, dentro: { papel: form, nome: Incluir conta } }
+    acao: clicar
+  - id: motivo
+    narracao: ""
+    texto: Motivo.
+    alvo: { rotulo: Motivo, exato: true, dentro: { papel: form, nome: Incluir conta } }
+    acao: preencher
+    valor: "Nova pessoa na equipe do RH a partir de novembro (exemplo)."
+  - id: salvar
+    narracao: ""
+    texto: Incluir conta.
+    alvo: { papel: button, nome: Incluir conta, exato: true, dentro: { papel: form, nome: Incluir conta } }
+    acao: clicar
+    espera_texto: Conta 40.857-8 criada.

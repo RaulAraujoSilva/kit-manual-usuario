@@ -1,4 +1,4 @@
-# RASCUNHO — Gerar o lote: conferir pendências e totais e enviar para autorização
+# Gerar o lote: conferir pendências e totais e enviar para autorização
 # Perfil: analista | Tela: TL-09 /rh/lote?competencia=2026-09 | UC-11 | Vídeo: V14
 # Manual: Manual do RH › Gerar o lote e entregar à folha (parte 1: elaborar)
 #
@@ -11,7 +11,7 @@
 id: rh-lote
 titulo: Gerar o lote do mês
 perfil: analista
-estado: atual
+estado: rh-base
 inicio: /rh?competencia=2026-09
 capitulo: capitulos/rh-lote.md
 

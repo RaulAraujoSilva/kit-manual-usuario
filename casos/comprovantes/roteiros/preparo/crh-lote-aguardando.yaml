@@ -1,0 +1,31 @@
+# PREPARO (sem capítulo nem vídeo) — a analista elabora o lote de setembro/2026 e o envia para autorização.
+# Parte do estado inicial; depois de capturar, salvar: node motor/estado.ts salvar comprovantes crh-lote-aguardando
+# Usado por: crh-autorizar-lote, crh-devolver-lote.
+id: crh-lote-aguardando
+titulo: Preparo — lote de setembro aguardando autorização
+perfil: analista
+estado: inicial
+inicio: /rh/lote?competencia=2026-09
+
+abertura: { titulo: Preparo, subtitulo: Preparo }
+fecho: { linhas: [] }
+
+passos:
+  - id: pendencias
+    narracao: ""
+    texto: Confirmar pendências.
+    alvo: { papel: button, nome: Confirmar pendências }
+    acao: clicar
+
+  - id: totais
+    narracao: ""
+    texto: Confirmar totais.
+    alvo: { papel: button, nome: Confirmar totais }
+    acao: clicar
+
+  - id: enviar
+    narracao: ""
+    texto: Enviar para autorização.
+    alvo: { papel: button, nome: Enviar para autorização }
+    acao: clicar
+    espera_texto: Aguardando autorização da coordenação do RH

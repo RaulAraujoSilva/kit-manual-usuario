@@ -1,0 +1,91 @@
+# Autorizar e gerar o lote
+# Perfil: coordenacao | Tela: TL-09 /rh/lote?competencia=2026-09 | UC-11 | Vídeo: V16 (parte 1 de 2)
+# Manual: Manual do RH › capítulo Autorizar ou devolver o lote
+#
+# Estado: crh-lote-aguardando (preparo/crh-lote-aguardando.yaml: a analista elabora o lote de setembro/2026 e o envia
+#   para autorização).
+# Documentos fictícios: nenhum.
+# Altera dados: lote GERADO e bloqueado (não se desfaz; os arquivos são prova). Comprovantes de setembro "No lote".
+# Os links "Baixar" não são clicados (o motor não trata download).
+id: crh-autorizar-lote
+titulo: Autorizar e gerar o lote
+perfil: coordenacao
+estado: crh-lote-aguardando
+inicio: /rh?competencia=2026-09
+capitulo: capitulos/crh-lote.md
+
+abertura:
+  titulo: Autorizar e gerar o lote
+  subtitulo: Manual do RH · Coordenação
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Autorizar ou devolver o lote."
+
+passos:
+  - id: abrir
+    narracao: No menu da coordenação, clique em Gerar lote.
+    texto: >-
+      Com a competência escolhida em **Competência**, no alto, clique em **Gerar lote**, no menu.
+    alvo: { papel: link, nome_comeca: "Gerar lote", dentro: { papel: navigation, nome: Menu do RH } }
+    acao: clicar
+    captura: true
+    enquadrar: tela
+
+  - id: totais
+    narracao: >-
+      Antes de autorizar, confira os totais por auxílio e rubrica: o comprovado, a glosa e o reembolsado. Abaixo da
+      tabela fica o líquido na folha.
+    texto: >-
+      Na etapa **2. Conferir totais**, confira os aprovados no lote e os totais por auxílio e rubrica (comprovado, glosa
+      e reembolsado). Abaixo da tabela ficam as compensações e o **Líquido na folha**.
+    alvo: { papel: table, nome_comeca: "Saúde e educação, competência" }
+    acao: nenhuma
+    captura: true
+
+  - id: conferir
+    narracao: >-
+      Na etapa quatro, veja quem elaborou o lote e quando. Quem elaborou o lote não pode autorizá-lo.
+    texto: >-
+      Na etapa **4. Autorizar e gerar**, veja quem elaborou o lote e quando, em **Elaborado por**. Quem elaborou o lote
+      não pode autorizá-lo.
+    alvo: { texto: Elaborado por }
+    acao: nenhuma
+    captura: true
+    enquadrar: tela
+
+  - id: marcar
+    narracao: Marque Conferi os totais e autorizo o envio do lote.
+    texto: Marque **Conferi os totais e autorizo o envio do lote**. Sem a marcação, o botão de gerar fica bloqueado.
+    alvo: { papel: checkbox, nome: Conferi os totais e autorizo o envio do lote }
+    acao: clicar
+    captura: true
+
+  - id: gerar
+    narracao: O botão de gerar fica liberado. Clique em Gerar lote de setembro.
+    texto: Clique em **Gerar lote de setembro**.
+    alvo: { papel: button, nome: Gerar lote de setembro, exato: true }
+    acao: clicar
+    captura: true
+
+  - id: confirmar
+    narracao: >-
+      Confirme. Depois de gerado, o lote fica bloqueado: nenhum comprovante do mês muda de situação.
+    texto: >-
+      Na confirmação, clique em **Gerar lote de setembro**. Depois de gerado, o lote fica bloqueado e os arquivos
+      recebem impressão digital.
+    alvo: { papel: button, nome: Gerar lote de setembro, exato: true, dentro: { papel: dialog, nome: Gerar o lote de setembro? } }
+    acao: clicar
+    espera_texto: Lote gerado por
+    captura: true
+
+  - id: arquivos
+    narracao: >-
+      Lote gerado. Os dois arquivos ficam disponíveis para baixar, cada um com a sua impressão digital, que comprova
+      que ele não foi alterado.
+    texto: >-
+      **Lote gerado**. O **arquivo da folha** (CSV) e o **relatório para o SEI** (PDF) ficam disponíveis em **Baixar**,
+      cada um com a impressão digital **SHA-256**, que comprova que o arquivo não foi alterado depois.
+    alvo: { css: 'div:has(> article[aria-label="Folha_Comprovantes_2026-09.csv"])' }
+    acao: nenhuma
+    captura: true

@@ -1,16 +1,15 @@
-# RASCUNHO — Calendário, tetos e parâmetros
+# Calendário, tetos e parâmetros
 # Perfil: analista | Tela: TL-13 /rh/parametros (abas Calendário, Tetos, Parâmetros, Catálogos) | UC-15 | Vídeo: V13
 # Manual: Manual do RH › Calendário, tetos e parâmetros
 #
-# Estado necessário: qualquer um. Teto da saúde em vigor: IN CODIR nº 34/2012 (carga).
+# Estado: rh-base (inicial com o ato do teto da educação em texto de exemplo; ver preparo/rh-base.sql). Teto da saúde em vigor: IN CODIR nº 34/2012 (carga).
 # Documentos fictícios: nenhum. Ato de origem e valores fictícios; vigência futura (01/01/2027), para não mudar a
-#   conferência de outubro/2026.   # conferir: se outro roteiro (ou o teste ponta a ponta) já criou versão nessa data, usar
-#   a seguinte; versão publicada não se apaga.
+#   conferência de outubro/2026.
 # Altera dados: cria a versão do teto da saúde vigente a partir de 01/01/2027.
 id: rh-parametros
 titulo: Calendário, tetos e parâmetros
 perfil: analista
-estado: atual
+estado: rh-base
 inicio: /rh
 capitulo: capitulos/rh-parametros.md
 
@@ -35,12 +34,14 @@ passos:
       O calendário mostra, para cada mês, a abertura, o prazo do servidor, o fechamento do lote e os lembretes. Data em
       dia sem expediente aparece com o próximo dia útil.
     texto: >-
-      A aba **Calendário** mostra, por competência, a abertura, o **prazo do servidor**, o **fechamento do lote** e as
-      datas dos lembretes. Quando a data cai em dia sem expediente, a tela avisa e mostra o próximo dia útil. **Ajustar
-      datas** muda o calendário de um mês, com motivo.
-    alvo: { papel: table, nome: Calendário das competências de 2026 }
+      A aba **Calendário** mostra, por competência, a abertura, o **prazo do servidor**, o **fechamento do lote**, as
+      datas dos lembretes e a situação (Fechada, Aberta ou Futura). Quando a data cai em dia sem expediente, a tela avisa
+      e mostra o próximo dia útil. Na competência aberta ou futura, **Ajustar o calendário de** muda as datas daquele
+      mês. **Ano anterior** e **Ano seguinte** trocam o ano.
+    alvo: { papel: row, nome_comeca: "outubro/2026" }
     acao: nenhuma
     captura: true
+    enquadrar: tela
 
   - id: tetos
     narracao: Na aba Tetos, ficam os valores máximos de reembolso, com a vigência e o ato de origem.
@@ -62,7 +63,7 @@ passos:
 
   - id: data
     narracao: Informe a data de início, o ato de origem e o valor de cada grupo.
-    texto: Preencha **Vigência a partir de**, **Ato de origem** e o valor de cada grupo, em reais.
+    texto: Em **Vigência a partir de**, informe a data de início da nova tabela.
     alvo: { rotulo: Vigência a partir de, dentro: { papel: form, nome: Nova vigência do teto da saúde } }
     acao: preencher
     valor: "2027-01-01"
@@ -70,7 +71,7 @@ passos:
 
   - id: ato
     narracao: ""   # sem fala: a narração do passo anterior cobre os campos
-    texto: Informe o ato de origem.
+    texto: Em **Ato de origem**, informe o ato que fixou a tabela.
     alvo: { rotulo: Ato de origem, dentro: { papel: form, nome: Nova vigência do teto da saúde } }
     acao: preencher
     valor: "Ato de exemplo nº 1/2027 (atualização pelo INPC)"
@@ -78,7 +79,7 @@ passos:
 
   - id: grupo-1
     narracao: ""
-    texto: Valor do grupo I.
+    texto: Em **Valor do grupo I (R$)**, informe o valor do ato, em reais.
     alvo: { rotulo: Valor do grupo I (R$), dentro: { papel: form, nome: Nova vigência do teto da saúde } }
     acao: preencher
     valor: "250,00"
@@ -86,7 +87,7 @@ passos:
 
   - id: grupo-2
     narracao: ""
-    texto: Valor do grupo II.
+    texto: Em **Valor do grupo II (R$)**, informe o valor do ato, em reais.
     alvo: { rotulo: Valor do grupo II (R$), dentro: { papel: form, nome: Nova vigência do teto da saúde } }
     acao: preencher
     valor: "330,00"
@@ -94,7 +95,7 @@ passos:
 
   - id: grupo-3
     narracao: ""
-    texto: Valor do grupo III.
+    texto: Em **Valor do grupo III (R$)**, informe o valor do ato, em reais.
     alvo: { rotulo: Valor do grupo III (R$), dentro: { papel: form, nome: Nova vigência do teto da saúde } }
     acao: preencher
     valor: "410,00"
@@ -102,7 +103,7 @@ passos:
 
   - id: grupo-4
     narracao: ""
-    texto: Valor do grupo IV.
+    texto: Em **Valor do grupo IV (R$)**, informe o valor do ato, em reais.
     alvo: { rotulo: Valor do grupo IV (R$), dentro: { papel: form, nome: Nova vigência do teto da saúde } }
     acao: preencher
     valor: "490,00"
@@ -110,7 +111,7 @@ passos:
 
   - id: grupo-5
     narracao: ""
-    texto: Valor do grupo V.
+    texto: Em **Valor do grupo V (R$)**, informe o valor do ato, em reais.
     alvo: { rotulo: Valor do grupo V (R$), dentro: { papel: form, nome: Nova vigência do teto da saúde } }
     acao: preencher
     valor: "570,00"
@@ -124,14 +125,35 @@ passos:
     espera_texto: Nova versão do teto da saúde vigente a partir de 01/01/2027.
     captura: true
 
-  - id: parametros
+  - id: cadastrada
+    narracao: Pronto. A nova versão fica cadastrada, com a data de início.
+    texto: >-
+      A tela confirma a nova versão, vigente a partir da data informada. A tabela em vigor continua valendo até a
+      véspera.
+    alvo: { texto: Nova versão do teto da saúde vigente a partir de 01/01/2027. }
+    acao: nenhuma
+    captura: true
+
+  - id: catalogos
     narracao: >-
-      Na aba Parâmetros, os valores das regras com vigência e o histórico. Em Catálogos, os motivos de devolução e as
+      Na aba Parâmetros ficam os valores das regras, como o percentual da amostra. Em Catálogos, os motivos e as
       rubricas da folha.
     texto: >-
-      A aba **Parâmetros** mostra os valores das regras (percentual da amostra, dias dos lembretes e outros), a versão
-      das regras em vigor e o histórico. A aba **Catálogos** guarda os **motivos** de devolução, reprovação, glosa e
-      suspensão e as **rubricas da folha**: cadastre, corrija o texto de um motivo nunca usado ou desative.
-    alvo: { papel: link, nome: Parâmetros, exato: true, dentro: { papel: navigation, nome: Partes dos parâmetros } }
+      A aba **Parâmetros** mostra os valores de que as regras dependem (percentual da amostra, dias do calendário, dias
+      dos lembretes e outros), cada um com a vigência e a origem; **Nova vigência** cadastra um valor novo a partir de
+      uma data. Para os motivos e as rubricas, clique em **Catálogos**.
+    alvo: { papel: link, nome: Catálogos, exato: true, dentro: { papel: navigation, nome: Partes dos parâmetros } }
     acao: clicar
+    captura: true
+
+  - id: motivos
+    narracao: >-
+      Os motivos aparecem nas listas de devolução, reprovação, glosa e suspensão. Motivo já usado não muda de texto:
+      desative e cadastre outro.
+    texto: >-
+      Em **Catálogos** ficam os **motivos** de devolução, reprovação, glosa e suspensão, que aparecem nas listas de
+      decisão, e as **rubricas da folha**. Você pode cadastrar um motivo, corrigir o texto de um motivo ainda não usado
+      ou **Desativar** um motivo; o que já foi usado (**em uso**) fica no histórico.
+    alvo: { papel: heading, nome: "Motivos de devolução, reprovação, glosa e suspensão" }
+    acao: nenhuma
     captura: true

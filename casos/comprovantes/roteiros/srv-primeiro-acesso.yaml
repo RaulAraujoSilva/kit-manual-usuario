@@ -1,0 +1,126 @@
+# Primeiro acesso com a senha provisória
+# Perfil: pessoa com conta nova (Servidora 040857, matrícula 40.857-8, conta criada pela administração)
+# Telas: e-mail + TL-01 /entrar + /senha (troca obrigatória) | UC-01, UC-17 | Vídeo: sem vídeo próprio
+# Manual: Guia do servidor › Entrar, trocar a senha e sair (seção "Primeiro acesso")
+#
+# Estado: srv-conta-nova (preparo preparo/srv-conta-nova). A restauração do banco não devolve o e-mail: o e-mail
+#   "Senha provisória do Sistema de comprovantes" precisa estar na caixa do ambiente; se não estiver, rode o preparo de
+#   novo. A senha provisória é sorteada pelo sistema: o motor a lê do e-mail (valor_do_email) e, no print do e-mail,
+#   ela aparece como pontos.
+# Documentos fictícios: nenhum.
+# Altera dados: troca a senha da conta 40.857-8.
+id: srv-primeiro-acesso
+titulo: Primeiro acesso com a senha provisória
+perfil: servidor
+estado: srv-conta-nova
+sem_entrada: true
+inicio: /entrar
+capitulo: capitulos/srv-entrar.md
+
+abertura:
+  titulo: Primeiro acesso
+  subtitulo: Guia do servidor
+
+fecho:
+  linhas:
+    - Dúvidas? Fale com o RH pelo ramal 6457.
+    - "Guia do servidor: capítulo Entrar, trocar a senha e sair."
+
+passos:
+  - id: abrir-email
+    narracao: ""
+    texto: Abra o seu e-mail institucional.
+    acao: abrir_email
+    assunto: Senha provisória do Sistema de comprovantes
+
+  - id: email
+    narracao: >-
+      No primeiro acesso, você recebe no e-mail institucional uma senha provisória, que vale por vinte e quatro horas e
+      para uma única entrada.
+    texto: >-
+      Quando a sua conta é criada, chega ao seu e-mail institucional a mensagem **Senha provisória do Sistema de
+      comprovantes**, com o login (**Entre com**) e a **Senha provisória**. Ela vale por 24 horas e para uma única
+      entrada.
+    alvo: { css: 'p:has-text("Entre com:")' }
+    acao: nenhuma
+    captura: true
+
+  - id: abrir-sistema
+    narracao: ""
+    texto: Abra o sistema no navegador.
+    acao: abrir
+    url: /entrar
+
+  - id: identificador
+    narracao: Abra o sistema e entre com a matrícula e a senha provisória.
+    texto: Na tela de entrada, digite em **CPF ou matrícula** o login que veio no e-mail.
+    alvo: { rotulo: CPF ou matrícula }
+    acao: preencher
+    valor: "40.857-8"
+    captura: true
+
+  - id: senha-provisoria
+    narracao: ""
+    texto: Em **Senha**, digite a senha provisória do e-mail.
+    alvo: { rotulo: Senha, exato: true }
+    acao: preencher
+    valor_do_email: { assunto: Senha provisória do Sistema de comprovantes, padrao: "Senha provisória: (\\S+)" }
+    captura: false
+
+  - id: entrar
+    narracao: Clique em Entrar.
+    texto: Clique em **Entrar**.
+    alvo: { papel: button, nome: Entrar, exato: true }
+    acao: clicar
+    captura: true
+
+  - id: obrigatoria
+    narracao: >-
+      O sistema abre direto a troca de senha. Até você criar a sua senha, nenhuma outra tela abre.
+    texto: >-
+      O sistema abre direto **Trocar senha**, com o aviso de que você entrou com a senha provisória: até você criar a
+      sua senha, nenhuma outra tela abre.
+    alvo: { texto: Você entrou com a senha provisória recebida por e-mail }
+    acao: nenhuma
+    captura: true
+
+  - id: atual
+    narracao: Em senha atual, digite de novo a provisória.
+    texto: Em **Senha atual (ou a provisória)**, digite a senha provisória.
+    alvo: { rotulo: "Senha atual (ou a provisória)" }
+    acao: preencher
+    valor_do_email: { assunto: Senha provisória do Sistema de comprovantes, padrao: "Senha provisória: (\\S+)" }
+    captura: true
+
+  - id: nova
+    narracao: Crie a sua senha, uma frase longa, e repita.
+    texto: >-
+      Em **Nova senha** e **Repita a nova senha**, digite a sua senha nova: de 12 a 128 caracteres, de preferência uma
+      frase. Não use o CPF, a matrícula nem uma senha comum.
+    alvo: { rotulo: Nova senha, exato: true }
+    acao: preencher
+    valor: "uma frase longa e nova para o primeiro acesso"
+    captura: true
+
+  - id: repetir
+    narracao: ""
+    texto: Repita a nova senha.
+    alvo: { rotulo: Repita a nova senha }
+    acao: preencher
+    valor: "uma frase longa e nova para o primeiro acesso"
+    captura: false
+
+  - id: trocar
+    narracao: Clique em Trocar senha.
+    texto: Clique em **Trocar senha**.
+    alvo: { papel: button, nome: Trocar senha, exato: true }
+    acao: clicar
+    captura: true
+
+  - id: trocada
+    narracao: Pronto. Entre de novo com a senha que você criou.
+    texto: >-
+      A senha foi trocada. Clique em **Entrar de novo** e use a senha que você criou. A provisória não vale mais.
+    alvo: { texto: Senha trocada. Entre de novo com a nova senha. }
+    acao: nenhuma
+    captura: true

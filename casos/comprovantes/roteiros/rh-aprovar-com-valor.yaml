@@ -1,17 +1,15 @@
-# RASCUNHO — Aprovar informando o valor (divergência sem valor reembolsável calculado)
+# Aprovar informando o valor (divergência sem valor reembolsável calculado)
 # Perfil: analista | Tela: TL-08 /rh/comprovantes/[id] | UC-08 (RN-ANL-02) | Vídeo: sem vídeo próprio (o V09 cita)
 # Manual: Manual do RH › Analisar divergências e decidir (seção "Quando não há valor calculado")
 #
-# Estado necessário: uma divergência da carga SEM valor reembolsável calculado e que não seja da própria analista. O
-#   teste ponta a ponta acha uma pela API; aqui foi escolhida a da Servidora 046112 (exemplo), Espaço Exemplo Recreação
-#   (Regra 2, emitente), valor pago R$ 1.280,00.   # conferir na lista: escolher a que mostra "Sem valor reembolsável calculado"
-#   O teto da educação da carga é R$ 1.000,00 por dependente: o valor informado não pode passar dele.   # conferir
+# Estado: inicial. Divergência da Servidora 046112 (exemplo), Espaço Exemplo Recreação (Regra 2, emitente sem
+#   atividade de ensino), valor pago R$ 1.280,00, sem valor reembolsável calculado. Teto da educação: R$ 1.000,00.
 # Documentos fictícios: nenhum.
 # Altera dados: o comprovante vira Aprovado com o valor e a justificativa (podem ser desfeitos até o lote).
 id: rh-aprovar-com-valor
 titulo: Aprovar informando o valor
 perfil: analista
-estado: atual
+estado: inicial
 inicio: /rh/divergencias
 capitulo: capitulos/rh-decidir.md
 
@@ -27,7 +25,7 @@ passos:
   - id: ver
     narracao: Abra a divergência pela lista.
     texto: Na lista **Divergências**, clique na linha do comprovante.
-    alvo: { papel: button, nome_comeca: "Ver detalhes do comprovante de Servidora 046112 (exemplo)" }   # conferir
+    alvo: { papel: button, nome_comeca: "Ver detalhes do comprovante de Servidora 046112 (exemplo)" }
     acao: clicar
     captura: false
 
@@ -49,8 +47,10 @@ passos:
     captura: true
 
   - id: valor
-    narracao: Informe o valor aprovado, em reais, sem passar do teto.
-    texto: Em **Valor aprovado**, informe o valor em reais, com centavos, sem passar do teto disponível.
+    narracao: Informe o valor aprovado, em reais. A tela mostra o teto.
+    texto: >-
+      Em **Valor aprovado**, informe o valor em reais, com centavos. A tela mostra o limite (aqui, até R$ 1.000,00, o
+      teto da educação).
     alvo: { rotulo: Valor aprovado, dentro: { papel: region, nome: Decisão do RH } }
     acao: preencher
     valor: "1.000,00"
@@ -68,16 +68,18 @@ passos:
 
   - id: confirmar
     narracao: Clique em Confirmar decisão.
-    texto: Clique em **Confirmar decisão**.
-    alvo: { papel: button, nome: Confirmar decisão, dentro: { papel: region, nome: Decisão do RH } }   # conferir: rótulo do botão nesta opção
+    texto: >-
+      Clique em **Confirmar decisão**. Quando o valor difere do calculado, a tela avisa logo acima do botão que a
+      justificativa vai para o histórico e o relatório.
+    alvo: { papel: button, nome: Confirmar decisão, dentro: { papel: region, nome: Decisão do RH } }
     acao: clicar
     captura: true
 
   - id: aprovado
     narracao: O comprovante está aprovado pelo valor informado e entra no lote do mês.
     texto: >-
-      O comprovante fica **Aprovado** pelo valor informado e entra no lote da competência. Se o valor difere do
-      calculado, o sistema pede confirmação antes.
-    alvo: { texto: "Aprovado por" }   # conferir: mensagem "Aprovado por R$ … às …" (DECISAO.aprovadoPor)
+      O comprovante fica **Aprovado** pelo valor informado e entra no lote da competência. Até o lote ser gerado,
+      **Desfazer a decisão** desfaz a aprovação.
+    alvo: { papel: status, dentro: { papel: region, nome: Decisão do RH } }
     acao: nenhuma
     captura: true

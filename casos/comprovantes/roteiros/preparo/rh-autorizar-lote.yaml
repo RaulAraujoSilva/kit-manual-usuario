@@ -1,0 +1,28 @@
+# PREPARO (sem capítulo nem vídeo) — a coordenação autoriza e gera o lote de setembro/2026.
+# Parte de rh-lote-aguardando (salvo depois do rh-lote). Depois de rodar, salvar o estado rh-lote-gerado, de onde parte
+# o rh-registrar-entrega:  node motor/estado.ts salvar comprovantes rh-lote-gerado
+# Referência: rascunho crh-autorizar-lote (da coordenação); este preparo é do Manual do RH.
+id: preparo/rh-autorizar-lote
+titulo: Preparo — autorizar e gerar o lote
+perfil: coordenacao
+estado: rh-lote-aguardando
+inicio: /rh/lote?competencia=2026-09
+abertura: { titulo: Preparo, subtitulo: Manual do RH }
+fecho: { linhas: [] }
+passos:
+  - id: marcar
+    narracao: ""
+    texto: Marcar a conferência.
+    alvo: { papel: checkbox, nome: Conferi os totais e autorizo o envio do lote }
+    acao: clicar
+  - id: gerar
+    narracao: ""
+    texto: Gerar o lote.
+    alvo: { papel: button, nome: Gerar lote de setembro, exato: true }
+    acao: clicar
+  - id: confirmar
+    narracao: ""
+    texto: Confirmar.
+    alvo: { papel: button, nome: Gerar lote de setembro, exato: true, dentro: { papel: dialog } }
+    acao: clicar
+    espera_texto: Lote gerado por

@@ -1,0 +1,4 @@
+matricula;nome;cpf;vinculo;data_nascimento;email;situacao
+54.001-2;Servidora 054001 (exemplo);77920451884;efetivo;1990-05-12;servidora.054001@exemplo.invalido;ativo
+42.118-3;Servidora 042118 (exemplo);00077403100;efetivo;1984-11-23;servidora.042118.novo@exemplo.invalido;ativo
+54.002-0;Servidor 054002 (exemplo);12345678900;efetivo;1985-01-01;;ativo

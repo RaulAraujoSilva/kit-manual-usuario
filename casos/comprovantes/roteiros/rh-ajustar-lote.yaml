@@ -1,14 +1,15 @@
-# RASCUNHO — Ajustar o lote devolvido e reenviar para autorização
+# Ajustar o lote devolvido e reenviar para autorização
 # Perfil: analista | Tela: TL-09 /rh/lote?competencia=2026-09 | UC-11 (5a) | Vídeo: sem vídeo próprio (o V14 cita)
 # Manual: Manual do RH › Gerar o lote e entregar à folha (seção "Quando a coordenação devolve o lote")
 #
-# Estado necessário: lote de setembro/2026 "Em elaboração" depois da devolução pela coordenação (crh-devolver-lote).
+# Estado: rh-lote-devolvido (rh-lote → preparo/rh-devolver-lote, com o motivo "Confira de novo os totais da educação
+#   antes de reenviar (exemplo).").
 # Documentos fictícios: nenhum.
 # Altera dados: lote volta a "Aguardando autorização".
 id: rh-ajustar-lote
 titulo: Ajustar o lote devolvido
 perfil: analista
-estado: atual
+estado: rh-lote-devolvido
 inicio: /rh/lote?competencia=2026-09
 capitulo: capitulos/rh-lote.md
 
@@ -27,7 +28,7 @@ passos:
     texto: >-
       Quando a coordenação devolve o lote, chega um e-mail para quem elaborou, e a tela do lote mostra **quem
       devolveu**, quando e o **motivo**.
-    alvo: { texto: Confira os totais de novo (etapa 2) e envie para autorização. }
+    alvo: { css: 'main [role=status]:has-text("Lote devolvido para ajuste por")' }
     acao: nenhuma
     captura: true
     enquadrar: tela
@@ -43,7 +44,8 @@ passos:
 
   - id: reenviar
     narracao: E envie de novo para autorização.
-    texto: Clique em **Enviar para autorização**.
+    texto: >-
+      Clique em **Enviar para autorização**. O lote volta a **Aguardando autorização** da coordenação do RH.
     alvo: { papel: button, nome: Enviar para autorização }
     acao: clicar
     espera_texto: Aguardando autorização da coordenação do RH

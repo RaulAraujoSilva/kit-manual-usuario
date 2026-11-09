@@ -1,17 +1,16 @@
-# RASCUNHO — Decidir uma falta de comprovação
+# Decidir uma falta de comprovação
 # Perfil: analista | Tela: TL-11 /rh/sem-envio?aba=faltas | UC-10 | Vídeo: sem vídeo próprio (o V11 cita)
 # Manual: Manual do RH › Sem envio, lembretes e faltas de comprovação (seção "Faltas de comprovação")
 #
-# Estado necessário: a falta de setembro/2026 do auxílio-saúde do Servidor 048191 (exemplo), 48.191-9, aberta (a carga
-#   abre faltas de quem parou de enviar; saúde vai para decisão do RH com ampla defesa, educação com suspensão
-#   proposta).
+# Estado: inicial. A falta de setembro/2026 do auxílio-saúde do Servidor 048191 (exemplo), 48.191-9, aguardando
+#   decisão (a carga tem 11 faltas, todas da saúde, com proposta de decisão do RH com ampla defesa).
 # Documentos fictícios: nenhum. O número do processo SEI é fictício.
 # Altera dados: a falta fica Decidida ("Processo de ampla defesa").
 # Na R1 a falta sanada e o desconto integral ainda não existem (pendência): o capítulo não os menciona.
 id: rh-faltas
 titulo: Decidir uma falta de comprovação
 perfil: analista
-estado: atual
+estado: inicial
 inicio: /rh/sem-envio?aba=faltas
 capitulo: capitulos/rh-sem-envio.md
 
@@ -28,9 +27,9 @@ passos:
     narracao: >-
       Quem tinha o auxílio ativo e não enviou até o prazo ganha uma falta de comprovação, aberta no dia seguinte.
     texto: >-
-      Na aba **Faltas de comprovação** ficam as faltas abertas no dia seguinte ao prazo, para quem tinha o auxílio ativo
-      e não enviou. A coluna **Proposta** diz o caminho: suspensão (educação) ou decisão do RH com ampla defesa (saúde).
-    alvo: { papel: table }   # conferir: a tabela das faltas deve ser a única da aba (legenda "N faltas de comprovação")
+      Em **Sem envio**, abra a aba **Faltas de comprovação** e encontre a falta do servidor, com a situação **Aguardando
+      decisão**.
+    alvo: { papel: row, nome_comeca: "Servidor 048191 (exemplo) · 48.191-9 Saúde setembro/2026" }
     acao: nenhuma
     captura: true
     enquadrar: tela
@@ -40,7 +39,7 @@ passos:
     texto: >-
       Na linha da falta, clique em **Registrar decisão** (saúde) ou **Confirmar suspensão** (educação). **Arquivar**
       encerra a falta sem efeito, por exemplo quando a comprovação foi aceita fora do sistema.
-    alvo: { papel: button, nome: Registrar decisão, dentro: { css: 'tr:has-text("48.191-9"):has-text("setembro/2026")' } }   # conferir: linha da tabela (há uma só falta deste servidor)
+    alvo: { papel: button, nome: Registrar decisão, dentro: { papel: row, nome_comeca: "Servidor 048191 (exemplo) · 48.191-9 Saúde setembro/2026" } }
     acao: clicar
     captura: true
 
@@ -67,5 +66,15 @@ passos:
       no SEI. Na suspensão, o auxílio fica suspenso a partir de hoje e o servidor sai dos lotes seguintes.
     alvo: { papel: button, nome: Registrar decisão, dentro: { papel: dialog } }
     acao: clicar
-    espera_texto: Decisão registrada.
+    espera_texto: "Decidida: Processo de ampla defesa"
     captura: true
+
+  - id: registrada
+    narracao: A falta passa a Decidida, com o processo SEI e a justificativa.
+    texto: >-
+      A linha da falta passa de **Aguardando decisão** para **Decidida**, com a decisão, o processo SEI e a
+      justificativa, que ficam no histórico da falta.
+    alvo: { papel: row, nome_comeca: "Servidor 048191 (exemplo) · 48.191-9 Saúde setembro/2026" }
+    acao: nenhuma
+    captura: true
+    enquadrar: tela

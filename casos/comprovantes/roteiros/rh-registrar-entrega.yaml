@@ -1,8 +1,9 @@
-# RASCUNHO — Registrar a entrega à folha, a juntada ao SEI e o pagamento
+# Registrar a entrega à folha, a juntada ao SEI e o pagamento
 # Perfil: analista | Tela: TL-09 /rh/lote?competencia=2026-09 (Entrega, juntada e pagamento) | UC-12 | Vídeo: sem vídeo
 #   próprio (pode virar a parte 2 do V14) | Manual: Manual do RH › Gerar o lote e entregar à folha (parte 2)
 #
-# Estado necessário: lote de setembro/2026 GERADO (depois do crh-autorizar-lote; cópia "E4-lote-gerado").
+# Estado: rh-lote-gerado (rh-lote → preparo/rh-autorizar-lote). Depois de rodar, salvar rh-lote-entregue (de onde
+#   parte o rh-relatorio):  node motor/estado.ts salvar comprovantes rh-lote-entregue
 # Documentos fictícios: nenhum. Processo e documento SEI fictícios (os mesmos do teste ponta a ponta).
 # Altera dados: lote "Pago na folha"; comprovantes de setembro "Pago"; a Servidora 050213 passa a ver setembro pago e o
 #   "Reembolsado em 2026" de R$ 16.565,04.
@@ -10,7 +11,7 @@
 id: rh-registrar-entrega
 titulo: Registrar a entrega, a juntada e o pagamento
 perfil: analista
-estado: atual
+estado: rh-lote-gerado
 inicio: /rh/lote?competencia=2026-09
 capitulo: capitulos/rh-lote.md
 
@@ -23,15 +24,26 @@ fecho:
     - "Manual do RH: capítulo Gerar o lote e entregar à folha."
 
 passos:
+  - id: arquivos
+    narracao: >-
+      Com o lote gerado pela coordenação, baixe o arquivo da folha e o relatório em PDF.
+    texto: >-
+      Depois que a coordenação gera o lote, a tela do lote mostra o **arquivo para a folha** (CSV) e o **relatório para
+      o SEI** (PDF), cada um com o botão **Baixar** e a impressão digital (SHA-256). Baixe os dois.
+    alvo: { papel: article, nome: Folha_Comprovantes_2026-09.csv }
+    acao: nenhuma
+    captura: true
+    enquadrar: tela
+
   - id: entrega
     narracao: >-
       Depois de enviar o arquivo ao órgão da folha, registre a entrega: diga como foi entregue.
     texto: >-
-      Baixe o arquivo da folha e envie ao órgão gestor da folha. Depois, em **Registrar entrega à folha**, informe a
-      data e **Como foi entregue** (e o protocolo da folha, se houver).
+      Envie o arquivo da folha ao órgão gestor da folha. Depois, em **Registrar entrega à folha**, confira a **Data da
+      entrega** e informe **Como foi entregue** (e o **Protocolo da folha**, se houver).
     alvo: { rotulo: Como foi entregue, dentro: { papel: form, nome: Registrar entrega à folha } }
     acao: preencher
-    valor: "Arquivo enviado ao órgão gestor da folha pelo processo SEI."
+    valor: "Enviado pelo processo SEI"
     captura: true
 
   - id: registrar-entrega
@@ -73,8 +85,17 @@ passos:
       Quando a folha for paga, registre o pagamento. Os servidores passam a ver Pago na folha.
     texto: >-
       Quando a folha for paga, em **Registrar pagamento na folha**, confira a folha e a data e clique em **Registrar
-      pagamento**. Os servidores passam a ver **Pago na folha**; o que não foi pago vira compensação no mês seguinte.
+      pagamento**. Os servidores passam a ver **Pago na folha**.
     alvo: { papel: button, nome: Registrar pagamento, exato: true, dentro: { papel: form, nome: Registrar pagamento na folha } }
     acao: clicar
     espera_texto: Pago na folha em
+    captura: true
+
+  - id: pago
+    narracao: Pronto. O lote fica pago na folha, e cada servidor vê o pagamento no próprio painel.
+    texto: >-
+      Os três registros ficam no lote, com data e autor. Os comprovantes do lote passam a **Pago**, e cada servidor vê
+      o pagamento no próprio painel.
+    alvo: { texto: Pago na folha em }
+    acao: nenhuma
     captura: true

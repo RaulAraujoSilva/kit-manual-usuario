@@ -1,15 +1,16 @@
-# RASCUNHO — Conferir a amostra
+# Conferir a amostra
 # Perfil: analista | Telas: TL-07 /rh/amostra (painel lateral) | UC-06 (sorteio), UC-08 (decisão) | Vídeo: V10
 # Manual: Manual do RH › Conferir a amostra
 #
-# Estado necessário: o comprovante de saúde da Servidora 050213 (Vida Plena Saúde, R$ 1.240,00) Em amostra, sem
-#   decisão (estado da carga; semente do sorteio 2026-10-7F3A, 5% dos conformes).
+# Estado: inicial. Comprovante de saúde do Servidor 048093 (exemplo), Operadora Exemplo Vale Saúde, Em amostra, com
+#   valor reembolsável calculado (R$ 390,56) e glosa pelo teto (semente do sorteio 2026-10-7F3A, 5% dos conformes).
+#   O item da amostra da Servidora 050213 não tem valor calculado (só sai pela análise completa): não serve aqui.
 # Documentos fictícios: nenhum.
 # Altera dados: o comprovante da amostra vira Aprovado (pode ser desfeito até o lote).
 id: rh-amostra
 titulo: Conferir a amostra
 perfil: analista
-estado: atual
+estado: inicial
 inicio: /rh
 capitulo: capitulos/rh-amostra.md
 
@@ -34,9 +35,13 @@ passos:
     captura: true
 
   - id: lista
-    narracao: Cada comprovante da amostra passou nas seis regras. Abra um.
-    texto: Os comprovantes da amostra passaram nas 6 regras. Clique na linha de um deles.
-    alvo: { papel: button, nome_comeca: "Ver detalhes do comprovante de Servidora 050213 (exemplo)" }
+    narracao: >-
+      A lista mostra os comprovantes sorteados. Cada um passou nas seis regras, mas só entra no lote depois da sua
+      conferência. Abra um.
+    texto: >-
+      A lista mostra os comprovantes sorteados. Todos passaram nas 6 regras. Clique na linha de um deles, ou em
+      **Ver**.
+    alvo: { papel: button, nome_comeca: "Ver detalhes do comprovante de Servidor 048093 (exemplo)" }
     acao: clicar
     captura: true
 
@@ -52,14 +57,20 @@ passos:
     captura: true
 
   - id: documento
-    narracao: Abra os documentos e confira com os dados lidos.
-    texto: Use **Abrir documento** para conferir cada documento com os dados lidos e o valor calculado.
-    alvo: { papel: figure, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }   # conferir: o painel mostra uma miniatura (figure); "Abrir documento: …" pode ter dois botões e o motor exige alvo único
+    narracao: >-
+      Confira os valores: documento, pago, reembolsável e glosa, com o motivo da glosa. Abra os documentos e compare com
+      os dados lidos.
+    texto: >-
+      Confira os valores (**Documento**, **Pago**, **Reembolsável** e **Glosa**, com o motivo da glosa) e use **Abrir
+      documento** para ver cada documento. Para comparar lado a lado, use **Abrir análise completa**.
+    alvo: { papel: region, nome: Documentos, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
     acao: nenhuma
     captura: true
 
   - id: aprovar
-    narracao: Estando tudo certo, clique em Confirmar e aprovar. O botão mostra o valor que será aprovado.
+    narracao: >-
+      Estando tudo certo, clique em Confirmar e aprovar. O botão mostra o valor que será aprovado. Se encontrar um
+      problema, devolva ou reprove, como numa divergência.
     texto: >-
       Se estiver tudo certo, clique em **Confirmar e aprovar**: o botão mostra o valor que será aprovado. Se encontrar um
       problema, use **Devolver ao servidor** ou **Reprovar**, como numa divergência.
@@ -70,8 +81,8 @@ passos:
   - id: aprovado
     narracao: Aprovado. O resultado da amostra entra no relatório do mês, com a taxa de erro.
     texto: >-
-      O comprovante fica **Aprovado** e entra no lote. O resultado da amostra vai para o relatório mensal, com a taxa de
-      erro na amostra.
-    alvo: { texto: "Aprovado. Entra no lote de" }   # conferir: mensagem de retorno no painel lateral
+      O comprovante fica **Aprovado** e entra no lote. Até o lote ser gerado, **Desfazer a decisão** desfaz a
+      aprovação. O resultado da amostra vai para o relatório mensal, com a taxa de erro na amostra.
+    alvo: { papel: button, nome: Desfazer a decisão, dentro: { papel: dialog, nome_comeca: "Detalhes do comprovante de" } }
     acao: nenhuma
     captura: true

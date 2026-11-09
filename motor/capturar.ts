@@ -43,8 +43,31 @@ export async function executarAcao(pagina: Page, caso: string, passo: Passo, dad
       await pagina.goto(dados.endereco + (passo.url ?? "/"));
       break;
     case "abrir_email": {
-      const { id } = await emailMaisRecente(dados, passo.assunto ?? "");
-      await pagina.goto(`${dados.caixa_email}/view/${id}.html`);
+      const msg = await emailMaisRecente(dados, passo.assunto ?? "");
+      await pagina.goto(`${dados.caixa_email}/view/${msg.id}.html`);
+      // Cabeçalho (assunto, remetente, destinatário) acima do corpo, como num leitor de e-mail; o parágrafo com o
+      // endereço do ambiente local some, como a faixa de ambiente de teste (nunca aparece em print nem vídeo).
+      await pagina.evaluate(({ assunto, de, para, endereco }) => {
+        for (const a of document.querySelectorAll(`a[href^="${endereco}"]`)) (a.closest("p") ?? a).remove();
+        // senha (mesmo a provisória fictícia) nunca aparece em texto: vira pontos, como no campo de senha
+        const passeio = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        for (let n = passeio.nextNode(); n; n = passeio.nextNode()) {
+          n.textContent = (n.textContent ?? "").replace(/(senha\s+provis[oó]ria\s*:\s*)\S+/gi, "$1••••••••••••");
+        }
+        const c = document.createElement("div");
+        c.setAttribute("style", "font:15px/1.5 'Segoe UI',Roboto,Arial,sans-serif;color:#14243a;padding:18px 8px 14px;border-bottom:1px solid #d5dbe3;margin-bottom:14px");
+        const linha = (rotulo: string, valor: string, forte = false) => {
+          const p = document.createElement("div");
+          const r = document.createElement("span"); r.textContent = `${rotulo}: `; r.style.color = "#4a5b70";
+          const v = document.createElement(forte ? "strong" : "span"); v.textContent = valor;
+          p.append(r, v); return p;
+        };
+        const t = document.createElement("h1"); t.textContent = assunto;
+        t.setAttribute("style", "font-size:22px;margin:0 0 10px");
+        c.append(t, linha("De", de), linha("Para", para));
+        document.body.prepend(c);
+        document.body.setAttribute("style", "max-width:720px;margin:32px 0 0 48px;font:17px/1.5 Arial,Helvetica,sans-serif;color:#14243a");
+      }, { assunto: msg.assunto, de: msg.de, para: msg.para, endereco: dados.endereco });
       break;
     }
     case "nenhuma":
@@ -61,7 +84,9 @@ export async function abrirSessao(
   dados: Caso, roteiro: Roteiro, extra: Parameters<Browser["newContext"]>[0] = {},
 ): Promise<{ navegador: Browser; contexto: BrowserContext; pagina: Page }> {
   const j = janela(roteiro);
-  const navegador = await chromium.launch();
+  // Chromium completo em português: campos de data em dd/mm/aaaa e "Escolher arquivo" (o modo headless enxuto só
+  // tem os textos em inglês: mm/dd/yyyy, "Choose File")
+  const navegador = await chromium.launch({ channel: "chromium", args: ["--lang=pt-BR"] });
   const base = { viewport: j.viewport, locale: "pt-BR", isMobile: j.celular, hasTouch: j.celular };
   let storageState: Awaited<ReturnType<BrowserContext["storageState"]>> | undefined;
   if (!roteiro.sem_entrada) {

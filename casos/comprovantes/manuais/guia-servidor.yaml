@@ -1,5 +1,6 @@
 # Guia do servidor: o manual mais lido (um PDF por perfil, D1 do plano).
-# Cada capítulo é casos/comprovantes/capitulos/<roteiro>.md; o passo a passo sai do roteiro de mesmo nome.
+# Cada capítulo é casos/comprovantes/capitulos/<roteiro>.md; o passo a passo sai do roteiro de mesmo nome. Capítulos
+# com mais de uma tarefa usam {{passos:<roteiro>}} (srv-entrar inclui srv-primeiro-acesso; srv-avisos inclui srv-email).
 titulo: Guia do servidor
 perfil: servidor
 subtitulo: Comprovantes de saúde e educação
@@ -8,4 +9,12 @@ apresentacao: >-
   Este guia mostra, passo a passo, como usar o sistema de comprovantes de saúde e educação. As imagens usam dados de
   exemplo: na sua tela aparecem os seus dados. Dúvidas? Fale com o RH pelo ramal 6457.
 capitulos:
+  - srv-entrar
+  - srv-painel
   - srv-enviar
+  - srv-enviar-celular
+  - srv-arrumar-despesas
+  - srv-corrigir
+  - srv-avisos
+  - srv-dependentes
+  - srv-dados-e-ajuda

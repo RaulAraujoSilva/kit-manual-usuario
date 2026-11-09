@@ -1,0 +1,29 @@
+# PREPARO (sem capítulo nem vídeo) — a coordenação devolve o lote de setembro/2026 para ajuste.
+# Parte de rh-lote-aguardando (salvo depois do rh-lote). Depois de rodar, salvar o estado rh-lote-devolvido, de onde
+# parte o rh-ajustar-lote:  node motor/estado.ts salvar comprovantes rh-lote-devolvido
+# Referência: rascunho crh-devolver-lote (da coordenação); este preparo é do Manual do RH.
+id: preparo/rh-devolver-lote
+titulo: Preparo — devolver o lote para ajuste
+perfil: coordenacao
+estado: rh-lote-aguardando
+inicio: /rh/lote?competencia=2026-09
+abertura: { titulo: Preparo, subtitulo: Manual do RH }
+fecho: { linhas: [] }
+passos:
+  - id: devolver
+    narracao: ""
+    texto: Devolver para ajuste.
+    alvo: { papel: button, nome: Devolver para ajuste, exato: true }
+    acao: clicar
+  - id: motivo
+    narracao: ""
+    texto: Motivo da devolução.
+    alvo: { rotulo: Motivo da devolução, dentro: { papel: dialog } }
+    acao: preencher
+    valor: "Confira de novo os totais da educação antes de reenviar (exemplo)."
+  - id: confirmar
+    narracao: ""
+    texto: Confirmar.
+    alvo: { papel: button, nome: Devolver para ajuste, exato: true, dentro: { papel: dialog } }
+    acao: clicar
+    espera_texto: Lote devolvido para ajuste por

@@ -1,16 +1,16 @@
-# RASCUNHO — Suspender ou restabelecer um auxílio
+# Suspender ou restabelecer um auxílio
 # Perfil: analista | Tela: TL-12 /rh/servidores/[servidor_id] | UC-13 (RF-CAD-09) | Vídeo: sem vídeo próprio (o V12 cita)
 # Manual: Manual do RH › Servidores e dependentes (seção "Situação do auxílio")
 #
-# Estado necessário: o Servidor 047120 (exemplo), matrícula 47.120-3, com o auxílio-saúde ativo (estado da carga). Ele
-#   está entre os sem envio de outubro: depois desta suspensão, sai da lista de cobrança da saúde.
+# Estado: inicial. O Servidor 049655 (exemplo), matrícula 49.655-1, com o auxílio-saúde ativo (estado da carga). Ele
+#   está entre os sem envio de outubro. Escolhido porque não tem a suspensão da carga com o texto "massa fictícia".
 # Documentos fictícios: nenhum. Processo SEI fictício.
-# Altera dados: auxílio-saúde do 47.120-3 Suspenso a partir de 01/11/2026 (histórico do servidor e trilha).
+# Altera dados: auxílio-saúde do 49.655-1 Suspenso a partir de 01/11/2026 (histórico do servidor e trilha).
 id: rh-situacao-auxilio
 titulo: Suspender ou restabelecer um auxílio
 perfil: analista
-estado: atual
-inicio: /rh/servidores?busca=47.120-3
+estado: inicial
+inicio: /rh/servidores?busca=49.655-1
 capitulo: capitulos/rh-servidores.md
 
 abertura:
@@ -25,7 +25,7 @@ passos:
   - id: abrir
     narracao: Abra o cadastro do servidor.
     texto: Em **Servidores**, busque o servidor e clique no nome dele.
-    alvo: { papel: link, nome: "47.120-3" }   # conferir: o link do servidor traz a matrícula no nome
+    alvo: { papel: link, nome: "49.655-1" }
     acao: clicar
     captura: true
 
@@ -40,15 +40,15 @@ passos:
     narracao: Escolha o auxílio e a nova situação.
     texto: Em **Auxílio**, escolha saúde ou educação; em **Nova situação**, Suspenso, Restabelecido ou Ativo (adesão).
     alvo: { rotulo: Auxílio, exato: true, dentro: { papel: form, nome: Suspender ou restabelecer um auxílio } }
-    acao: selecionar   # precisa do motor: ação "selecionar"
-    valor: Saúde   # conferir: rótulo da opção
+    acao: selecionar
+    valor: Saúde
     captura: true
 
   - id: situacao
     narracao: ""   # sem fala: continua a frase do passo anterior
     texto: Escolha a nova situação.
     alvo: { rotulo: Nova situação, dentro: { papel: form, nome: Suspender ou restabelecer um auxílio } }
-    acao: selecionar   # precisa do motor: ação "selecionar"
+    acao: selecionar
     valor: Suspenso
     captura: false
 
@@ -76,5 +76,14 @@ passos:
       entra nos lotes seguintes até o restabelecimento.
     alvo: { papel: button, nome: Registrar situação, dentro: { papel: form, nome: Suspender ou restabelecer um auxílio } }
     acao: clicar
-    espera_texto: suspenso a partir de   # conferir: mensagem "Auxílio de saúde suspenso a partir de 01/11/2026."
+    espera_texto: suspenso a partir de
+    captura: true
+
+  - id: historico
+    narracao: A nova situação aparece no cadastro e no histórico dos auxílios, com o motivo e quem registrou.
+    texto: >-
+      A nova situação aparece em **Situação dos auxílios** e no **Histórico dos auxílios**, com o período, o motivo, o
+      processo SEI e quem registrou. Para voltar a pagar, registre **Restabelecido** da mesma forma.
+    alvo: { papel: table, nome: Histórico dos auxílios }
+    acao: nenhuma
     captura: true

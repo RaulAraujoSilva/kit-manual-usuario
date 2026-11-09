@@ -1,0 +1,73 @@
+# Devolver o lote para ajuste
+# Perfil: coordenacao | Tela: TL-09 /rh/lote?competencia=2026-09 | UC-11 (RF-LOT-06) | Vídeo: V16 (parte 2 de 2;
+#   o V16 pode mostrar só o botão e deixar o passo a passo para o manual)
+# Manual: Manual do RH › capítulo Autorizar ou devolver o lote
+#
+# Estado: crh-lote-aguardando (preparo/crh-lote-aguardando.yaml: a analista elabora o lote de setembro/2026 e o envia
+#   para autorização).
+# Documentos fictícios: nenhum.
+# Altera dados: o lote volta a "Em elaboração", com o motivo; e-mail a quem elaborou (caixa de teste). O rh-ajustar-lote
+#   reenvia em seguida.
+id: crh-devolver-lote
+titulo: Devolver o lote para ajuste
+perfil: coordenacao
+estado: crh-lote-aguardando
+inicio: /rh/lote?competencia=2026-09
+capitulo: capitulos/crh-lote.md
+
+abertura:
+  titulo: Devolver o lote para ajuste
+  subtitulo: Manual do RH · Coordenação
+
+fecho:
+  linhas:
+    - "Manual do RH: capítulo Autorizar ou devolver o lote."
+
+passos:
+  - id: elaborado
+    narracao: >-
+      O lote chega à coordenação com o nome de quem elaborou, a data e a hora. Antes de autorizar, confira os totais e
+      a prévia dos arquivos.
+    texto: >-
+      O lote chega à coordenação com **Elaborado por**, a data e a hora. Confira os totais e a prévia dos arquivos.
+    alvo: { texto: Elaborado por }
+    acao: nenhuma
+    captura: true
+    enquadrar: tela
+
+  - id: devolver
+    narracao: Se algum total não confere, não gere o lote. Clique em Devolver para ajuste.
+    texto: Se algum total não confere, clique em **Devolver para ajuste**.
+    alvo: { papel: button, nome: Devolver para ajuste, exato: true }
+    acao: clicar
+    captura: true
+
+  - id: motivo
+    narracao: >-
+      Escreva o que o RH precisa ajustar. O motivo é obrigatório, e quem elaborou o recebe por e-mail.
+    texto: >-
+      Em **Motivo da devolução**, escreva o que o RH precisa ajustar (obrigatório, de 10 a 500 caracteres). Quem
+      elaborou recebe o motivo por e-mail.
+    alvo: { rotulo: Motivo da devolução, dentro: { papel: dialog, nome: Devolver o lote de setembro para ajuste? } }
+    acao: preencher
+    valor: "Falta conferir a compensação de agosto de um servidor (exemplo)."
+    captura: true
+
+  - id: confirmar
+    narracao: Clique em Devolver para ajuste.
+    texto: Clique em **Devolver para ajuste**.
+    alvo: { papel: button, nome: Devolver para ajuste, exato: true, dentro: { papel: dialog, nome: Devolver o lote de setembro para ajuste? } }
+    acao: clicar
+    espera_texto: Lote devolvido para ajuste por
+    captura: true
+
+  - id: devolvido
+    narracao: >-
+      Pronto. O lote volta para elaboração, com o motivo à vista. O RH confere os totais de novo e envia outra vez para
+      autorização.
+    texto: >-
+      O lote volta para **Em elaboração**, com o motivo à vista. O RH confere os totais de novo (etapa 2) e envia outra
+      vez para autorização.
+    alvo: { css: '[role=status]:has-text("Lote devolvido para ajuste por")' }
+    acao: nenhuma
+    captura: true

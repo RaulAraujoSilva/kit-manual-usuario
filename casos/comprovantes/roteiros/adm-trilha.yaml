@@ -1,0 +1,107 @@
+# Consultar a trilha de auditoria e verificar o encadeamento
+# Perfil: administracao | Tela: TL-14 /admin?aba=trilha | UC-17 | Vídeo: V18 (parte 3 de 3)
+# Manual: Manual da administração › capítulo Trilha de auditoria
+#
+# Estado: crh-acesso-aprovado (há os eventos de criar a conta 40.857-8, pedir e aprovar o perfil do RH).
+# Documentos fictícios: nenhum.
+# Altera dados: só registra na trilha a consulta e a conferência (cada consulta é um evento). "Exportar CSV" não é
+#   clicado (o motor não trata download).
+id: adm-trilha
+titulo: Consultar a trilha de auditoria
+perfil: administracao
+estado: crh-acesso-aprovado
+inicio: /admin
+capitulo: capitulos/adm-trilha.md
+
+abertura:
+  titulo: Trilha de auditoria
+  subtitulo: Manual da administração
+
+fecho:
+  linhas:
+    - "Manual da administração: capítulo Trilha de auditoria."
+
+passos:
+  - id: aba
+    narracao: >-
+      Toda ação no sistema fica registrada numa trilha que não se altera. Clique na aba Trilha de auditoria.
+    texto: Clique na aba **Trilha de auditoria**.
+    alvo: { papel: link, nome: Trilha de auditoria, exato: true, dentro: { papel: navigation, nome: Partes da administração } }
+    acao: clicar
+    captura: true
+
+  - id: filtros
+    narracao: >-
+      Filtre por protocolo do comprovante, matrícula, competência, autor, ação ou período. Aqui, a ação Criou conta.
+    texto: >-
+      Preencha os filtros que precisar: **Protocolo do comprovante**, **Matrícula do servidor**, **Competência**,
+      **Autor**, **Ação** e **Período** (**De** e **Até**). No exemplo, em **Ação**, escolha **Criou conta**.
+    alvo: { rotulo: Ação, exato: true }
+    acao: selecionar
+    valor: Criou conta
+    captura: true
+
+  - id: consultar
+    narracao: E clique em Consultar.
+    texto: Clique em **Consultar**.
+    alvo: { papel: button, nome: Consultar, exato: true }
+    acao: clicar
+    captura: false
+
+  - id: eventos
+    narracao: >-
+      Cada evento mostra quando, quem, a ação e o objeto, descrito em termos de gente: a conta, o comprovante, o
+      servidor.
+    texto: >-
+      Cada evento mostra a **data e hora**, o **autor** com o perfil, a **ação**, o **objeto** (a conta, o comprovante, o
+      servidor ou a competência, descritos por nome e número) e o selo de **encadeamento**. O identificador longo do
+      objeto fica em **Copiar identificador**.
+    alvo: { papel: row, nome_comeca: "05/11/2026" }
+    acao: nenhuma
+    captura: true
+    enquadrar: tela
+
+  - id: detalhe
+    narracao: Clique em Detalhe para ver o que mudou.
+    texto: Clique em **Detalhe**.
+    alvo: { css: ':nth-match(summary:has-text("Detalhe"), 1)' }
+    acao: clicar
+    captura: true
+
+  - id: antes-depois
+    narracao: O detalhe mostra o antes e o depois, campo a campo, com o motivo informado.
+    texto: >-
+      **O que mudou neste evento** mostra cada campo com o valor de **Antes** e o de **Depois**, inclusive o motivo
+      informado. Evento sobre comprovante de saúde não mostra o detalhe: aparece "Detalhe restrito: o objeto pode ter
+      dado de saúde."
+    alvo: { papel: table, nome: O que mudou neste evento }
+    acao: nenhuma
+    captura: true
+
+  - id: verificar
+    narracao: Para conferir que nada foi alterado, clique em Verificar encadeamento.
+    texto: >-
+      Clique em **Verificar encadeamento** para conferir que nenhum evento foi alterado ou apagado. A rotina diária
+      também confere.
+    alvo: { papel: button, nome: Verificar encadeamento }
+    acao: clicar
+    espera_texto: Trilha íntegra
+    captura: true
+
+  - id: integra
+    narracao: Trilha íntegra. Os eventos conferidos ganham o selo Íntegro.
+    texto: >-
+      O resultado aparece ao lado do botão: **Trilha íntegra** e o número de eventos verificados, ou o ponto exato em
+      que o encadeamento quebrou. Os eventos conferidos passam a mostrar o selo **Íntegro**.
+    alvo: { texto: "Trilha íntegra:" }
+    acao: nenhuma
+    captura: true
+
+  - id: exportar
+    narracao: Para levar a consulta para fora, use Exportar CSV. A exportação também fica registrada.
+    texto: >-
+      **Exportar CSV** baixa os eventos desta consulta, com os mesmos filtros e o CPF mascarado. A exportação também
+      fica registrada na trilha.
+    alvo: { papel: link, nome_comeca: "Exportar CSV com os" }
+    acao: nenhuma
+    captura: true

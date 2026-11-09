@@ -1,0 +1,27 @@
+# Manual do RH (um PDF por perfil, D1 do plano): analista do RH, na ordem do ciclo do mês, e a coordenação no fim.
+# Capítulo de uma tarefa: o id do roteiro (capitulos/<id>.md com {{passos}}). Capítulo com várias tarefas:
+# { capitulo: capitulos/<arquivo>.md }, com {{passos:<roteiro>}} no Markdown.
+titulo: Manual do RH
+perfil: analista
+subtitulo: Comprovantes de saúde e educação
+versao: Versão piloto · novembro de 2026
+apresentacao: >-
+  Este manual mostra, passo a passo, como o RH usa o sistema de comprovantes de saúde e educação ao longo do mês: do
+  painel e das decisões sobre os comprovantes até o lote, a entrega à folha e o relatório para o SEI. Os três últimos capítulos são da coordenação do RH:
+  o painel da coordenação, autorizar ou devolver o lote e aprovar os perfis do RH. As imagens usam
+  dados de exemplo: na sua tela aparecem os dados reais da competência.
+capitulos:
+  - { capitulo: capitulos/rh-ciclo.md }
+  - rh-painel
+  - rh-aprovar-conformes
+  - { capitulo: capitulos/rh-decidir.md }
+  - rh-amostra
+  - { capitulo: capitulos/rh-sem-envio.md }
+  - { capitulo: capitulos/rh-servidores.md }
+  - rh-parametros
+  - { capitulo: capitulos/rh-lote.md }
+  - rh-relatorio
+  # coordenação do RH
+  - crh-indicadores
+  - { capitulo: capitulos/crh-lote.md }
+  - crh-aprovar-acessos

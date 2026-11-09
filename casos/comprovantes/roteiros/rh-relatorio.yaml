@@ -1,17 +1,16 @@
-# RASCUNHO — Relatório mensal para o SEI
+# Relatório mensal para o SEI
 # Perfil: analista (a coordenação também abre) | Tela: TL-10 /rh/relatorio?competencia=2026-09 | UC-12 | Vídeo: V15
 # Manual: Manual do RH › Relatório mensal para o SEI
 #
-# Estado necessário: lote de setembro/2026 gerado e, de preferência, com a juntada registrada (depois do
-#   rh-registrar-entrega): o relatório mostra o processo SEI, a integridade com o SHA-256 e a juntada. Antes da
-#   autorização, a tela mostra a prévia "sujeita à autorização"; antes dos totais conferidos, "ainda não está
-#   disponível".
+# Estado: rh-lote-entregue (rh-lote → preparo/rh-autorizar-lote → rh-registrar-entrega): lote de setembro/2026 gerado,
+#   entregue, juntado ao SEI e pago. Antes da autorização, a tela mostra a prévia "sujeita à autorização"; antes dos
+#   totais conferidos, "ainda não está disponível".
 # Documentos fictícios: nenhum.
 # Altera dados: não. "Baixar PDF" não é clicado (o motor não trata download).
 id: rh-relatorio
 titulo: Relatório mensal para o SEI
 perfil: analista
-estado: atual
+estado: rh-lote-entregue
 inicio: /rh/relatorio?competencia=2026-09
 capitulo: capitulos/rh-relatorio.md
 
@@ -43,6 +42,15 @@ passos:
     acao: nenhuma
     captura: true
 
+  - id: juntada
+    narracao: Depois da juntada, o relatório mostra o número do documento no SEI.
+    texto: >-
+      Depois que a juntada é registrada no lote, o alto do relatório mostra o número do documento SEI, a data e quem
+      registrou.
+    alvo: { papel: status, dentro: { papel: main } }
+    acao: nenhuma
+    captura: true
+
   - id: secoes
     narracao: >-
       Use o índice para ir a cada seção: resumo, conferência, divergências tratadas, faixas de valor e pagamentos.
@@ -54,20 +62,38 @@ passos:
     captura: true
 
   - id: conferencia
-    narracao: >-
-      A seção de conferência explica a conferência automatizada por regras e mostra a amostra, com a semente do sorteio.
-    texto: >-
-      A seção **2 e 3** explica a **conferência automatizada por regras**, as ocorrências de cada regra e a **amostra de
-      controle**, com a semente do sorteio e a taxa de erro.
+    narracao: Clique em uma seção para ir direto a ela. Por exemplo, a conferência e o resultado.
+    texto: Clique em uma seção do índice para ir direto a ela, por exemplo **2 e 3. Conferência e resultado**.
     alvo: { papel: link, nome_comeca: "2 e 3.", dentro: { papel: navigation, nome: Ir para a seção do relatório } }
     acao: clicar
     captura: true
 
-  - id: integridade
-    narracao: E a integridade traz a impressão digital de cada arquivo do lote.
+  - id: conferencia-secao
+    narracao: >-
+      Esta seção explica a conferência automatizada por regras e mostra a amostra de controle, com a semente do sorteio.
     texto: >-
-      A seção **7. Integridade** traz a impressão digital SHA-256 de cada arquivo do lote, para provar que não foram
-      alterados, e a juntada ao SEI registrada.
+      A seção **2 e 3** explica a **conferência automatizada por regras**, mostra as ocorrências de cada regra e a
+      **amostra de controle**, com a semente do sorteio e a taxa de erro.
+    alvo: { papel: heading, nome_comeca: "2 e 3. Como os comprovantes foram conferidos" }
+    acao: nenhuma
+    captura: true
+    enquadrar: tela
+
+  - id: integridade
+    narracao: Volte ao índice e abra a integridade.
+    texto: Volte ao índice e clique em **7. Integridade**.
     alvo: { papel: link, nome_comeca: "7. Integridade", dentro: { papel: navigation, nome: Ir para a seção do relatório } }
     acao: clicar
+    captura: false
+
+  - id: integridade-secao
+    narracao: >-
+      A integridade traz a impressão digital de cada arquivo do lote, que prova que eles não foram alterados, e a
+      juntada ao SEI.
+    texto: >-
+      A seção **7. Integridade e rastreabilidade** traz a impressão digital (SHA-256) de cada arquivo do lote, que prova
+      que os arquivos não foram alterados depois de gerados, e a juntada ao SEI registrada.
+    alvo: { papel: heading, nome_comeca: "7. Integridade e rastreabilidade" }
+    acao: nenhuma
     captura: true
+    enquadrar: tela

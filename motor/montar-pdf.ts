@@ -23,6 +23,8 @@ interface Manual {
   apresentacao?: string;
   /** Id de roteiro (capítulo = capitulos/<id>.md) ou capítulo próprio que junta vários roteiros com {{passos:<id>}}. */
   capitulos: (string | { capitulo: string; titulo?: string })[];
+  /** Sumário com as seções de cada capítulo ou só os capítulos (padrão: seções até 6 capítulos). */
+  sumario?: "secoes" | "capitulos";
 }
 
 interface Titulo { nivel: number; texto: string; id: string }
@@ -102,6 +104,7 @@ export async function montarPdf(caso: string, manualId: string, saidaDe = caso):
   const subtitulo = manual.subtitulo ?? dados.sistema;
 
   const sumario: string[] = [];
+  const comSecoes = manual.sumario ? manual.sumario === "secoes" : manual.capitulos.length <= 6;
   const capitulos: string[] = [];
   manual.capitulos.forEach((entrada, i) => {
     const id = typeof entrada === "string" ? entrada : path.basename(entrada.capitulo, ".md");
@@ -129,7 +132,7 @@ export async function montarPdf(caso: string, manualId: string, saidaDe = caso):
     const secoes = titulos.filter((t) => t.nivel === 3).map((t) => `<li><a href="#${t.id}">${escapar(t.texto)}</a></li>`);
     sumario.push(
       `<li><a href="#${idCap}"><span class="num">${i + 1}.</span><span>${escapar(tituloCap)}</span></a>` +
-        (secoes.length ? `<ol>${secoes.join("")}</ol>` : "") + "</li>",
+        (comSecoes && secoes.length ? `<ol>${secoes.join("")}</ol>` : "") + "</li>",
     );
   });
 

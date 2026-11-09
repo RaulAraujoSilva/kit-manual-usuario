@@ -1,0 +1,13 @@
+# Manual da administração do sistema (D1 do plano: um PDF por perfil).
+# Capítulos em casos/comprovantes/capitulos/; os que juntam tarefas usam {{passos:<roteiro>}}.
+titulo: Manual da administração
+perfil: administracao
+subtitulo: Comprovantes de saúde e educação
+versao: Versão piloto · novembro de 2026
+apresentacao: >-
+  Este manual mostra, passo a passo, como administrar as contas e os perfis de quem usa o sistema de comprovantes de
+  saúde e educação e como consultar a trilha de auditoria. As imagens usam dados de exemplo: na sua tela aparecem os
+  dados reais.
+capitulos:
+  - { capitulo: capitulos/adm-contas.md }
+  - adm-trilha

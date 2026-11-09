@@ -1,0 +1,91 @@
+# Incluir uma conta e atribuir perfis
+# Perfil: administracao | Tela: TL-14 /admin (aba Contas e perfis) | UC-17 | Vídeo: V18 (parte 1 de 3)
+# Manual: Manual da administração › capítulo Contas e perfis
+#
+# Estado necessário: a Servidora 040857 (exemplo), matrícula 40.857-8, no cadastro e SEM conta (estado da carga: só as
+#   quatro contas de teste existem).
+# Documentos fictícios: nenhum. O e-mail da conta é o do cadastro (servidor.040857@exemplo.invalido).
+# Altera dados: cria a conta 40.857-8 com os perfis Servidor e Recursos Humanos (este aguardando a coordenação); a senha
+#   provisória vai à caixa de teste. O mesmo estado é preparado por preparo/crh-conta-pedida.yaml
+#   (cópia "crh-conta-pedida", de onde parte o crh-aprovar-acessos).
+id: adm-contas
+titulo: Incluir uma conta
+perfil: administracao
+estado: inicial
+inicio: /admin
+capitulo: capitulos/adm-contas.md
+
+abertura:
+  titulo: Incluir uma conta
+  subtitulo: Manual da administração
+
+fecho:
+  linhas:
+    - "Manual da administração: capítulo Contas e perfis."
+
+passos:
+  - id: contas
+    narracao: >-
+      Na aba Contas e perfis, estão as contas de quem usa o sistema, com os perfis, a situação e o último acesso.
+    texto: >-
+      A aba **Contas e perfis** lista as contas com os **perfis**, a **situação** (ativa ou bloqueada) e o **último
+      acesso**. A sua conta aparece marcada como "sua conta".
+    alvo: { papel: table, nome_comeca: "Exibindo" }
+    acao: nenhuma
+    captura: true
+    enquadrar: tela
+
+  - id: incluir
+    narracao: Para dar acesso a uma pessoa, clique em Incluir conta.
+    texto: Clique em **Incluir conta**.
+    alvo: { css: 'summary:has-text("Incluir conta")' }
+    acao: clicar
+    captura: true
+
+  - id: matricula
+    narracao: >-
+      Para um servidor, informe a matrícula: ela vira o login, e a senha provisória vai para o e-mail do cadastro.
+    texto: >-
+      Em **Matrícula do servidor ou login da conta técnica**, informe a matrícula do servidor (ela vira o login). Para
+      conta técnica, informe o login e o **e-mail institucional da conta técnica**.
+    alvo: { rotulo: Matrícula do servidor ou login da conta técnica, dentro: { papel: form, nome: Incluir conta } }
+    acao: preencher
+    valor: "40.857-8"
+    captura: true
+
+  - id: perfil
+    narracao: Marque os perfis. O perfil do RH ou da coordenação só vale depois da aprovação da coordenação.
+    texto: >-
+      Marque os **perfis**: Servidor, Recursos Humanos, Coordenação do RH ou Administração. O perfil do RH ou da
+      coordenação só vale depois da aprovação da coordenação do RH.
+    alvo: { css: 'form[aria-label="Incluir conta"] label:has(input[type=checkbox]):has-text("Recursos Humanos")' }
+    acao: clicar
+    captura: true
+
+  - id: motivo
+    narracao: Informe o motivo. Ele é obrigatório para perfis do RH, da coordenação e de administração.
+    texto: Em **Motivo**, explique o acesso (obrigatório ao atribuir perfil do RH, da coordenação ou de administração).
+    alvo: { rotulo: Motivo, exato: true, dentro: { papel: form, nome: Incluir conta } }
+    acao: preencher
+    valor: "Nova pessoa na equipe do RH a partir de novembro (exemplo)."
+    captura: true
+
+  - id: salvar
+    narracao: >-
+      Clique em Incluir conta. A senha provisória vai direto ao e-mail da pessoa. Você não a vê.
+    texto: >-
+      Clique em **Incluir conta**. A senha provisória vai direto ao e-mail institucional da pessoa, vale 24 horas e uma
+      única entrada; você não a vê.
+    alvo: { papel: button, nome: Incluir conta, exato: true, dentro: { papel: form, nome: Incluir conta } }
+    acao: clicar
+    espera_texto: Conta 40.857-8 criada.
+    captura: true
+
+  - id: aguardando
+    narracao: Na lista, a conta aparece com o perfil do RH aguardando a coordenação.
+    texto: >-
+      Na lista, a conta nova mostra **aguardando a coordenação: Recursos Humanos** e **senha provisória ainda não
+      trocada**. **Alterar perfis** muda os perfis depois, também com motivo.
+    alvo: { papel: row, nome_comeca: "Servidora 040857 (exemplo)" }
+    acao: nenhuma
+    captura: true
