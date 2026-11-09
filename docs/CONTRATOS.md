@@ -66,3 +66,16 @@ passos com `captura: true`, mas `numero` é sempre a posição do passo no rotei
   capítulos). Cada capítulo é `casos/<caso>/capitulos/<roteiro>.md`; o marcador `{{passos}}` vira o passo a passo
   numerado com as imagens anotadas. Saída: `saida/<caso>/manuais/<manual>.pdf` (A4, marcado, com marcadores,
   idioma pt-BR, texto alternativo em toda figura).
+
+## Ambientes paralelos e estados (`motor/estado.ts`)
+- `caso.yaml` → `ambientes:` (endereço, caixa de e-mail, `vars` usadas como `{nome}` nos comandos de estado). Escolha
+  com `KIT_AMBIENTE=<nome>`; cada ambiente tem banco próprio, então captura e gravação podem rodar em paralelo, uma
+  por ambiente.
+- `estado:` no roteiro: `inicial` (padrão), `atual` (não restaura) ou o nome de uma cópia salva com
+  `node motor/estado.ts salvar <caso> <nome>` (`.cache/estado-<nome>.dump`). Roteiros de preparo (pré-requisitos de
+  outro perfil) ficam em `casos/<caso>/roteiros/preparo/` e não entram em manual nem vídeo.
+
+## Portões (`motor/checar.ts`)
+- `node motor/checar.ts <caso>` → `saida/<caso>/checagem.md`: cobertura da `matriz.md` (roteiro, prints, capítulo,
+  vídeo), termos proibidos no texto, na narração e nas legendas, duração e legenda dos vídeos, PDF marcado, com
+  idioma e marcadores. Sai com erro se algum portão falhar.

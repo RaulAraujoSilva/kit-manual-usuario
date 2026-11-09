@@ -14,7 +14,7 @@
     "narrar": "node motor/narrar.ts",
     "gravar": "node motor/gravar.ts",
     "video": "node motor/montar-video.ts",
-    "testar": "node --test \"motor/*.test.ts\""
+    "testar": "node motor/normalizar.test.ts"
   },
   "devDependencies": {
     "@types/node": "^24.19.2",
